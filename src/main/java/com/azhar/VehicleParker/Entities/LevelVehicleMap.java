@@ -1,13 +1,15 @@
 package com.azhar.VehicleParker.Entities;
 
 
+import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+
 public class LevelVehicleMap {
     private int levelNumber;
-    private String vehicleType;
+    private Vehicle vehicle;
 
-    public LevelVehicleMap(int levelNumber, String vehicleType) {
+    public LevelVehicleMap(int levelNumber, Vehicle vehicleType) {
         this.levelNumber = levelNumber;
-        this.vehicleType = vehicleType;
+        this.vehicle = vehicleType;
     }
 
     public int getLevelNumber() {
@@ -18,11 +20,11 @@ public class LevelVehicleMap {
         this.levelNumber = levelNumber;
     }
 
-    public String getVehicleType() {
-        return vehicleType;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 }

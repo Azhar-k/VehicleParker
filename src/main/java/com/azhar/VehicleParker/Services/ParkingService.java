@@ -22,8 +22,8 @@ public class ParkingService {
     public ParkResponse park(Vehicle vehicle) {
         ParkResponse parkResponse;
         try {
-           LevelVehicleMap levelSpace= parkVehicle(vehicle);
-           parkResponse = new ParkResponse(true,"vehicle parked",levelSpace);
+           LevelVehicleMap levelVehicleMap= parkVehicle(vehicle);
+           parkResponse = new ParkResponse(true,"vehicle parked",levelVehicleMap);
 
         } catch (Exception e) {
             parkResponse = new ParkResponse(false,e.getMessage(),null);
@@ -31,19 +31,21 @@ public class ParkingService {
         return parkResponse;
     }
 
+
+
     private LevelVehicleMap parkVehicle(Vehicle vehicle) throws Exception {
         boolean isVehicleTypeValid = validateVehicleType(vehicle);
         if(!isVehicleTypeValid){
             throw new Exception("This vehicle can not be parked here");
         }
 
-        String type= vehicle.getType();
-        int availableLevelNumber=getAvailableLevelNumber(type);
-        if(availableLevelNumber<=0){
+
+        int availableLevelNumber=getAvailableLevelNumber(vehicle);
+        if(availableLevelNumber<0){
             throw new Exception("Parking Space is Full");
         }
 
-        return new LevelVehicleMap(1,vehicle.getType());
+        return new LevelVehicleMap(availableLevelNumber,vehicle);
     }
 
     private boolean validateVehicleType(Vehicle vehicle){
@@ -56,12 +58,12 @@ public class ParkingService {
         return false;
     }
 
-    private int getAvailableLevelNumber(String type){
+    private int getAvailableLevelNumber(Vehicle vehicle){
 
         List<LevelSpace> levelSpaceList = spaceManager.getLAvailableSpace();
         int levelNo =-1;
         for(LevelSpace levelSpace : levelSpaceList){
-            switch (type){
+            switch (vehicle.getType()){
                 case "car":
                     if(levelSpace.getAvailableCarSpace()>0){
                         levelNo=levelSpace.getLevelNumber();

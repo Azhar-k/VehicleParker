@@ -4,7 +4,7 @@ package com.azhar.VehicleParker;
 import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelCapacity;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.Entities.Vehicle.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,29 +26,27 @@ public class Database {
     }
 
     private void loadLevels() {
-        levelList.add(new Level(0, new LevelCapacity(15, 5, 30, 10)));
-        levelList.add(new Level(1, new LevelCapacity(10, 3, 40, 10)));
-        levelList.add(new Level(2, new LevelCapacity(20, 4, 20, 10)));
-        levelList.add(new Level(3, new LevelCapacity(30, 2, 50, 10)));
-        levelList.add(new Level(4, new LevelCapacity(10, 5, 10, 10)));
-        levelList.add(new Level(5, new LevelCapacity(10, 2, 30, 10)));
-        levelList.add(new Level(6, new LevelCapacity(5, 5, 30, 10)));
+        levelList.add(new Level(0, new LevelCapacity(new Car(1, "car", 15), new Bus(2, "bus", 15), new Bike(3, "bike", 15), new Van(4, "van", 15))));
+        levelList.add(new Level(1, new LevelCapacity(new Car(1, "car", 15), new Bus(2, "bus", 15), new Bike(3, "bike", 15), new Van(4, "van", 15))));
+        levelList.add(new Level(2, new LevelCapacity(new Car(1, "car", 15), new Bus(2, "bus", 15), new Bike(3, "bike", 15), new Van(4, "van", 15))));
+        levelList.add(new Level(3, new LevelCapacity(new Car(1, "car", 15), new Bus(2, "bus", 15), new Bike(3, "bike", 15), new Van(4, "van", 15))));
+        levelList.add(new Level(4, new LevelCapacity(new Car(1, "car", 15), new Bus(2, "bus", 15), new Bike(3, "bike", 15), new Van(4, "van", 15))));
     }
 
     private void loadVehicles() {
-        vehicleList.add(new Vehicle(1, "car"));
-        vehicleList.add(new Vehicle(2, "bus"));
-        vehicleList.add(new Vehicle(3, "van"));
-        vehicleList.add(new Vehicle(4, "bike"));
+        vehicleList.add(new Car(1, "car"));
+        vehicleList.add(new Bus(2, "bus"));
+        vehicleList.add(new Van(3, "van"));
+        vehicleList.add(new Bike(4, "bike"));
     }
 
     public List<LevelSpace> getAvailableSpace() {
         for(Level level: getLevelList()){
             int levelNumber=level.getLevelNumber();
-            int availableCarSpace = level.getLevelCapacity().getMAX_NUMBER_OF_CAR()-level.getLevelCapacity().getOccupied_car_slots();
-            int availableBusSpace = level.getLevelCapacity().getMAX_NUMBER_OF_BUS()-level.getLevelCapacity().getOccupied_bus_slots();
-            int availableBikeSpace = level.getLevelCapacity().getMAX_NUMBER_OF_BIKE()-level.getLevelCapacity().getOccupied_bike_slots();
-            int availableVanSpace = level.getLevelCapacity().getMAX_NUMBER_OF_VAN()-level.getLevelCapacity().getOccupied_van_slots();
+            int availableCarSpace = level.getLevelCapacity().getCarCapacity().getMAX_SLOTS()-level.getLevelCapacity().getCarCapacity().getOccupiedSlots();
+            int availableBusSpace = level.getLevelCapacity().getBusCapacity().getMAX_SLOTS()-level.getLevelCapacity().getBusCapacity().getOccupiedSlots();
+            int availableBikeSpace = level.getLevelCapacity().getBikeCapacity().getMAX_SLOTS()-level.getLevelCapacity().getBikeCapacity().getOccupiedSlots();
+            int availableVanSpace = level.getLevelCapacity().getVanCapacity().getMAX_SLOTS()-level.getLevelCapacity().getVanCapacity().getOccupiedSlots();
             availableSpace.add(new LevelSpace(levelNumber,availableCarSpace,availableBusSpace,availableVanSpace,availableBikeSpace));
 
         }
