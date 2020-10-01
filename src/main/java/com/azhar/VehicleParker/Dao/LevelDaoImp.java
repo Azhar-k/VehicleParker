@@ -1,9 +1,9 @@
 package com.azhar.VehicleParker.Dao;
 
 import com.azhar.VehicleParker.Database;
-import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.LevelVehicleMap;
+import com.azhar.VehicleParker.Entities.Level.LevelSpace;
+import com.azhar.VehicleParker.Entities.Level.Level;
+import com.azhar.VehicleParker.Entities.LevelVehicle;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -43,15 +43,22 @@ public class LevelDaoImp implements LevelDao{
         return database.getVehicleList();
     }
 
-    public int fillSlot(LevelVehicleMap levelVehicleMap) {
-        return database.fillSlot(levelVehicleMap);
+    public int fillSlot(LevelVehicle levelVehicleMap) throws Exception {
+
+        int levelVehicleMapId = database.fillSlot(levelVehicleMap);
+        if(levelVehicleMapId==-1){
+            //parking rejected by databse
+            throw new Exception("database error occured");
+        }
+        //vehicle parked and an id for the parking is returned by databse
+        return levelVehicleMapId;
     }
 
     public boolean isLevelVehiclMapIdExist(int id){
         return database.isLevelVehicleMapIdExist(id);
     }
 
-    public boolean emptySlot(LevelVehicleMap levelVehicleMap) {
+    public boolean emptySlot(LevelVehicle levelVehicleMap) {
         return database.emptySlot(levelVehicleMap);
     }
 

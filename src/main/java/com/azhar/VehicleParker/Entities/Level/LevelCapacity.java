@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Entities.Building;
+package com.azhar.VehicleParker.Entities.Level;
 
 public class LevelCapacity {
     private int MAX_NUMBER_OF_CAR = 10;

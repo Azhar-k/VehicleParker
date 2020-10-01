@@ -1,17 +1,17 @@
 package com.azhar.VehicleParker.Entities;
 
-
-public class LevelVehicleMap {
+//map a vehicle to a level. Id will be unique to this parking
+public class LevelVehicle {
     private int id;
     private int levelNumber;
     private String vehicleType;
 
-    public LevelVehicleMap(int levelNumber, String vehicleType) {
+    public LevelVehicle(int levelNumber, String vehicleType) {
         this.levelNumber = levelNumber;
         this.vehicleType = vehicleType;
     }
 
-    public LevelVehicleMap(int id) {
+    public LevelVehicle(int id) {
         this.id = id;
     }
 
@@ -37,5 +37,14 @@ public class LevelVehicleMap {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "LevelVehicleMap{" +
+                "id=" + id +
+                ", levelNumber=" + levelNumber +
+                ", vehicleType='" + vehicleType + '\'' +
+                '}';
     }
 }

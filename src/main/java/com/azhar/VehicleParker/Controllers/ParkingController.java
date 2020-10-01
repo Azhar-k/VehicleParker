@@ -1,8 +1,8 @@
 package com.azhar.VehicleParker.Controllers;
 
-import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.LevelVehicleMap;
-import com.azhar.VehicleParker.Entities.Responses.ParkResponse;
+import com.azhar.VehicleParker.Entities.Level.LevelSpace;
+import com.azhar.VehicleParker.Entities.LevelVehicle;
+import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 
 import com.azhar.VehicleParker.Services.Interfaces.ParkingService;
@@ -38,7 +38,7 @@ public class ParkingController {
     }
 
     @PostMapping(path = "/unpark",consumes = "application/json",produces = "application/json")
-    public ParkResponse unpark(@RequestBody LevelVehicleMap levelVehicleMap){
+    public ParkResponse unpark(@RequestBody LevelVehicle levelVehicleMap){
 
         return unParkingService.unpark(levelVehicleMap);
     }

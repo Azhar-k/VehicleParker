@@ -1,10 +1,9 @@
 package com.azhar.VehicleParker;
 
 
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.Building.LevelCapacity;
-import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.LevelVehicleMap;
+import com.azhar.VehicleParker.Entities.Level.Level;
+import com.azhar.VehicleParker.Entities.Level.LevelCapacity;
+import com.azhar.VehicleParker.Entities.LevelVehicle;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,7 @@ import java.util.Random;
 public class Database {
     private static List<Level> levelList = new ArrayList<Level>();
     private static List<Vehicle> vehicleList = new ArrayList<Vehicle>();
-    private static List<LevelVehicleMap> levelVehicleMapList = new ArrayList<LevelVehicleMap>();
+    private static List<LevelVehicle> levelVehicleMapList = new ArrayList<LevelVehicle>();
 
     public Database() {
 
@@ -46,7 +45,10 @@ public class Database {
 
 
 
-    public int fillSlot(LevelVehicleMap levelVehicleMap){
+    public int fillSlot(LevelVehicle levelVehicleMap){
+
+        //A vehicle is to be parked.
+
         int levelNumber = levelVehicleMap.getLevelNumber();
         String vehicleType = levelVehicleMap.getVehicleType();
 
@@ -58,6 +60,7 @@ public class Database {
             if (level.getLevelNumber()==levelNumber){
                 switch (vehicleType){
                     case "car":
+                        //occupiedslot is incremented
                         currentOccupiedSlot = level.getLevelCapacity().getOccupied_car_slots();
                         updatedOccupiedSlot = currentOccupiedSlot+1;
                         level.getLevelCapacity().setOccupied_car_slots(updatedOccupiedSlot);
@@ -82,6 +85,8 @@ public class Database {
                     default:
                         break;
                 }
+                // levelVehicle instance corresponding to the parking is added to database and \
+                // a unique id for the parking is retrieved
                 levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
                 break;
             }
@@ -91,18 +96,23 @@ public class Database {
 
     }
 
-    public int addLevelVehicleMap(LevelVehicleMap levelVehicleMap){
+    public int addLevelVehicleMap(LevelVehicle levelVehicleMap){
         int id = getUniquieVehicleMapId();
         levelVehicleMap.setId(id);
         levelVehicleMapList.add(levelVehicleMap);
         return id;
     }
-    public boolean emptySlot(LevelVehicleMap levelVehicleMap){
+    //vehicle is unparked by using the unique id of levelVehicle instance
+    public boolean emptySlot(LevelVehicle levelVehicleMap){
+
         levelVehicleMap=getLevelVehicleMap(levelVehicleMap.getId());
+
         int levelNumber = levelVehicleMap.getLevelNumber();
         String vehicleType = levelVehicleMap.getVehicleType();
+
         int updatedOccupiedSlot;
         boolean isSlotEmptied=false;
+
         for(Level level:getLevelList()){
             if (level.getLevelNumber()==levelNumber){
                 switch (vehicleType){
@@ -131,47 +141,33 @@ public class Database {
                     default:
                         break;
                 }
-                break;
-            }
-        }
-        if(isSlotEmptied){
-            isSlotEmptied=false;
 
-            for(LevelVehicleMap lvm:getLevelVehicleMapList()){
-                if(lvm.getId()==levelVehicleMap.getId()){
-                    getLevelVehicleMapList().remove(lvm);
-                    isSlotEmptied=true;
-                    break;
-                }
+                //levelVehicle instance is removed from database.
+                removeLevelVehicle(levelVehicleMap);
+                break;
             }
         }
 
         return isSlotEmptied;
     }
+    public void removeLevelVehicle(LevelVehicle levelVehicle){
+        for(LevelVehicle lvm:getLevelVehicleMapList()){
+            if(lvm.getId()==levelVehicle.getId()){
+                getLevelVehicleMapList().remove(lvm);
+                break;
+            }
+        }
+    }
 
-    private LevelVehicleMap getLevelVehicleMap(int id) {
-        for (LevelVehicleMap levelVehicleMap : getLevelVehicleMapList()){
+    private LevelVehicle getLevelVehicleMap(int id) {
+        //retrieve a levelVehicle instance by using its id.
+        for (LevelVehicle levelVehicleMap : getLevelVehicleMapList()){
             if(levelVehicleMap.getId()==id){
                 return levelVehicleMap;
             }
         }
         return null;
     }
-
-
-    public List<Level> getLevelList() {
-
-        return levelList;
-    }
-
-    public List<Vehicle> getVehicleList() {
-        return vehicleList;
-    }
-
-    public static List<LevelVehicleMap> getLevelVehicleMapList() {
-        return levelVehicleMapList;
-    }
-
     private int getUniquieVehicleMapId(){
         Random random = new Random();
 
@@ -184,13 +180,30 @@ public class Database {
 
     }
     public boolean isLevelVehicleMapIdExist(int id){
-        for (LevelVehicleMap levelVehicleMap : getLevelVehicleMapList()){
+
+        for (LevelVehicle levelVehicleMap : getLevelVehicleMapList()){
             if(levelVehicleMap.getId()==id){
                 return true;
             }
         }
         return false;
     }
+
+
+    public List<Level> getLevelList() {
+
+        return levelList;
+    }
+
+    public List<Vehicle> getVehicleList() {
+        return vehicleList;
+    }
+
+    public static List<LevelVehicle> getLevelVehicleMapList() {
+        return levelVehicleMapList;
+    }
+
+
 }
 
 

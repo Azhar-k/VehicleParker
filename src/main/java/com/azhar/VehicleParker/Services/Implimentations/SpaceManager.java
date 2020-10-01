@@ -1,7 +1,7 @@
 package com.azhar.VehicleParker.Services.Implimentations;
 
 import com.azhar.VehicleParker.Dao.LevelDao;
-import com.azhar.VehicleParker.Entities.Building.LevelSpace;
+import com.azhar.VehicleParker.Entities.Level.LevelSpace;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,5 +1,6 @@
-package com.azhar.VehicleParker.Entities.Building;
+package com.azhar.VehicleParker.Entities.Level;
 
+//represent level number and available spaces of each type
 public class LevelSpace {
    private int levelNumber,availableCarSpace,availableBusSpace,availableVanSpace,availableBikeSpace;
 

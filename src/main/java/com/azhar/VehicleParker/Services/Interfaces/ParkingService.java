@@ -1,6 +1,6 @@
 package com.azhar.VehicleParker.Services.Interfaces;
 
-import com.azhar.VehicleParker.Entities.Responses.ParkResponse;
+import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import org.springframework.stereotype.Component;
 

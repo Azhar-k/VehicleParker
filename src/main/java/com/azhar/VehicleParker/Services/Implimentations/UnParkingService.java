@@ -1,8 +1,8 @@
 package com.azhar.VehicleParker.Services.Implimentations;
 
 import com.azhar.VehicleParker.Dao.LevelDao;
-import com.azhar.VehicleParker.Entities.LevelVehicleMap;
-import com.azhar.VehicleParker.Entities.Responses.ParkResponse;
+import com.azhar.VehicleParker.Entities.LevelVehicle;
+import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,34 +13,37 @@ public class UnParkingService implements com.azhar.VehicleParker.Services.Interf
     @Autowired
     LevelDao levelDao;
 
-    public ParkResponse unpark(LevelVehicleMap levelVehicleMap) {
+    public ParkResponse unpark(LevelVehicle levelVehicleMap) {
+
         ParkResponse parkResponse;
         try {
-            LevelVehicleMap levelVehicleMapResponse= unparkVehicle(levelVehicleMap);
-            parkResponse = new ParkResponse(true,"vehicle unparked",levelVehicleMapResponse);
+            //try to unpark the instance
+            LevelVehicle levelVehicleMapResponse = unparkVehicle(levelVehicleMap);
+            //format api response
+            parkResponse = new ParkResponse(true, "vehicle unparked", levelVehicleMapResponse);
 
         } catch (Exception e) {
-            parkResponse = new ParkResponse(false,e.getMessage(),null);
+            parkResponse = new ParkResponse(false, e.getMessage(), null);
         }
         return parkResponse;
 
     }
 
-    private LevelVehicleMap unparkVehicle(LevelVehicleMap levelVehicleMap) throws Exception {
+    private LevelVehicle unparkVehicle(LevelVehicle levelVehicleMap) throws Exception {
         boolean isVehicleExist = isVehicleExist(levelVehicleMap);
 
-        if(!isVehicleExist){
+        if (!isVehicleExist) {
             throw new Exception("Your vehicle is not parked. Please recheck id");
         }
-        boolean isSlotEmptied = levelDao.emptySlot(levelVehicleMap);
-
-        if(!isSlotEmptied){
+        boolean isSlotEmptied = levelDao.emptySlot(levelVehicleMap);//unpark the vehicle from database
+        if (!isSlotEmptied) {
             throw new Exception("Database error occure. Please try again");
         }
         return levelVehicleMap;
     }
 
-    private boolean isVehicleExist(LevelVehicleMap levelVehicleMap) {
+    private boolean isVehicleExist(LevelVehicle levelVehicleMap) {
+        //check whether the vehicle is parked or not
         return levelDao.isLevelVehiclMapIdExist(levelVehicleMap.getId());
     }
 }
