@@ -46,4 +46,11 @@ public class LevelCapacity {
     public void setVanCapacity(Vehicle vanCapacity) {
         this.vanCapacity = vanCapacity;
     }
+
+    public int getOccupiedtSlots(Vehicle vehicle){
+        return vehicle.getOccupiedSlots();
+    }
+    public int getFreeSlots(Vehicle vehicle){
+        return vehicle.getMAX_SLOTS()-vehicle.getOccupiedSlots();
+    }
 }

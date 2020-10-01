@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker.Entities.Building;
 
 
+import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 
 public class Level {
     private int levelNumber;
@@ -26,4 +27,6 @@ public class Level {
     public void setLevelCapacity(LevelCapacity levelCapacity) {
         this.levelCapacity = levelCapacity;
     }
+
+
 }

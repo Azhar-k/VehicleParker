@@ -1,25 +1,17 @@
 package com.azhar.VehicleParker.Entities.Vehicle;
 
 public class Vehicle {
-    private int id;
-    private String type;
     private int MAX_SLOTS;
     private int occupiedSlots;
+    private int id;
 
-    public Vehicle(int id, String type) {
+
+    public Vehicle(int id, int MAX_SLOTS) {
         this.id=id;
-        this.type=type;
-
-    }
-
-    public Vehicle(String type) {
-        this.type = type;
-    }
-
-    public Vehicle(int id, String type, int MAX_SLOTS) {
-        this.id = id;
-        this.type = type;
         this.MAX_SLOTS = MAX_SLOTS;
+    }
+
+    public Vehicle() {
     }
 
     public int getMAX_SLOTS() {
@@ -44,13 +36,5 @@ public class Vehicle {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }

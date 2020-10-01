@@ -13,9 +13,8 @@ public class VehicleParkerApplication implements CommandLineRunner {
 
 		ApplicationContext applicationContext =SpringApplication.run(VehicleParkerApplication.class, args);
 
-		SpaceManager spaceManager = applicationContext.getBean(SpaceManager.class);
-
-		System.out.println(spaceManager.getLAvailableSpace().get(0).getAvailableBikeSpace());
+		Database database = applicationContext.getBean(Database.class);
+		database.loadData();
 	}
 
 	@Override

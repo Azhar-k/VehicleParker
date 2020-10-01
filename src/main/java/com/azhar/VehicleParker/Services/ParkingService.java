@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker.Services;
 
 import com.azhar.VehicleParker.Dao.LevelDao;
+import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.LevelVehicleMap;
 import com.azhar.VehicleParker.Entities.Responses.ParkResponse;
@@ -39,7 +40,6 @@ public class ParkingService {
             throw new Exception("This vehicle can not be parked here");
         }
 
-
         int availableLevelNumber=getAvailableLevelNumber(vehicle);
         if(availableLevelNumber<0){
             throw new Exception("Parking Space is Full");
@@ -49,45 +49,24 @@ public class ParkingService {
     }
 
     private boolean validateVehicleType(Vehicle vehicle){
-        List<Vehicle> availableVehicleList = levelDao.getVehicleList();
-        for(Vehicle availableVehicle:availableVehicleList){
-            if(availableVehicle.getType().equals(vehicle.getType())){
-                return true;
-            }
+        if(vehicle==null){
+            return false;
         }
-        return false;
+        return true;
     }
 
     private int getAvailableLevelNumber(Vehicle vehicle){
-
-        List<LevelSpace> levelSpaceList = spaceManager.getLAvailableSpace();
         int levelNo =-1;
-        for(LevelSpace levelSpace : levelSpaceList){
-            switch (vehicle.getType()){
-                case "car":
-                    if(levelSpace.getAvailableCarSpace()>0){
-                        levelNo=levelSpace.getLevelNumber();
-                    }
-                    break;
-                case "bus":
-                    if(levelSpace.getAvailableBusSpace()>0){
-                        levelNo=levelSpace.getLevelNumber();
-                    }
-                    break;
-                case "bike":
-                    if(levelSpace.getAvailableBikeSpace()>0){
-                        levelNo=levelSpace.getLevelNumber();
-                    }
-                    break;
-                case "van":
-                    if(levelSpace.getAvailableVanSpace()>0){
-                        levelNo=levelSpace.getLevelNumber();
-                    }
-                    break;
-                default:
-                    levelNo=-1;
+
+        for(Level level : levelDao.getLevelList()){
+            int availableSlots = level.getLevelCapacity().getFreeSlots(vehicle);
+            if(availableSlots>0){
+                levelNo = level.getLevelNumber();
+                break;
             }
         }
         return levelNo;
     }
+
+
 }
