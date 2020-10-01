@@ -5,11 +5,11 @@ import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 
 public class LevelVehicleMap {
     private int levelNumber;
-    private Vehicle vehicle;
+    private int vehicleId;
 
-    public LevelVehicleMap(int levelNumber, Vehicle vehicleType) {
+    public LevelVehicleMap(int levelNumber, int vehicleId) {
         this.levelNumber = levelNumber;
-        this.vehicle = vehicleType;
+        this.vehicleId = vehicleId;
     }
 
     public int getLevelNumber() {
@@ -20,11 +20,11 @@ public class LevelVehicleMap {
         this.levelNumber = levelNumber;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public int getVehicle() {
+        return vehicleId;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public void setVehicle(int vehicleID) {
+        this.vehicleId = vehicleID;
     }
 }

@@ -37,4 +37,7 @@ public class Vehicle {
     public void setId(int id) {
         this.id = id;
     }
+    public int getFreeSlots(){
+        return (this.getMAX_SLOTS()-this.getOccupiedSlots());
+    }
 }

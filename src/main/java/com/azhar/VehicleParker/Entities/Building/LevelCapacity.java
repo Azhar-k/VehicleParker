@@ -1,6 +1,6 @@
 package com.azhar.VehicleParker.Entities.Building;
 
-import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.Entities.Vehicle.*;
 
 public class LevelCapacity {
     private  Vehicle carCapacity;
@@ -47,10 +47,20 @@ public class LevelCapacity {
         this.vanCapacity = vanCapacity;
     }
 
-    public int getOccupiedtSlots(Vehicle vehicle){
-        return vehicle.getOccupiedSlots();
-    }
     public int getFreeSlots(Vehicle vehicle){
-        return vehicle.getMAX_SLOTS()-vehicle.getOccupiedSlots();
+        int freeSlots=0;
+        if(vehicle instanceof Car){
+            freeSlots = this.getCarCapacity().getFreeSlots();
+        }
+        if(vehicle instanceof Bus){
+            freeSlots = this.getBusCapacity().getFreeSlots();
+        }
+        if(vehicle instanceof Bike){
+            freeSlots = this.getBikeCapacity().getFreeSlots();
+        }
+        if(vehicle instanceof Van){
+            freeSlots = this.getVanCapacity().getFreeSlots();
+        }
+        return freeSlots;
     }
 }
