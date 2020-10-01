@@ -49,34 +49,40 @@ public class Database {
     public int fillSlot(LevelVehicleMap levelVehicleMap){
         int levelNumber = levelVehicleMap.getLevelNumber();
         String vehicleType = levelVehicleMap.getVehicleType();
+
+        int currentOccupiedSlot;
         int updatedOccupiedSlot;
         int levelVehicleMapid = -1;
+
         for(Level level:getLevelList()){
             if (level.getLevelNumber()==levelNumber){
                 switch (vehicleType){
                     case "car":
-                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_car_slots()+1;
+                        currentOccupiedSlot = level.getLevelCapacity().getOccupied_car_slots();
+                        updatedOccupiedSlot = currentOccupiedSlot+1;
                         level.getLevelCapacity().setOccupied_car_slots(updatedOccupiedSlot);
-                        levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
                         break;
                     case "bus":
-                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_bus_slots()+1;
+                        currentOccupiedSlot=level.getLevelCapacity().getOccupied_bus_slots();
+                        updatedOccupiedSlot = currentOccupiedSlot+1;
                         level.getLevelCapacity().setOccupied_bus_slots(updatedOccupiedSlot);
-                        levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
+
                         break;
                     case "bike":
-                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_bike_slots()+1;
+                        currentOccupiedSlot = level.getLevelCapacity().getOccupied_bike_slots();
+                        updatedOccupiedSlot = currentOccupiedSlot+1;
                         level.getLevelCapacity().setOccupied_bike_slots(updatedOccupiedSlot);
-                        levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
+
                         break;
                     case "van":
-                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_van_slots()+1;
+                        currentOccupiedSlot=level.getLevelCapacity().getOccupied_van_slots();
+                        updatedOccupiedSlot = currentOccupiedSlot+1;
                         level.getLevelCapacity().setOccupied_van_slots(updatedOccupiedSlot);
-                        levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
                         break;
                     default:
                         break;
                 }
+                levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
                 break;
             }
         }
@@ -92,7 +98,6 @@ public class Database {
         return id;
     }
     public boolean emptySlot(LevelVehicleMap levelVehicleMap){
-        System.out.println("inside database start");
         levelVehicleMap=getLevelVehicleMap(levelVehicleMap.getId());
         int levelNumber = levelVehicleMap.getLevelNumber();
         String vehicleType = levelVehicleMap.getVehicleType();

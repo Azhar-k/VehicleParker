@@ -1,4 +1,5 @@
-package com.azhar.VehicleParker.Services;
+package com.azhar.VehicleParker.Services.Implimentations;
+
 
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
@@ -11,10 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ParkingService {
-
-    @Autowired
-    SpaceManager spaceManager;
+public class ParkingService implements com.azhar.VehicleParker.Services.Interfaces.ParkingService {
 
     @Autowired
     LevelDao levelDao;
@@ -64,7 +62,7 @@ public class ParkingService {
 
     private int getAvailableLevelNumber(String type){
 
-        List<LevelSpace> levelSpaceList = spaceManager.getLAvailableSpace();
+        List<LevelSpace> levelSpaceList = levelDao.getAvailableSpace();
         int levelNo =-1;
 
         for(LevelSpace levelSpace : levelSpaceList){
@@ -96,7 +94,9 @@ public class ParkingService {
                 default:
                     levelNo=-1;
             }
-            System.out.println(".......");
+           if(levelNo>-1){
+               break;
+           }
 
 
         }
@@ -104,34 +104,4 @@ public class ParkingService {
         return levelNo;
     }
 
-    public ParkResponse unpark(LevelVehicleMap levelVehicleMap) {
-        ParkResponse parkResponse;
-        try {
-            LevelVehicleMap levelVehicleMapResponse= unparkVehicle(levelVehicleMap);
-            parkResponse = new ParkResponse(true,"vehicle unparked",levelVehicleMapResponse);
-
-        } catch (Exception e) {
-            parkResponse = new ParkResponse(false,e.getMessage(),null);
-        }
-        return parkResponse;
-
-    }
-
-    private LevelVehicleMap unparkVehicle(LevelVehicleMap levelVehicleMap) throws Exception {
-        boolean isVehicleExist = isVehicleExist(levelVehicleMap);
-
-        if(!isVehicleExist){
-            throw new Exception("Your vehicle is not parked. Please recheck id");
-        }
-        boolean isSlotEmptied = levelDao.emptySlot(levelVehicleMap);
-
-        if(!isSlotEmptied){
-            throw new Exception("Database error occure. Please try again");
-        }
-        return levelVehicleMap;
-    }
-
-    private boolean isVehicleExist(LevelVehicleMap levelVehicleMap) {
-        return levelDao.isLevelVehiclMapIdExist(levelVehicleMap.getId());
-    }
 }

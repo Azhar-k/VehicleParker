@@ -5,8 +5,13 @@ public class Vehicle {
     private String type;
 
     public Vehicle(int id, String type) {
+        this.id=id;
         this.type=type;
 
+    }
+
+    public Vehicle(String type) {
+        this.type = type;
     }
 
     public int getId() {
