@@ -32,7 +32,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
         return parkResponse;
     }
 
-    private LevelVehicle parkVehicle(Vehicle vehicle) throws Exception {
+    public LevelVehicle parkVehicle(Vehicle vehicle) throws Exception {
 
         boolean isVehicleTypeValid = validateVehicleType(vehicle);
         if(!isVehicleTypeValid){
