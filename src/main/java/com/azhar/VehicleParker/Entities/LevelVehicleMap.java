@@ -2,12 +2,17 @@ package com.azhar.VehicleParker.Entities;
 
 
 public class LevelVehicleMap {
+    private int id;
     private int levelNumber;
     private String vehicleType;
 
     public LevelVehicleMap(int levelNumber, String vehicleType) {
         this.levelNumber = levelNumber;
         this.vehicleType = vehicleType;
+    }
+
+    public LevelVehicleMap(int id) {
+        this.id = id;
     }
 
     public int getLevelNumber() {
@@ -24,5 +29,13 @@ public class LevelVehicleMap {
 
     public void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    public int getId() {
+        return  this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

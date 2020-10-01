@@ -29,8 +29,18 @@ public class ParkingController {
 
     @PostMapping(path = "/park",consumes = "application/json",produces = "application/json")
     public ParkResponse park(@RequestBody Vehicle vehicle){
-
+        System.out.println("...............");
+        System.out.println("...............");
+        System.out.println("...............");
         return parkingService.park(vehicle);
+    }
+
+    @PostMapping(path = "/unpark",consumes = "application/json",produces = "application/json")
+    public ParkResponse unpark(@RequestBody LevelVehicleMap levelVehicleMap){
+        System.out.println("...............");
+        System.out.println("...............");
+        System.out.println("...............");
+        return parkingService.unpark(levelVehicleMap);
     }
 
 }

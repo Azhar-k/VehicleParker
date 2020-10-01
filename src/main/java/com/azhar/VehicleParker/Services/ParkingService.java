@@ -22,8 +22,8 @@ public class ParkingService {
     public ParkResponse park(Vehicle vehicle) {
         ParkResponse parkResponse;
         try {
-           LevelVehicleMap levelSpace= parkVehicle(vehicle);
-           parkResponse = new ParkResponse(true,"vehicle parked",levelSpace);
+           LevelVehicleMap levelVehicleMap= parkVehicle(vehicle);
+           parkResponse = new ParkResponse(true,"vehicle parked",levelVehicleMap);
 
         } catch (Exception e) {
             parkResponse = new ParkResponse(false,e.getMessage(),null);
@@ -39,11 +39,17 @@ public class ParkingService {
 
         String type= vehicle.getType();
         int availableLevelNumber=getAvailableLevelNumber(type);
-        if(availableLevelNumber<=0){
+        if(availableLevelNumber<0){
             throw new Exception("Parking Space is Full");
         }
 
-        return new LevelVehicleMap(1,vehicle.getType());
+        LevelVehicleMap levelVehicleMap = new LevelVehicleMap(availableLevelNumber,vehicle.getType());
+        int levelVehicleMapid = levelDao.fillSlot(levelVehicleMap);
+        if(levelVehicleMapid==-1){
+            throw new Exception("Database error . Please try again");
+        }
+        levelVehicleMap.setId(levelVehicleMapid);
+        return levelVehicleMap;
     }
 
     private boolean validateVehicleType(Vehicle vehicle){
@@ -60,32 +66,72 @@ public class ParkingService {
 
         List<LevelSpace> levelSpaceList = spaceManager.getLAvailableSpace();
         int levelNo =-1;
+
         for(LevelSpace levelSpace : levelSpaceList){
+
             switch (type){
                 case "car":
-                    if(levelSpace.getAvailableCarSpace()>0){
+                    if(levelSpace.getAvailableCarSpace()>=0){
                         levelNo=levelSpace.getLevelNumber();
                     }
                     break;
                 case "bus":
-                    if(levelSpace.getAvailableBusSpace()>0){
+                    if(levelSpace.getAvailableBusSpace()>=0){
+                        System.out.println("level :"+levelSpace.getLevelNumber());
+                        System.out.println("bus space : "+levelSpace.getAvailableBusSpace());
                         levelNo=levelSpace.getLevelNumber();
+                        return levelNo;
                     }
                     break;
                 case "bike":
-                    if(levelSpace.getAvailableBikeSpace()>0){
+                    if(levelSpace.getAvailableBikeSpace()>=0){
                         levelNo=levelSpace.getLevelNumber();
                     }
                     break;
                 case "van":
-                    if(levelSpace.getAvailableVanSpace()>0){
+                    if(levelSpace.getAvailableVanSpace()>=0){
                         levelNo=levelSpace.getLevelNumber();
                     }
                     break;
                 default:
                     levelNo=-1;
             }
+            System.out.println(".......");
+
+
         }
+        System.out.println("returned level :"+levelNo);
         return levelNo;
+    }
+
+    public ParkResponse unpark(LevelVehicleMap levelVehicleMap) {
+        ParkResponse parkResponse;
+        try {
+            LevelVehicleMap levelVehicleMapResponse= unparkVehicle(levelVehicleMap);
+            parkResponse = new ParkResponse(true,"vehicle unparked",levelVehicleMapResponse);
+
+        } catch (Exception e) {
+            parkResponse = new ParkResponse(false,e.getMessage(),null);
+        }
+        return parkResponse;
+
+    }
+
+    private LevelVehicleMap unparkVehicle(LevelVehicleMap levelVehicleMap) throws Exception {
+        boolean isVehicleExist = isVehicleExist(levelVehicleMap);
+
+        if(!isVehicleExist){
+            throw new Exception("Your vehicle is not parked. Please recheck id");
+        }
+        boolean isSlotEmptied = levelDao.emptySlot(levelVehicleMap);
+
+        if(!isSlotEmptied){
+            throw new Exception("Database error occure. Please try again");
+        }
+        return levelVehicleMap;
+    }
+
+    private boolean isVehicleExist(LevelVehicleMap levelVehicleMap) {
+        return levelDao.isLevelVehiclMapIdExist(levelVehicleMap.getId());
     }
 }

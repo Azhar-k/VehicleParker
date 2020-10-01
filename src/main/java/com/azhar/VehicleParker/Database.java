@@ -4,20 +4,22 @@ package com.azhar.VehicleParker;
 import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelCapacity;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
+import com.azhar.VehicleParker.Entities.LevelVehicleMap;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class Database {
-    private List<Level> levelList = new ArrayList<Level>();
-    private List<Vehicle> vehicleList = new ArrayList<Vehicle>();
-    private List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
+    private static List<Level> levelList = new ArrayList<Level>();
+    private static List<Vehicle> vehicleList = new ArrayList<Vehicle>();
+    private static List<LevelVehicleMap> levelVehicleMapList = new ArrayList<LevelVehicleMap>();
 
     public Database() {
-        loadData();
+
     }
 
     public void loadData() {
@@ -32,7 +34,7 @@ public class Database {
         levelList.add(new Level(3, new LevelCapacity(30, 2, 50, 10)));
         levelList.add(new Level(4, new LevelCapacity(10, 5, 10, 10)));
         levelList.add(new Level(5, new LevelCapacity(10, 2, 30, 10)));
-        levelList.add(new Level(6, new LevelCapacity(5, 5, 30, 10)));
+        levelList.add(new Level(6, new LevelCapacity(1, 5, 30, 10)));
     }
 
     private void loadVehicles() {
@@ -42,17 +44,113 @@ public class Database {
         vehicleList.add(new Vehicle(4, "bike"));
     }
 
-    public List<LevelSpace> getAvailableSpace() {
-        for(Level level: getLevelList()){
-            int levelNumber=level.getLevelNumber();
-            int availableCarSpace = level.getLevelCapacity().getMAX_NUMBER_OF_CAR()-level.getLevelCapacity().getOccupied_car_slots();
-            int availableBusSpace = level.getLevelCapacity().getMAX_NUMBER_OF_BUS()-level.getLevelCapacity().getOccupied_bus_slots();
-            int availableBikeSpace = level.getLevelCapacity().getMAX_NUMBER_OF_BIKE()-level.getLevelCapacity().getOccupied_bike_slots();
-            int availableVanSpace = level.getLevelCapacity().getMAX_NUMBER_OF_VAN()-level.getLevelCapacity().getOccupied_van_slots();
-            availableSpace.add(new LevelSpace(levelNumber,availableCarSpace,availableBusSpace,availableVanSpace,availableBikeSpace));
 
+
+    public int fillSlot(LevelVehicleMap levelVehicleMap){
+        int levelNumber = levelVehicleMap.getLevelNumber();
+        String vehicleType = levelVehicleMap.getVehicleType();
+        int updatedOccupiedSlot;
+        int levelVehicleMapid = -1;
+        for(Level level:getLevelList()){
+            if (level.getLevelNumber()==levelNumber){
+                switch (vehicleType){
+                    case "car":
+                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_car_slots()+1;
+                        level.getLevelCapacity().setOccupied_car_slots(updatedOccupiedSlot);
+                        levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
+                        break;
+                    case "bus":
+                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_bus_slots()+1;
+                        level.getLevelCapacity().setOccupied_bus_slots(updatedOccupiedSlot);
+                        levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
+                        break;
+                    case "bike":
+                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_bike_slots()+1;
+                        level.getLevelCapacity().setOccupied_bike_slots(updatedOccupiedSlot);
+                        levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
+                        break;
+                    case "van":
+                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_van_slots()+1;
+                        level.getLevelCapacity().setOccupied_van_slots(updatedOccupiedSlot);
+                        levelVehicleMapid = addLevelVehicleMap(levelVehicleMap);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
         }
-        return availableSpace;
+
+        return levelVehicleMapid;
+
+    }
+
+    public int addLevelVehicleMap(LevelVehicleMap levelVehicleMap){
+        int id = getUniquieVehicleMapId();
+        levelVehicleMap.setId(id);
+        levelVehicleMapList.add(levelVehicleMap);
+        return id;
+    }
+    public boolean emptySlot(LevelVehicleMap levelVehicleMap){
+        System.out.println("inside database start");
+        levelVehicleMap=getLevelVehicleMap(levelVehicleMap.getId());
+        int levelNumber = levelVehicleMap.getLevelNumber();
+        String vehicleType = levelVehicleMap.getVehicleType();
+        int updatedOccupiedSlot;
+        boolean isSlotEmptied=false;
+        for(Level level:getLevelList()){
+            if (level.getLevelNumber()==levelNumber){
+                switch (vehicleType){
+
+                    case "car":
+                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_car_slots()-1;
+                        level.getLevelCapacity().setOccupied_car_slots(updatedOccupiedSlot);
+                        isSlotEmptied=true;
+                        break;
+                    case "bus":
+                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_bus_slots()-1;
+                        level.getLevelCapacity().setOccupied_bus_slots(updatedOccupiedSlot);
+                        isSlotEmptied=true;
+                        System.out.println("inside database switch");
+                        break;
+                    case "bike":
+                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_bike_slots()-1;
+                        level.getLevelCapacity().setOccupied_bike_slots(updatedOccupiedSlot);
+                        isSlotEmptied=true;
+                        break;
+                    case "van":
+                        updatedOccupiedSlot = level.getLevelCapacity().getOccupied_van_slots()-1;
+                        level.getLevelCapacity().setOccupied_van_slots(updatedOccupiedSlot);
+                        isSlotEmptied=true;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+        }
+        if(isSlotEmptied){
+            isSlotEmptied=false;
+
+            for(LevelVehicleMap lvm:getLevelVehicleMapList()){
+                if(lvm.getId()==levelVehicleMap.getId()){
+                    getLevelVehicleMapList().remove(lvm);
+                    isSlotEmptied=true;
+                    break;
+                }
+            }
+        }
+
+        return isSlotEmptied;
+    }
+
+    private LevelVehicleMap getLevelVehicleMap(int id) {
+        for (LevelVehicleMap levelVehicleMap : getLevelVehicleMapList()){
+            if(levelVehicleMap.getId()==id){
+                return levelVehicleMap;
+            }
+        }
+        return null;
     }
 
 
@@ -65,6 +163,29 @@ public class Database {
         return vehicleList;
     }
 
+    public static List<LevelVehicleMap> getLevelVehicleMapList() {
+        return levelVehicleMapList;
+    }
+
+    private int getUniquieVehicleMapId(){
+        Random random = new Random();
+
+        while(true){
+            int x = random.nextInt(900) + 100;
+            if(!isLevelVehicleMapIdExist(x)){
+                return x;
+            }
+        }
+
+    }
+    public boolean isLevelVehicleMapIdExist(int id){
+        for (LevelVehicleMap levelVehicleMap : getLevelVehicleMapList()){
+            if(levelVehicleMap.getId()==id){
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 
