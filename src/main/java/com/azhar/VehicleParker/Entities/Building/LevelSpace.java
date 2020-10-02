@@ -11,11 +11,6 @@ public class LevelSpace {
    private int levelNumber;
    private Map<String,Integer> availabeSpace = new HashMap<String, Integer>();
 
-    public LevelSpace(int levelNumber, Map<String,Integer> availabeSpace) {
-        this.levelNumber = levelNumber;
-        this.availabeSpace = availabeSpace;
-    }
-
     public LevelSpace(int levelNumber) {
         this.levelNumber = levelNumber;
     }

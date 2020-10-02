@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Entities.Responses;
+package com.azhar.VehicleParker.Entities.ApiResponses;
 
 import com.azhar.VehicleParker.Entities.LevelVehicle;
 

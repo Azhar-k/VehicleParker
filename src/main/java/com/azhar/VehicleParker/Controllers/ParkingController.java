@@ -2,11 +2,12 @@ package com.azhar.VehicleParker.Controllers;
 
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.LevelVehicle;
-import com.azhar.VehicleParker.Entities.Responses.ParkResponse;
+import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Vehicle.*;
-import com.azhar.VehicleParker.Services.ParkingService;
-import com.azhar.VehicleParker.Services.SpaceManager;
-import com.azhar.VehicleParker.Services.UnParkingService;
+
+import com.azhar.VehicleParker.Services.Interfaces.ParkingService;
+import com.azhar.VehicleParker.Services.Interfaces.SpaceManager;
+import com.azhar.VehicleParker.Services.Interfaces.UnParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -4,12 +4,12 @@ package com.azhar.VehicleParker.Entities.Building;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Level {
     private int levelNumber;
-    private List<Vehicle> allowedVehicles = new ArrayList<Vehicle>(
-    );
+    private Map<Integer, Vehicle> allowedVehicles = new HashMap<Integer, Vehicle>();
 
 
 
@@ -25,7 +25,7 @@ public class Level {
         this.levelNumber = levelNumber;
     }
 
-    public List<Vehicle> getAllowedVehicles() {
+    public Map<Integer, Vehicle> getAllowedVehicles() {
         return allowedVehicles;
     }
 

@@ -3,6 +3,7 @@ package com.azhar.VehicleParker.Entities.Vehicle;
 public class Vehicle {
     private int MAX_SLOTS;
     private int occupiedSlots;
+    private int freeSlots;
     private int type;
     private String name;
 
@@ -31,16 +32,8 @@ public class Vehicle {
         return MAX_SLOTS;
     }
 
-    public void setMAX_SLOTS(int MAX_SLOTS) {
-        this.MAX_SLOTS = MAX_SLOTS;
-    }
-
     public int getOccupiedSlots() {
         return occupiedSlots;
-    }
-
-    public void setOccupiedSlots(int occupiedSlots) {
-        this.occupiedSlots = occupiedSlots;
     }
 
     public int getType() {
@@ -51,6 +44,19 @@ public class Vehicle {
         return name;
     }
 
+    public int getFreeSlots(){
+        this.freeSlots =this.getMAX_SLOTS()-this.getOccupiedSlots();
+        return this.freeSlots;
+    }
+
+    public void setOccupiedSlots(int occupiedSlots) {
+        this.occupiedSlots = occupiedSlots;
+    }
+
+    public void setMAX_SLOTS(int MAX_SLOTS) {
+        this.MAX_SLOTS = MAX_SLOTS;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -59,7 +65,14 @@ public class Vehicle {
         this.type = type;
     }
 
-    public int getFreeSlots(){
-        return (this.getMAX_SLOTS()-this.getOccupiedSlots());
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "MAX_SLOTS=" + MAX_SLOTS +
+                ", occupiedSlots=" + occupiedSlots +
+                ", freeSlots=" + freeSlots +
+                ", type=" + type +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

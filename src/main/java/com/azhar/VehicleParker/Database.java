@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker;
 
 
+import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.LevelVehicle;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Component
@@ -21,25 +23,31 @@ public class Database {
     public void loadData() {
         loadVehicles();
         loadLevels();
-
     }
 
     private void loadLevels() {
         for (int i = 0; i < 6; i++) {
             Level level = new Level(i);
-
-            int carType = getVehicleTypeByName("car");
-            Vehicle car = new Vehicle(carType,"car",15);
-            System.out.println(car);
-            level.getAllowedVehicles().add(car);
-
-            int busType = getVehicleTypeByName("bus");
-            Vehicle bus = new Vehicle(busType,"bus",15);
-            level.getAllowedVehicles().add(bus);
-
-            levelList.add(level);
+            addLevel(level, "car", 3);
+            addLevel(level, "bus", 3);
+            addLevel(level, "van", 3);
+            addLevel(level, "bike", 15);
+            getLevelList().add(level);
         }
+        Level level = new Level(6);
+        addLevel(level,"car",2);
+        addLevel(level, "truck", 5);
+        getLevelList().add(level);
+        addLevel(getLevelList().get(0), "truck", 2);
 
+
+
+    }
+
+    private void addLevel(Level level, String name, int MAX_SLOT) {
+        int type = getVehicleTypeByName(name);
+        Vehicle vehicle = new Vehicle(type, name, MAX_SLOT);
+        level.getAllowedVehicles().put(vehicle.getType(),vehicle);
     }
 
     private void loadVehicles() {
@@ -47,6 +55,7 @@ public class Database {
         vehicleList.add(new Vehicle(1, "bus"));
         vehicleList.add(new Vehicle(2, "van"));
         vehicleList.add(new Vehicle(3, "bike"));
+        vehicleList.add(new Vehicle(4, "truck"));
     }
 
     public int getVehicleTypeByName(String name) {
@@ -57,18 +66,23 @@ public class Database {
         }
         return -1;
     }
+
     public LevelVehicle fillSlot(int levelNumber, int vehicleType) {
 
         LevelVehicle levelVehicle = addLevelVehicleMap(levelNumber, vehicleType);
-
+        System.out.println("here1");
         if (levelVehicle != null) {
             Level level = getLevelList().get(levelNumber);
+            System.out.println("here2");
             Vehicle vehicle = level.getAllowedVehicles().get(vehicleType);
-
+            System.out.println("here3");
             int currentOccupiedSlot = vehicle.getOccupiedSlots();
+            System.out.println("here4");
             int updatedOccupiedSlot = currentOccupiedSlot + 1;
+            System.out.println("here5");
 
             vehicle.setOccupiedSlots(updatedOccupiedSlot);
+            System.out.println("here6");
         }
         return levelVehicle;
 
@@ -138,7 +152,8 @@ public class Database {
         List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
         for (Level level : getLevelList()) {
             LevelSpace levelSpace = new LevelSpace(level.getLevelNumber());
-            for (Vehicle vehicle : level.getAllowedVehicles()) {
+            for (int vehicleType : level.getAllowedVehicles().keySet()) {
+                Vehicle vehicle = level.getAllowedVehicles().get(vehicleType);
                 int freeSlot = vehicle.getFreeSlots();
                 levelSpace.getAvailabeSpace().put(vehicle.getName(), freeSlot);
 
@@ -161,7 +176,6 @@ public class Database {
     public List<Vehicle> getVehicleList() {
         return vehicleList;
     }
-
 
 
 }

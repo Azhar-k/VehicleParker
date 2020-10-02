@@ -3,16 +3,13 @@ package com.azhar.VehicleParker.Services;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.LevelVehicle;
-import com.azhar.VehicleParker.Entities.Responses.ParkResponse;
+import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ParkingService {
-
-    @Autowired
-    SpaceManager spaceManager;
+public class ParkingService implements com.azhar.VehicleParker.Services.Interfaces.ParkingService {
 
     @Autowired
     LevelDao levelDao;
@@ -31,7 +28,7 @@ public class ParkingService {
 
 
 
-    private LevelVehicle parkVehicle(Vehicle inputVehicle) throws Exception {
+    public LevelVehicle parkVehicle(Vehicle inputVehicle) throws Exception {
         Vehicle vehicle= getValidVehicleType(inputVehicle.getName());
         if(vehicle==null){
             throw new Exception("This vehicle can not be parked here");
@@ -39,7 +36,7 @@ public class ParkingService {
 
         int availableLevelNumber=getAvailableLevelNumber(vehicle);
         if(availableLevelNumber<0){
-            throw new Exception("Parking Space is Full");
+            throw new Exception("Parking Space is Full for "+vehicle.getName());
         }
 
         LevelVehicle levelVehicle = levelDao.fillSlot(availableLevelNumber,vehicle.getType());
@@ -51,16 +48,18 @@ public class ParkingService {
 
 
 
-    private Vehicle getValidVehicleType(String name){
+    public Vehicle getValidVehicleType(String name){
         for(Vehicle validVehicle : levelDao.getVehicleList()){
+
             if(validVehicle.getName().equals(name)){
+
                 return validVehicle;
             }
         }
         return null;
     }
 
-    private int getAvailableLevelNumber(Vehicle vehicle){
+    public int getAvailableLevelNumber(Vehicle vehicle){
         int levelNo =-1;
 
         for(LevelSpace levelSpace:levelDao.getAvailableSpace()){
@@ -77,24 +76,6 @@ public class ParkingService {
 
         }
         return levelNo;
-
-//        for(Level level : levelDao.getLevelList()){
-//            for(Vehicle vehicle1 : level.getAllowedVehicles())
-//            {
-//                if(vehicle.getType().equals(vehicle1.getType())){
-//                    int currentSlot = vehicle1.getOccupiedSlots();
-//                    int freeslots = vehicle1.getMAX_SLOTS()-currentSlot;
-//                    if(freeslots>0){
-//                        levelNo = level.getLevelNumber();
-//                        break;
-//                    }
-//
-//                }
-//            }
-//
-//        }
-
-
     }
 
 
