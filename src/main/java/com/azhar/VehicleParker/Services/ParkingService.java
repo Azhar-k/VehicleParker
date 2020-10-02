@@ -17,10 +17,12 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
     public ParkResponse park(Vehicle inputVehicle) {
         ParkResponse parkResponse;
         try {
+            //try to park a vehicle
            LevelVehicle levelVehicle= parkVehicle(inputVehicle);
            parkResponse = new ParkResponse(true,"vehicle parked",levelVehicle);
-
+            //format the api response
         } catch (Exception e) {
+            //parking failed due to some reason
             parkResponse = new ParkResponse(false,e.getMessage(),null);
         }
         return parkResponse;
@@ -29,26 +31,30 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
 
 
     public LevelVehicle parkVehicle(Vehicle inputVehicle) throws Exception {
-        Vehicle vehicle= getValidVehicleType(inputVehicle.getName());
+
+        //validate the vehicle given by user
+        Vehicle vehicle= getVehicle(inputVehicle.getName());
         if(vehicle==null){
             throw new Exception("This vehicle can not be parked here");
         }
 
+        //try to find out a free level to park the vehicle
         int availableLevelNumber=getAvailableLevelNumber(vehicle);
         if(availableLevelNumber<0){
+
             throw new Exception("Parking Space is Full for "+vehicle.getName());
         }
-
+        //close the slot in database and get a unique id for this parking
         LevelVehicle levelVehicle = levelDao.fillSlot(availableLevelNumber,vehicle.getType());
         if(levelVehicle==null){
-            throw new Exception("Parking Space is Full");
+            throw new Exception("some error occured");
         }
         return levelVehicle;
     }
 
 
 
-    public Vehicle getValidVehicleType(String name){
+    public Vehicle getVehicle(String name){
         for(Vehicle validVehicle : levelDao.getVehicleList()){
 
             if(validVehicle.getName().equals(name)){
@@ -64,7 +70,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
 
         for(LevelSpace levelSpace:levelDao.getAvailableSpace()){
             try {
-                int freeSlot = levelSpace.getAvailabeSpace().get(vehicle.getName());
+                int freeSlot = levelSpace.getAvailabeSlots().get(vehicle.getName());
                 if(freeSlot>0){
                     levelNo = levelSpace.getLevelNumber();
                     return levelNo;

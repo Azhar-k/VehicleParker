@@ -29,7 +29,7 @@ public class UnParkingService implements com.azhar.VehicleParker.Services.Interf
     public LevelVehicle unParkVehicle(LevelVehicle inputLevelVehicle) throws Exception {
         LevelVehicle levelVehicle= getValidLevelVehicle(inputLevelVehicle);
         if(levelVehicle==null){
-            //not levelvehicle exist with the id entered by user
+            //no levelvehicle exist with the id entered by user
             throw new Exception("This vehicle is not parked here");
         }
 

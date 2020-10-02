@@ -1,15 +1,12 @@
 package com.azhar.VehicleParker.Entities.Building;
 
-import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+//represent level number and available spaces of each type
 public class LevelSpace {
    private int levelNumber;
-   private Map<String,Integer> availabeSpace = new HashMap<String, Integer>();
+   private Map<String,Integer> availabeSlots = new HashMap<String, Integer>();
 
     public LevelSpace(int levelNumber) {
         this.levelNumber = levelNumber;
@@ -23,11 +20,11 @@ public class LevelSpace {
         this.levelNumber = levelNumber;
     }
 
-    public Map<String, Integer> getAvailabeSpace() {
-        return availabeSpace;
+    public Map<String, Integer> getAvailabeSlots() {
+        return availabeSlots;
     }
 
-    public void setAvailabeSpace(Map<String,Integer> availabeSpace) {
-        this.availabeSpace = availabeSpace;
+    public void setAvailabeSlots(Map<String,Integer> availabeSlots) {
+        this.availabeSlots = availabeSlots;
     }
 }

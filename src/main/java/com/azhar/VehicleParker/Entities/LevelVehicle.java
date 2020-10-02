@@ -1,6 +1,6 @@
 package com.azhar.VehicleParker.Entities;
 
-//map a vehicle to a level. Id will be unique to this parking
+//map a vehicle to a level. Id will be unique to this maping
 public class LevelVehicle {
     private int id;
     private int levelNumber;

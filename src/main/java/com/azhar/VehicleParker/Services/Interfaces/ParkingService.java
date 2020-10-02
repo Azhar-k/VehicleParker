@@ -10,7 +10,7 @@ public interface ParkingService {
 
     public ParkResponse park(Vehicle vehicle);
     public LevelVehicle parkVehicle(Vehicle vehicle) throws Exception;
-    public Vehicle getValidVehicleType(String name);
+    public Vehicle getVehicle(String name);
     public int getAvailableLevelNumber(Vehicle vehicle);
 
 }
