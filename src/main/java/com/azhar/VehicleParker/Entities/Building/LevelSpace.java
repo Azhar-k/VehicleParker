@@ -1,14 +1,23 @@
 package com.azhar.VehicleParker.Entities.Building;
 
-public class LevelSpace {
-   private int levelNumber,availableCarSpace,availableBusSpace,availableVanSpace,availableBikeSpace;
+import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 
-    public LevelSpace(int levelNumber, int availableCarSpace, int availableBusSpace, int availableVanSpace, int availableBikeSpace) {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class LevelSpace {
+   private int levelNumber;
+   private Map<String,Integer> availabeSpace = new HashMap<String, Integer>();
+
+    public LevelSpace(int levelNumber, Map<String,Integer> availabeSpace) {
         this.levelNumber = levelNumber;
-        this.availableCarSpace = availableCarSpace;
-        this.availableBusSpace = availableBusSpace;
-        this.availableVanSpace = availableVanSpace;
-        this.availableBikeSpace = availableBikeSpace;
+        this.availabeSpace = availabeSpace;
+    }
+
+    public LevelSpace(int levelNumber) {
+        this.levelNumber = levelNumber;
     }
 
     public int getLevelNumber() {
@@ -19,35 +28,11 @@ public class LevelSpace {
         this.levelNumber = levelNumber;
     }
 
-    public int getAvailableCarSpace() {
-        return availableCarSpace;
+    public Map<String, Integer> getAvailabeSpace() {
+        return availabeSpace;
     }
 
-    public void setAvailableCarSpace(int availableCarSpace) {
-        this.availableCarSpace = availableCarSpace;
-    }
-
-    public int getAvailableBusSpace() {
-        return availableBusSpace;
-    }
-
-    public void setAvailableBusSpace(int availableBusSpace) {
-        this.availableBusSpace = availableBusSpace;
-    }
-
-    public int getAvailableVanSpace() {
-        return availableVanSpace;
-    }
-
-    public void setAvailableVanSpace(int availableVanSpace) {
-        this.availableVanSpace = availableVanSpace;
-    }
-
-    public int getAvailableBikeSpace() {
-        return availableBikeSpace;
-    }
-
-    public void setAvailableBikeSpace(int availableBikeSpace) {
-        this.availableBikeSpace = availableBikeSpace;
+    public void setAvailabeSpace(Map<String,Integer> availabeSpace) {
+        this.availabeSpace = availabeSpace;
     }
 }

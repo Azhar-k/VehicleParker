@@ -1,16 +1,16 @@
 package com.azhar.VehicleParker.Entities.Responses;
 
-import com.azhar.VehicleParker.Entities.LevelVehicleMap;
+import com.azhar.VehicleParker.Entities.LevelVehicle;
 
 public class ParkResponse {
     private boolean isSucces;
     private String message;
-    private LevelVehicleMap vehicleMap;
+    private LevelVehicle levelVehicleMap;
 
-    public ParkResponse(boolean isSucces, String message,LevelVehicleMap levelVehicleMap) {
+    public ParkResponse(boolean isSucces, String message,LevelVehicle levelVehicleMap) {
         this.isSucces = isSucces;
         this.message = message;
-        this.vehicleMap = levelVehicleMap;
+        this.levelVehicleMap = levelVehicleMap;
     }
 
     public boolean isSucces() {
@@ -29,11 +29,11 @@ public class ParkResponse {
         this.message = message;
     }
 
-    public LevelVehicleMap getVehicleMap() {
-        return vehicleMap;
+    public LevelVehicle getVehicleMap() {
+        return levelVehicleMap;
     }
 
-    public void setVehicleMap(LevelVehicleMap vehicleMap) {
-        this.vehicleMap = vehicleMap;
+    public void setVehicleMap(LevelVehicle vehicleMap) {
+        this.levelVehicleMap = vehicleMap;
     }
 }

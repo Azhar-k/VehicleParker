@@ -3,13 +3,18 @@ package com.azhar.VehicleParker.Entities.Building;
 
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Level {
     private int levelNumber;
-    private LevelCapacity levelCapacity;
+    private List<Vehicle> allowedVehicles = new ArrayList<Vehicle>(
+    );
 
-    public Level(int levelNumber, LevelCapacity levelCapacity) {
+
+
+    public Level(int levelNumber) {
         this.levelNumber = levelNumber;
-        this.levelCapacity = levelCapacity;
     }
 
     public int getLevelNumber() {
@@ -20,13 +25,10 @@ public class Level {
         this.levelNumber = levelNumber;
     }
 
-    public LevelCapacity getLevelCapacity() {
-        return levelCapacity;
+    public List<Vehicle> getAllowedVehicles() {
+        return allowedVehicles;
     }
 
-    public void setLevelCapacity(LevelCapacity levelCapacity) {
-        this.levelCapacity = levelCapacity;
-    }
 
 
 }
