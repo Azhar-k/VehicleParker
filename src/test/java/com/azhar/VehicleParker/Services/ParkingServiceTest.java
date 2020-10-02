@@ -17,7 +17,7 @@ public class ParkingServiceTest {
 
 
 
-    @Autowired
+
     @Mock
     ParkingService parkingService;
     @Autowired

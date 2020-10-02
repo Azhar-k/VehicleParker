@@ -30,6 +30,11 @@ public class ParkingController {
 
         return spaceManager.getLAvailableSpace();
     }
+    @GetMapping(path = "/getParkedVehicles")
+    public List<LevelVehicle> getLevelVehicleSpace(){
+
+        return spaceManager.getLevelVehicleList();
+    }
 
     @PostMapping(path = "/park",consumes = "application/json",produces = "application/json")
     public ParkResponse park(@RequestBody Vehicle vehicle){

@@ -85,10 +85,8 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
                     break;
                 case "bus":
                     if(levelSpace.getAvailableBusSpace()>0){
-                        System.out.println("level :"+levelSpace.getLevelNumber());
-                        System.out.println("bus space : "+levelSpace.getAvailableBusSpace());
                         levelNo=levelSpace.getLevelNumber();
-                        return levelNo;
+
                     }
                     break;
                 case "bike":

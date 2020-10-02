@@ -62,5 +62,10 @@ public class LevelDaoImp implements LevelDao{
         return database.emptySlot(levelVehicleMap);
     }
 
+    @Override
+    public List<LevelVehicle> getLevelVehicleList() {
+        return database.getLevelVehicleList();
+    }
+
 
 }

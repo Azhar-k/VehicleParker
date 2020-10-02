@@ -15,4 +15,5 @@ public interface LevelDao {
     public int fillSlot(LevelVehicle levelVehicleMap) throws Exception;
     public boolean isLevelVehiclMapIdExist(int id);
     public boolean emptySlot(LevelVehicle levelVehicleMap);
+    public  List<LevelVehicle> getLevelVehicleList();
 }
