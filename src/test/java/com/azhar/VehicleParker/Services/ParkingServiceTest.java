@@ -8,7 +8,10 @@ import com.azhar.VehicleParker.Entities.LevelVehicle;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import com.azhar.VehicleParker.Services.Interfaces.ParkingService;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -25,35 +28,37 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ParkingServiceTest {
 
 
-
     @Autowired
     ParkingService parkingService;
     @Autowired
     LevelDao levelDao;
 
     @BeforeAll
-    public static void init(){
+    public static void init() {
         Database db = new Database();
         db.loadData();
     }
 
-    @Test
-    public void getVehicleTypeGivenInValidType() {
-        assertNull(parkingService.getVehicle("jeep"));
+    @Nested
+    public class getVehicleTest {
+        @Test
+        public void GivenInValidType() {
+            assertNull(parkingService.getVehicle("jeep"));
+        }
+
+        @Test
+        public void GivenValidType() {
+            assertNotNull(parkingService.getVehicle("car"));
+        }
     }
 
-    @Test
-    public void getVehicleTypeGivenValidType() {
-        //db.loadData();
-        assertNotNull(parkingService.getVehicle("car"));
-    }
 
     @Test
     public void getAvailableLevelNumberGivenVehicle() {
         for (Vehicle vehicle : levelDao.getVehicleList()) {
-            int expected = 0;//all vehicle types except truck has slot in oth level
+            int expected = 0;//all vehicle types except truck has slot in 0th level
             if (vehicle.getName().equals("truck")) {
-                //truck has no slot in 6th level
+                //truck has slot in 6th level only
                 expected = 6;
             }
             int actual = parkingService.getAvailableLevelNumber(vehicle);
@@ -61,43 +66,70 @@ public class ParkingServiceTest {
         }
     }
 
-    @Test
-    public void parkVehicleGivenInValidVehicle() {
-        Vehicle vehicle = new Vehicle("jeep");
 
-        try {
-            parkingService.parkVehicle(vehicle);
-        } catch (Exception exception) {
-            assertEquals("This vehicle can not be parked here", exception.getMessage());
-        }
-    }
+    @Nested
+    public class parkVehicleTest {
+        @Test
+        public void GivenInValidVehicle() {
+            Vehicle vehicle = new Vehicle("jeep");
 
-    @Test
-    public void parkVehicleGivenValidVehicle() throws Exception {
-        LevelVehicle levelVehicle;
-        Vehicle vehicle;
-
-        vehicle = new Vehicle("car");
-        levelVehicle = parkingService.parkVehicle(vehicle);
-        assertTrue(100 <= levelVehicle.getId() && levelVehicle.getId() < 1000);
-
-        vehicle = new Vehicle("truck");
-        levelVehicle = parkingService.parkVehicle(vehicle);
-        assertTrue(100 <= levelVehicle.getId() && levelVehicle.getId() < 1000);
-
-    }
-
-    @Test
-    public void parkVehicleGivenSpaceIsfull() {
-        Vehicle vehicle = new Vehicle("car");
-        try {
-            for (int i = 0; i < 100; i++) {
-                //100 slot is not available for car
+            try {
                 parkingService.parkVehicle(vehicle);
+            } catch (Exception exception) {
+                assertEquals("This vehicle can not be parked here", exception.getMessage());
             }
-        } catch (Exception exception) {
-            assertEquals("Parking Space is Full for " + vehicle.getName(), exception.getMessage());
+        }
+
+        @ParameterizedTest(name = "vehicle name")
+        @CsvSource(value = {"bus", "bike", "van", "truck"})
+        public void GivenValidVehicle(String vehicleName) throws Exception {
+            LevelVehicle levelVehicle;
+            Vehicle vehicle;
+
+            vehicle = new Vehicle(vehicleName);
+            levelVehicle = parkingService.parkVehicle(vehicle);
+            assertAll(
+                    () -> {
+                        assertTrue(100 <= levelVehicle.getId() && levelVehicle.getId() < 1000);
+                        assertTrue(levelVehicle.getLevelNumber() >= 0);//negative values indicate space is full. can not park vehicle there
+                    }
+            );
+
+
+        }
+
+        @Test
+        public void GivenSpaceIsfull() {
+            Vehicle vehicle = new Vehicle("car");
+            try {
+                for (int i = 0; i < 50; i++) {
+                    //100 slot is not available for car
+                    parkingService.parkVehicle(vehicle);
+                }
+            } catch (Exception exception) {
+                assertEquals("Parking Space is Full for " + vehicle.getName(), exception.getMessage());
+            }
         }
     }
+
+    @Nested
+    public class parkTest {
+        @ParameterizedTest(name = "vehicle name")
+        @CsvSource(value = {"bus", "bike", "van", "truck"})
+        public void GivenValidVehicle(String vehicleName) throws Exception {
+            Vehicle vehicle = new Vehicle(vehicleName);
+
+            LevelVehicle levelVehicle = parkingService.parkVehicle(vehicle);
+            ParkResponse expected = new ParkResponse(true, "vehicle parked", levelVehicle);
+            ParkResponse actual = parkingService.park(vehicle);
+            assertAll(()->{
+                assertEquals(expected.isSucces(),actual.isSucces());
+                assertEquals(expected.getMessage(),actual.getMessage());
+            });
+
+        }
+
+    }
+
 
 }

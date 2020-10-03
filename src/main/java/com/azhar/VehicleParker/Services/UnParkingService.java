@@ -27,7 +27,7 @@ public class UnParkingService implements com.azhar.VehicleParker.Services.Interf
 
 
     public LevelVehicle unParkVehicle(LevelVehicle inputLevelVehicle) throws Exception {
-        LevelVehicle levelVehicle= getValidLevelVehicle(inputLevelVehicle);
+        LevelVehicle levelVehicle= getValidLevelVehicle(inputLevelVehicle.getId());
         if(levelVehicle==null){
             //no levelvehicle exist with the id entered by user
             throw new Exception("This vehicle is not parked here");
@@ -40,10 +40,10 @@ public class UnParkingService implements com.azhar.VehicleParker.Services.Interf
         return levelVehicle;
     }
 
-    public LevelVehicle getValidLevelVehicle(LevelVehicle levelVehicle) {
+    public LevelVehicle getValidLevelVehicle(int levelVehicleId) {
         //check whether the vehicle is parked or not
         for(LevelVehicle validLevelVehicle : levelDao.getLevelVehicleList()){
-            if(validLevelVehicle.getId()==levelVehicle.getId()){
+            if(validLevelVehicle.getId()==levelVehicleId){
                 return validLevelVehicle;
             }
         }

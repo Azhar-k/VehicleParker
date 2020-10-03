@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component;
 public interface UnParkingService {
     public ParkResponse unPark(LevelVehicle levelVehicleMap);
     public LevelVehicle unParkVehicle(LevelVehicle inputLevelVehicle) throws Exception;
-    public LevelVehicle getValidLevelVehicle(LevelVehicle levelVehicle);
+    public LevelVehicle getValidLevelVehicle(int levelVehicleId);
 }
