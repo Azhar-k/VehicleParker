@@ -1,9 +1,15 @@
 package com.azhar.VehicleParker;
 
 
+import com.azhar.VehicleParker.Dao.AllowedVehicleRepository;
+import com.azhar.VehicleParker.Dao.LevelRepository;
+import com.azhar.VehicleParker.Dao.LevelParkedVehicleRepository;
+import com.azhar.VehicleParker.Dao.VehicleRepository;
 import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.LevelVehicle;
+import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
+import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.Vehicle.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,17 +20,26 @@ import java.util.Random;
 public class Database {
     private static List<Level> levelList = new ArrayList<Level>();
     private static List<Vehicle> vehicleList = new ArrayList<Vehicle>();
-    private static List<LevelVehicle> levelVehicleList = new ArrayList<LevelVehicle>();
+    private static List<LevelParkedVehicle> levelAllowedVehicleList = new ArrayList<LevelParkedVehicle>();
 
-    public List<LevelVehicle> getLevelVehicleList() {
-        return levelVehicleList;
+    @Autowired
+    LevelRepository levelRepository;
+    @Autowired
+    LevelParkedVehicleRepository levelParkedVehicleRepository;
+    @Autowired
+    VehicleRepository vehicleRepository;
+    @Autowired
+    AllowedVehicleRepository allowedVehicleRepository;
+
+    public List<LevelParkedVehicle> getLevelAllowedVehicleList() {
+        return levelAllowedVehicleList;
     }
     public List<Level> getLevelList() {
 
-        return levelList;
+        return levelRepository.findAll();
     }
     public List<Vehicle> getVehicleList() {
-        return vehicleList;
+        return vehicleRepository.findAll();
     }
 
     public void loadData() {
@@ -34,31 +49,30 @@ public class Database {
 
     private void loadLevels() {
         for (int i = 0; i < 6; i++) {
+            //all level contains same list of vehicles and free slots
             Level level = new Level(i);
-            addLevel(level, "car", 3);
-            addLevel(level, "bus", 3);
-            addLevel(level, "van", 3);
-            addLevel(level, "bike", 15);
-            getLevelList().add(level);
+            List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
+            addLevel(allowedVehicles, 0,"car", 3);
+            addLevel(allowedVehicles, 1,"bus", 3);
+            addLevel(allowedVehicles, 2,"van", 3);
+            addLevel(allowedVehicles, 3, "bike",15);
+            level.setAllowedVehicles(allowedVehicles);
+            levelRepository.save(level);
         }
+        //adding extra level where only truck can be parked
         Level level = new Level(6);
-        addLevel(level,"car",2);
-        addLevel(level, "truck", 5);
-        getLevelList().add(level);
+        List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
+        addLevel(allowedVehicles,4,"truck",2);
+        level.setAllowedVehicles(allowedVehicles);
+        levelRepository.save(level);
     }
-    private void addLevel(Level level, String name, int MAX_SLOT) {
-        int type = getVehicleTypeByName(name);
-        Vehicle vehicle = new Vehicle(type, name, MAX_SLOT);
-        level.getAllowedVehicles().put(vehicle.getType(),vehicle);
+    private void addLevel(List<AllowedVehicle> allowedVehicles, int type, String name, int MAX_SLOT) {
+        Vehicle vehicle = vehicleRepository.getOne(type);
+        AllowedVehicle allowedVehicle = new AllowedVehicle(MAX_SLOT,0,vehicle);
+        allowedVehicleRepository.save(allowedVehicle);
+        allowedVehicles.add(allowedVehicle);
     }
-    public int getVehicleTypeByName(String name) {
-        for (Vehicle vehicle : getVehicleList()) {
-            if (vehicle.getName().equals(name)) {
-                return vehicle.getType();
-            }
-        }
-        return -1;
-    }
+
 
     private void loadVehicles() {
         vehicleList.add(new Vehicle(0, "car"));
@@ -68,56 +82,67 @@ public class Database {
         vehicleList.add(new Vehicle(4, "truck"));
     }
 
-    public LevelVehicle fillSlot(int levelNumber, int vehicleType) {
+    public LevelParkedVehicle fillSlot(int levelNumber, int allowedVehicleid) {
 
-        LevelVehicle levelVehicle = addLevelVehicleMap(levelNumber, vehicleType);
-        if (levelVehicle != null) {
+        LevelParkedVehicle levelAllowedVehicle = addLevelAllowedVehicleMap(levelNumber, allowedVehicleid);
+        if (levelAllowedVehicle != null) {
             Level level = getLevelList().get(levelNumber);
 
-            Vehicle vehicle = level.getAllowedVehicles().get(vehicleType);
+            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+                if(allowedVehicle.getVehicle().getId()==allowedVehicleid){
+                    int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
+                    int updatedOccupiedSlot = currentOccupiedSlot + 1;
+                    allowedVehicle.setOccupiedSlots(updatedOccupiedSlot);
+                }
+                allowedVehicleRepository.save(allowedVehicle);
+            }
+            levelRepository.save(level);
 
-            int currentOccupiedSlot = vehicle.getOccupiedSlots();
-            int updatedOccupiedSlot = currentOccupiedSlot + 1;
-            vehicle.setOccupiedSlots(updatedOccupiedSlot);
+
 
         }
-        return levelVehicle;
+        return levelAllowedVehicle;
 
     }
-    public LevelVehicle addLevelVehicleMap(int levelNumber, int vehicleType) {
-        LevelVehicle levelVehicle = null;
+    public LevelParkedVehicle addLevelAllowedVehicleMap(int levelNumber, int allowedVehicleid) {
+        LevelParkedVehicle levelAllowedVehicle = null;
 
         try {
             int id = getUniquieVehicleMapId();
-            levelVehicle = new LevelVehicle(levelNumber, vehicleType);
-            levelVehicle.setId(id);
-            levelVehicleList.add(levelVehicle);
+            levelAllowedVehicle = new LevelParkedVehicle(levelNumber, allowedVehicleid);
+            levelAllowedVehicle.setId(id);
+            levelParkedVehicleRepository.save(levelAllowedVehicle);
         } catch (Exception e) {
-            levelVehicle = null;
+            System.out.println(e.getMessage());
+            levelAllowedVehicle = null;
         }
 
-        return levelVehicle;
+        return levelAllowedVehicle;
     }
 
-    public Boolean emptySlot(LevelVehicle levelVehicle) {
-        boolean isLevelVehicleRemoved = removeLevelVehicle(levelVehicle);
-        if (isLevelVehicleRemoved) {
-            int levelNumber = levelVehicle.getLevelNumber();
-            int vehicleType = levelVehicle.getVehicleType();
+    public Boolean emptySlot(LevelParkedVehicle levelAllowedVehicle) {
+        boolean isLevelAllowedVehicleRemoved = removeLevelAllowedVehicle(levelAllowedVehicle);
+        if (isLevelAllowedVehicleRemoved) {
+            int levelNumber = levelAllowedVehicle.getLevelNumber();
+            int allowedVehicleid = levelAllowedVehicle.getVehicleType();
 
             Level level = getLevelList().get(levelNumber);
-            Vehicle vehicle = level.getAllowedVehicles().get(vehicleType);
+            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+                if(allowedVehicle.getVehicle().getId()==allowedVehicleid){
+                    int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
+                    int updatedOccupiedSlot = currentOccupiedSlot - 1;
+                    allowedVehicle.setOccupiedSlots(updatedOccupiedSlot);
+                }
+                allowedVehicleRepository.save(allowedVehicle);
+            }
+            levelRepository.save(level);
 
-            int currentOccupiedSlot = vehicle.getOccupiedSlots();
-            int updatedOccupiedSlot = currentOccupiedSlot - 1;
-
-            vehicle.setOccupiedSlots(updatedOccupiedSlot);
         }
         return true;
 
     }
-    private boolean removeLevelVehicle(LevelVehicle levelVehicle) {
-        getLevelVehicleList().remove(levelVehicle);
+    private boolean removeLevelAllowedVehicle(LevelParkedVehicle levelAllowedVehicle) {
+        levelParkedVehicleRepository.delete(levelAllowedVehicle);
         return true;
     }
 
@@ -126,16 +151,16 @@ public class Database {
 
         while (true) {
             int x = random.nextInt(900) + 100;
-            if (!isLevelVehicleMapIdExist(x)) {
+            if (!isLevelAllowedVehicleMapIdExist(x)) {
                 return x;
             }
         }
 
     }
-    private boolean isLevelVehicleMapIdExist(int id) {
+    private boolean isLevelAllowedVehicleMapIdExist(int id) {
 
-        for (LevelVehicle levelVehicle : getLevelVehicleList()) {
-            if (levelVehicle.getId() == id) {
+        for (LevelParkedVehicle levelAllowedVehicle : getLevelAllowedVehicleList()) {
+            if (levelAllowedVehicle.getId() == id) {
                 return true;
             }
         }

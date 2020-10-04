@@ -1,17 +1,25 @@
 package com.azhar.VehicleParker.Entities;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 //map a vehicle to a level. Id will be unique to this maping
-public class LevelVehicle {
+@Entity
+public class LevelParkedVehicle {
+    @Id
     private int id;
     private int levelNumber;
     private int vehicleType;
 
-    public LevelVehicle(int levelNumber, int vehicleType) {
+    public LevelParkedVehicle(int levelNumber, int vehicleType) {
         this.levelNumber = levelNumber;
         this.vehicleType = vehicleType;
     }
 
-    public LevelVehicle(int id) {
+    public LevelParkedVehicle() {
+    }
+
+    public LevelParkedVehicle(int id) {
         this.id = id;
     }
 

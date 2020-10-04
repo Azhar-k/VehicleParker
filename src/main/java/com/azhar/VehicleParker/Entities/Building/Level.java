@@ -1,17 +1,19 @@
 package com.azhar.VehicleParker.Entities.Building;
 
 
-import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import javax.persistence.*;
+import java.util.List;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
+@Entity
 public class Level {
+    @Id
     private int levelNumber;
-    private Map<Integer, Vehicle> allowedVehicles = new HashMap<Integer, Vehicle>();
+    @ManyToMany(targetEntity= AllowedVehicle.class)
+    private List<AllowedVehicle> allowedVehicles ;
 
 
+    public Level() {
+    }
 
     public Level(int levelNumber) {
         this.levelNumber = levelNumber;
@@ -25,10 +27,19 @@ public class Level {
         this.levelNumber = levelNumber;
     }
 
-    public Map<Integer, Vehicle> getAllowedVehicles() {
+    public void setAllowedVehicles(List<AllowedVehicle> allowedVehicles) {
+        this.allowedVehicles = allowedVehicles;
+    }
+
+    public List<AllowedVehicle> getAllowedVehicles() {
         return allowedVehicles;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Level{" +
+                "levelNumber=" + levelNumber +
+                ", allowedVehicles=" + allowedVehicles +
+                '}';
+    }
 }

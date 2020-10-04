@@ -3,7 +3,7 @@ package com.azhar.VehicleParker.Services;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Database;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
-import com.azhar.VehicleParker.Entities.LevelVehicle;
+import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import com.azhar.VehicleParker.Services.Interfaces.ParkingService;
 import com.azhar.VehicleParker.Services.Interfaces.UnParkingService;
@@ -32,17 +32,17 @@ public class UnParckingServiceTest {
     }
 
     @Nested
-    public class GetValidLevelVehicleTest{
+    public class GetValidLevelParkedVehicleTest {
         @Test
         public void givenINvalidId(){
             //no level vehicle map has id as 1000. id is 3 digit
-            assertNull(unParkingService.getValidLevelVehicle(1000));
+            assertNull(unParkingService.getValidLevelParkedVehicle(1000));
         }
 
         @Test
         public void givenValidId() throws Exception {
-            LevelVehicle expected = parkingService.parkVehicle(new Vehicle("bus"));
-            LevelVehicle actual = unParkingService.getValidLevelVehicle(expected.getId());
+            LevelParkedVehicle expected = parkingService.parkVehicle(new Vehicle("bus"));
+            LevelParkedVehicle actual = unParkingService.getValidLevelParkedVehicle(expected.getId());
             assertEquals(expected,actual);
         }
     }
@@ -52,7 +52,7 @@ public class UnParckingServiceTest {
         @Test
         public void givenInvalidLevelVehicle(){
             //no level vehicle map has id as 1000. id is 3 digit
-            LevelVehicle levelVehicle = new LevelVehicle(1000);
+            LevelParkedVehicle levelVehicle = new LevelParkedVehicle(1000);
             try {
                 unParkingService.unParkVehicle(levelVehicle);
             } catch (Exception e) {
@@ -64,8 +64,8 @@ public class UnParckingServiceTest {
         @Test
         public void givenValidLevelVehicle() throws Exception {
 
-            LevelVehicle expected = parkingService.parkVehicle(new Vehicle("bus"));
-            LevelVehicle actual = unParkingService.unParkVehicle(expected);
+            LevelParkedVehicle expected = parkingService.parkVehicle(new Vehicle("bus"));
+            LevelParkedVehicle actual = unParkingService.unParkVehicle(expected);
             assertEquals(expected,actual);
 
         }
@@ -76,7 +76,7 @@ public class UnParckingServiceTest {
         @Test
         public void givenInvalidLevelVehicle(){
             //no level vehicle map has id as 1000. id is 3 digit
-            LevelVehicle levelVehicle = new LevelVehicle(1000);
+            LevelParkedVehicle levelVehicle = new LevelParkedVehicle(1000);
             ParkResponse expected = new ParkResponse(false,"This vehicle is not parked here",null);
             ParkResponse actual = unParkingService.unPark(levelVehicle);
             assertAll(()->{
@@ -89,7 +89,7 @@ public class UnParckingServiceTest {
 
         @Test
         public void givenValidLevelVehicle() throws Exception {
-            LevelVehicle levelVehicle = parkingService.parkVehicle(new Vehicle("car"));
+            LevelParkedVehicle levelVehicle = parkingService.parkVehicle(new Vehicle("car"));
             ParkResponse actual = unParkingService.unPark(levelVehicle);
             ParkResponse expected = new ParkResponse(true,"vehicle unparked",levelVehicle);
             assertAll(()->{

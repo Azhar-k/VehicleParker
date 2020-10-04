@@ -3,8 +3,7 @@ package com.azhar.VehicleParker.Services;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Database;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
-import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.LevelVehicle;
+import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import com.azhar.VehicleParker.Services.Interfaces.ParkingService;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,15 +11,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -83,7 +75,7 @@ public class ParkingServiceTest {
         @ParameterizedTest(name = "vehicle name")
         @CsvSource(value = {"bus", "bike", "van", "truck"})
         public void GivenValidVehicle(String vehicleName) throws Exception {
-            LevelVehicle levelVehicle;
+            LevelParkedVehicle levelVehicle;
             Vehicle vehicle;
 
             vehicle = new Vehicle(vehicleName);
@@ -119,7 +111,7 @@ public class ParkingServiceTest {
         public void GivenValidVehicle(String vehicleName) throws Exception {
             Vehicle vehicle = new Vehicle(vehicleName);
 
-            LevelVehicle levelVehicle = parkingService.parkVehicle(vehicle);
+            LevelParkedVehicle levelVehicle = parkingService.parkVehicle(vehicle);
             ParkResponse expected = new ParkResponse(true, "vehicle parked", levelVehicle);
             ParkResponse actual = parkingService.park(vehicle);
             assertAll(()->{

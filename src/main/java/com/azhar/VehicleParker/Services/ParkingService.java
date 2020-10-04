@@ -2,7 +2,7 @@ package com.azhar.VehicleParker.Services;
 
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.LevelVehicle;
+import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
         ParkResponse parkResponse;
         try {
             //try to park a vehicle
-           LevelVehicle levelVehicle= parkVehicle(inputVehicle);
-           parkResponse = new ParkResponse(true,"vehicle parked",levelVehicle);
+           LevelParkedVehicle levelParkedVehicle= parkVehicle(inputVehicle);
+           parkResponse = new ParkResponse(true,"vehicle parked",levelParkedVehicle);
             //format the api response
         } catch (Exception e) {
             //parking failed due to some reason
@@ -30,7 +30,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
 
 
 
-    public LevelVehicle parkVehicle(Vehicle inputVehicle) throws Exception {
+    public LevelParkedVehicle parkVehicle(Vehicle inputVehicle) throws Exception {
 
         //validate the vehicle given by user
         Vehicle vehicle= getVehicle(inputVehicle.getName());
@@ -45,16 +45,17 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
             throw new Exception("Parking Space is Full for "+vehicle.getName());
         }
         //close the slot in database and get a unique id for this parking
-        LevelVehicle levelVehicle = levelDao.fillSlot(availableLevelNumber,vehicle.getType());
-        if(levelVehicle==null){
+        LevelParkedVehicle levelParkedVehicle = levelDao.fillSlot(availableLevelNumber,vehicle.getId());
+        if(levelParkedVehicle==null){
             throw new Exception("some error occured");
         }
-        return levelVehicle;
+        return levelParkedVehicle;
     }
 
 
 
     public Vehicle getVehicle(String name){
+
         for(Vehicle validVehicle : levelDao.getVehicleList()){
 
             if(validVehicle.getName().equals(name)){

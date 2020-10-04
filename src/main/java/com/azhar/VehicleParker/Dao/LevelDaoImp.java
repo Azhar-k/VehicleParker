@@ -1,9 +1,10 @@
 package com.azhar.VehicleParker.Dao;
 
 import com.azhar.VehicleParker.Database;
+import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.LevelVehicle;
+import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,11 @@ public class LevelDaoImp implements LevelDao{
     @Autowired
     Database database;
 
+    @Autowired
+    VehicleRepository vehicleRepository;
+    @Autowired
+    LevelParkedVehicleRepository levelParkedVehicleRepository;
+
     public List<Level> getLevelList(){
         return database.getLevelList();
     }
@@ -26,10 +32,10 @@ public class LevelDaoImp implements LevelDao{
         List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
         for (Level level : getLevelList()) {
             LevelSpace levelSpace = new LevelSpace(level.getLevelNumber());
-            for (int vehicleType : level.getAllowedVehicles().keySet()) {
-                Vehicle vehicle = level.getAllowedVehicles().get(vehicleType);
-                int freeSlot = vehicle.getFreeSlots();
-                levelSpace.getAvailabeSlots().put(vehicle.getName(), freeSlot);
+            for (AllowedVehicle allowedVehicle:level.getAllowedVehicles()) {
+
+                int freeSlot = allowedVehicle.getFreeSlots();
+                levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
 
             }
             availableSpace.add(levelSpace);
@@ -40,18 +46,19 @@ public class LevelDaoImp implements LevelDao{
 
 
     public List<Vehicle> getVehicleList() {
-        return database.getVehicleList();
+
+        return vehicleRepository.findAll();
     }
 
-    public List<LevelVehicle> getLevelVehicleList() {
-        return database.getLevelVehicleList();
+    public List<LevelParkedVehicle> getLevelParkedVehicleList() {
+        return levelParkedVehicleRepository.findAll();
     }
 
-    public LevelVehicle fillSlot(int availableLevelNumber, int type) {
+    public LevelParkedVehicle fillSlot(int availableLevelNumber, int type) {
         return database.fillSlot(availableLevelNumber,type);
     }
 
-    public boolean emptySlot(LevelVehicle levelVehicle) {
+    public boolean emptySlot(LevelParkedVehicle levelVehicle) {
         return database.emptySlot(levelVehicle);
     }
 }

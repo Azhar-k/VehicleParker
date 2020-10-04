@@ -1,77 +1,48 @@
 package com.azhar.VehicleParker.Entities.Vehicle;
 
-public class Vehicle {
-    private int MAX_SLOTS;
-    private int occupiedSlots;
-    private int freeSlots;
-    private int type;
-    private String name;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Table(name = "Vehicle")
+@Entity
+public class Vehicle {
+    @Id
+    private int id;
+    private String name;
 
     public Vehicle(String name) {
         this.name = name;
     }
 
-
-
-    public Vehicle(int type, String name) {
-        this.type = type;
-        this.name = name;
-    }
-
-    public Vehicle(int type, String name, int MAX_SLOTS) {
-        this.MAX_SLOTS = MAX_SLOTS;
-        this.type = type;
+    public Vehicle(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
     public Vehicle() {
     }
 
-    public int getMAX_SLOTS() {
-        return MAX_SLOTS;
-    }
-
-    public int getOccupiedSlots() {
-        return occupiedSlots;
-    }
-
-    public int getType() {
-        return type;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getFreeSlots(){
-        this.freeSlots =this.getMAX_SLOTS()-this.getOccupiedSlots();
-        return this.freeSlots;
-    }
-
-    public void setOccupiedSlots(int occupiedSlots) {
-        this.occupiedSlots = occupiedSlots;
-    }
-
-    public void setMAX_SLOTS(int MAX_SLOTS) {
-        this.MAX_SLOTS = MAX_SLOTS;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
         return "Vehicle{" +
-                "MAX_SLOTS=" + MAX_SLOTS +
-                ", occupiedSlots=" + occupiedSlots +
-                ", freeSlots=" + freeSlots +
-                ", type=" + type +
+                "type=" + id +
                 ", name='" + name + '\'' +
                 '}';
     }

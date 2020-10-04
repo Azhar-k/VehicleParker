@@ -1,10 +1,8 @@
 package com.azhar.VehicleParker.Services;
 
 import com.azhar.VehicleParker.Dao.LevelDao;
-import com.azhar.VehicleParker.Dao.LevelDaoImp;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.LevelVehicle;
+import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,7 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.Interfaces
     }
 
 
-    public List<LevelVehicle> getLevelVehicleList() {
-        return levelDao.getLevelVehicleList();
+    public List<LevelParkedVehicle> getLevelVehicleList() {
+        return levelDao.getLevelParkedVehicleList();
     }
 }
