@@ -1,10 +1,10 @@
 package com.azhar.VehicleParker;
 
 
-import com.azhar.VehicleParker.Dao.AllowedVehicleRepository;
-import com.azhar.VehicleParker.Dao.LevelRepository;
-import com.azhar.VehicleParker.Dao.LevelParkedVehicleRepository;
-import com.azhar.VehicleParker.Dao.VehicleRepository;
+import com.azhar.VehicleParker.dbclient.AllowedVehicleRepository;
+import com.azhar.VehicleParker.dbclient.LevelRepository;
+import com.azhar.VehicleParker.dbclient.LevelParkedVehicleRepository;
+import com.azhar.VehicleParker.dbclient.VehicleRepository;
 import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
@@ -82,43 +82,7 @@ public class Database {
         vehicleList.add(new Vehicle(4, "truck"));
     }
 
-    public LevelParkedVehicle fillSlot(int levelNumber, int allowedVehicleid) {
 
-        LevelParkedVehicle levelAllowedVehicle = addLevelAllowedVehicleMap(levelNumber, allowedVehicleid);
-        if (levelAllowedVehicle != null) {
-            Level level = getLevelList().get(levelNumber);
-
-            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
-                if(allowedVehicle.getVehicle().getId()==allowedVehicleid){
-                    int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
-                    int updatedOccupiedSlot = currentOccupiedSlot + 1;
-                    allowedVehicle.setOccupiedSlots(updatedOccupiedSlot);
-                }
-                allowedVehicleRepository.save(allowedVehicle);
-            }
-            levelRepository.save(level);
-
-
-
-        }
-        return levelAllowedVehicle;
-
-    }
-    public LevelParkedVehicle addLevelAllowedVehicleMap(int levelNumber, int allowedVehicleid) {
-        LevelParkedVehicle levelAllowedVehicle = null;
-
-        try {
-            int id = getUniquieVehicleMapId();
-            levelAllowedVehicle = new LevelParkedVehicle(levelNumber, allowedVehicleid);
-            levelAllowedVehicle.setId(id);
-            levelParkedVehicleRepository.save(levelAllowedVehicle);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            levelAllowedVehicle = null;
-        }
-
-        return levelAllowedVehicle;
-    }
 
     public Boolean emptySlot(LevelParkedVehicle levelAllowedVehicle) {
         boolean isLevelAllowedVehicleRemoved = removeLevelAllowedVehicle(levelAllowedVehicle);

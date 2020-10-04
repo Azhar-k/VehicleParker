@@ -1,10 +1,8 @@
 package com.azhar.VehicleParker;
 
 
-import com.azhar.VehicleParker.Dao.LevelRepository;
-import com.azhar.VehicleParker.Dao.VehicleRepository;
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.dbclient.LevelRepository;
+import com.azhar.VehicleParker.dbclient.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Dao;
+package com.azhar.VehicleParker.dbclient;
 
 
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;

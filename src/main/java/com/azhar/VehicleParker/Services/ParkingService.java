@@ -1,10 +1,16 @@
 package com.azhar.VehicleParker.Services;
 
+import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
+import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
+import com.azhar.VehicleParker.Dao.VehicleDao;
+import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
+import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.Services.Interfaces.SpaceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +19,15 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
 
     @Autowired
     LevelDao levelDao;
+    @Autowired
+    AllowedVehicleDao allowedVehicleDao;
+    @Autowired
+    LevelParkedVehicleDao levelParkedVehicleDao;
+    @Autowired
+    VehicleDao vehicleDao;
+
+    @Autowired
+    SpaceManager spaceManager;
 
     public ParkResponse park(Vehicle inputVehicle) {
         ParkResponse parkResponse;
@@ -45,7 +60,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
             throw new Exception("Parking Space is Full for "+vehicle.getName());
         }
         //close the slot in database and get a unique id for this parking
-        LevelParkedVehicle levelParkedVehicle = levelDao.fillSlot(availableLevelNumber,vehicle.getId());
+        LevelParkedVehicle levelParkedVehicle = fillSlot(availableLevelNumber,vehicle.getId());
         if(levelParkedVehicle==null){
             throw new Exception("some error occured");
         }
@@ -56,7 +71,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
 
     public Vehicle getVehicle(String name){
 
-        for(Vehicle validVehicle : levelDao.getVehicleList()){
+        for(Vehicle validVehicle : vehicleDao.getVehicleList()){
 
             if(validVehicle.getName().equals(name)){
 
@@ -69,7 +84,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
     public int getAvailableLevelNumber(Vehicle vehicle){
         int levelNo =-1;
 
-        for(LevelSpace levelSpace:levelDao.getAvailableSpace()){
+        for(LevelSpace levelSpace:spaceManager.getAvailableSpace()){
             try {
                 int freeSlot = levelSpace.getAvailabeSlots().get(vehicle.getName());
                 if(freeSlot>0){
@@ -83,6 +98,42 @@ public class ParkingService implements com.azhar.VehicleParker.Services.Interfac
 
         }
         return levelNo;
+    }
+
+    public LevelParkedVehicle fillSlot(int levelNumber, int parkedVehicleId) {
+
+        LevelParkedVehicle levelAllowedVehicle = addLevelAllowedVehicleMap(levelNumber, parkedVehicleId);
+        if (levelAllowedVehicle != null) {
+            Level level = levelDao.getLevelList().get(levelNumber);
+
+            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+                if(allowedVehicle.getVehicle().getId()==parkedVehicleId){
+                    int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
+                    int updatedOccupiedSlot = currentOccupiedSlot + 1;
+                    allowedVehicle.setOccupiedSlots(updatedOccupiedSlot);
+                }
+                vehicleDao.update(allowedVehicle);
+            }
+            levelDao.update(level);
+
+
+
+        }
+        return levelAllowedVehicle;
+
+    }
+    public LevelParkedVehicle addLevelAllowedVehicleMap(int levelNumber, int parkedVehicleId) {
+        LevelParkedVehicle levelParkedVehicle = null;
+
+        try {
+
+            levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId);
+            levelParkedVehicleDao.insert(levelParkedVehicle);
+        } catch (Exception e) {
+            levelParkedVehicle = null;
+        }
+
+        return levelParkedVehicle;
     }
 
 
