@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+
 public interface LevelDao {
     public List<Level> getLevelList();
     public Level update(Level level);

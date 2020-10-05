@@ -1,32 +1,34 @@
 package com.azhar.VehicleParker;
 
 
-import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
-import com.azhar.VehicleParker.Dao.LevelDao;
-import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.dbclient.AllowedVehicleRepository;
 import com.azhar.VehicleParker.dbclient.LevelRepository;
-import com.azhar.VehicleParker.dbclient.LevelParkedVehicleRepository;
 import com.azhar.VehicleParker.dbclient.VehicleRepository;
 import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.Vehicle.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Optional;
 
 @Component
 public class Database {
+//    @Autowired
+//    LevelDao levelDao;
+//    @Autowired
+//    VehicleDao vehicleDao;
+//    @Autowired
+//    AllowedVehicleDao allowedVehicleDao;
+
     @Autowired
-    LevelDao levelDao;
+    LevelRepository levelRepository;
     @Autowired
-    VehicleDao vehicleDao;
+    VehicleRepository vehicleRepository;
     @Autowired
-    AllowedVehicleDao allowedVehicleDao;
+    AllowedVehicleRepository allowedVehicleRepository;
     public void loadData() {
         //loadVehicles();
         loadLevels();
@@ -42,14 +44,14 @@ public class Database {
             addLevel(allowedVehicles, 2,"van", 4);
             addLevel(allowedVehicles, 3, "bike",15);
             level.setAllowedVehicles(allowedVehicles);
-            levelDao.insert(level);
+            levelRepository.save(level);
         }
         //adding extra level where only truck can be parked
         Level level = new Level(6);
         List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
         addLevel(allowedVehicles,4,"truck",4);
         level.setAllowedVehicles(allowedVehicles);
-        levelDao.insert(level);
+        levelRepository.save(level);
 
         //adding extra level where bus and container can be parked
         level = new Level(7);
@@ -57,12 +59,12 @@ public class Database {
         addLevel(allowedVehicles,1,"bus",4);
         addLevel(allowedVehicles,5,"container",3);
         level.setAllowedVehicles(allowedVehicles);
-        levelDao.insert(level);
+        levelRepository.save(level);
     }
     private void addLevel(List<AllowedVehicle> allowedVehicles, int type, String name, int MAX_SLOT) {
-        Vehicle vehicle = vehicleDao.findById(type);
+        Vehicle vehicle = vehicleRepository.getOne(type);
         AllowedVehicle allowedVehicle = new AllowedVehicle(MAX_SLOT,0,vehicle);
-        allowedVehicleDao.insert(allowedVehicle);
+        allowedVehicleRepository.save(allowedVehicle);
         allowedVehicles.add(allowedVehicle);
     }
 
@@ -74,34 +76,6 @@ public class Database {
 //        vehicleList.add(new Vehicle(3, "bike"));
 //        vehicleList.add(new Vehicle(4, "truck"));
 //    }
-
-
-
-
-
-//    private int getUniquieVehicleMapId() {
-//        Random random = new Random();
-//
-//        while (true) {
-//            int x = random.nextInt(900) + 100;
-//            if (!isLevelAllowedVehicleMapIdExist(x)) {
-//                return x;
-//            }
-//        }
-//
-//    }
-//    private boolean isLevelAllowedVehicleMapIdExist(int id) {
-//
-//        for (LevelParkedVehicle levelAllowedVehicle : getLevelAllowedVehicleList()) {
-//            if (levelAllowedVehicle.getId() == id) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-
-
-
 
 }
 

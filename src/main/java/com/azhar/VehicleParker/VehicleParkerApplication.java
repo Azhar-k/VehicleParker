@@ -12,12 +12,6 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class VehicleParkerApplication implements CommandLineRunner {
 
-	@Autowired
-	LevelRepository levelRepository;
-
-	@Autowired
-	VehicleRepository vehicleRepository;
-
 	static ApplicationContext applicationContext;
 
 	public static void main(String[] args) {
@@ -30,7 +24,5 @@ public class VehicleParkerApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-
-		System.out.println(levelRepository.findAll());
 	}
 }
