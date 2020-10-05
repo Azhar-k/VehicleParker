@@ -4,7 +4,6 @@ import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
-import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
 import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
@@ -30,11 +29,11 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
     @Autowired
     SpaceManager spaceManager;
 
-    public ParkResponse park(ParkRequest parkRequest ) {
+    public ParkResponse park(Vehicle inputVehicle) {
         ParkResponse parkResponse;
         try {
             //try to park a vehicle
-            LevelParkedVehicle levelParkedVehicle = parkVehicle(parkRequest);
+            LevelParkedVehicle levelParkedVehicle = parkVehicle(inputVehicle);
             //format the api response
             parkResponse = new ParkResponse(true, "vehicle parked", levelParkedVehicle);
 
@@ -46,10 +45,10 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
     }
 
 
-    public LevelParkedVehicle parkVehicle(ParkRequest parkRequest) throws Exception {
+    public LevelParkedVehicle parkVehicle(Vehicle inputVehicle) throws Exception {
 
         //validate the vehicle given by user
-        Vehicle vehicle = getVehicle(parkRequest.getVehicleName());
+        Vehicle vehicle = getVehicle(inputVehicle.getName());
         if (vehicle == null) {
             throw new Exception("This vehicle can not be parked here");
         }

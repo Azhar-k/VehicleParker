@@ -5,7 +5,6 @@ import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Database;
-import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
 import com.azhar.VehicleParker.Entities.Building.Level;
@@ -107,7 +106,7 @@ public class ParkingServiceTest {
 //            Mockito.when(vehicleDao.getVehicleByName(vehicle.getName())).thenReturn(findByName(vehicle.getName()));
 //            Mockito.when(spaceManager.getLAvailableSpace()).thenReturn(getLAvailableSpace());
             try {
-                parkingService.parkVehicle(new ParkRequest());
+                parkingService.parkVehicle(vehicle);
             } catch (Exception exception) {
                 assertEquals("This vehicle can not be parked here", exception.getMessage());
             }
@@ -122,7 +121,7 @@ public class ParkingServiceTest {
 //            Mockito.when(vehicleDao.getVehicleByName(vehicle.getName())).thenReturn(findByName(vehicle.getName()));
 //            Mockito.when(spaceManager.getLAvailableSpace()).thenReturn(getLAvailableSpace());
 
-            levelVehicle = parkingService.parkVehicle(new ParkRequest());
+            levelVehicle = parkingService.parkVehicle(vehicle);
             assertAll(
                     () -> {
                         assertTrue(100 <= levelVehicle.getId() && levelVehicle.getId() < 1000);
@@ -137,7 +136,7 @@ public class ParkingServiceTest {
             try {
                 for (int i = 0; i < 50; i++) {
                     //100 slot is not available for car
-                    parkingService.parkVehicle(new ParkRequest());
+                    parkingService.parkVehicle(vehicle);
                 }
             } catch (Exception exception) {
                 assertEquals("Parking Space is Full for " + vehicle.getName(), exception.getMessage());
@@ -153,9 +152,9 @@ public class ParkingServiceTest {
             database.loadData();
             Vehicle vehicle = new Vehicle(vehicleName);
 
-            LevelParkedVehicle levelVehicle = parkingService.parkVehicle(new ParkRequest());
+            LevelParkedVehicle levelVehicle = parkingService.parkVehicle(vehicle);
             ParkResponse expected = new ParkResponse(true, "vehicle parked", levelVehicle);
-            ParkResponse actual = parkingService.park(new ParkRequest());
+            ParkResponse actual = parkingService.park(vehicle);
             assertAll(() -> {
                 assertEquals(expected.isSucces(), actual.isSucces());
                 assertEquals(expected.getMessage(), actual.getMessage());
