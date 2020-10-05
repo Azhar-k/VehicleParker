@@ -3,6 +3,9 @@ package com.azhar.VehicleParker.Entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
 
 //map a vehicle to a level. Id will be unique to this maping
 @Entity
@@ -14,14 +17,12 @@ public class LevelParkedVehicle {
     private int vehicleType;
     private String vehicleName;
     private String vehicleNumber;
-
-    public LevelParkedVehicle(int levelNumber, int vehicleType) {
-        this.levelNumber = levelNumber;
-        this.vehicleType = vehicleType;
-    }
+    private LocalDate date;
+    private LocalTime time;
 
     public LevelParkedVehicle( int levelNumber, int vehicleType, String vehicleName, String vehicleNumber) {
-
+        this.date=LocalDate.now();
+        this.time=LocalTime.now();
         this.levelNumber = levelNumber;
         this.vehicleType = vehicleType;
         this.vehicleName = vehicleName;
@@ -76,6 +77,22 @@ public class LevelParkedVehicle {
         this.vehicleNumber = vehicleNumber;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
     @Override
     public String toString() {
         return "LevelVehicleMap{" +
@@ -84,4 +101,5 @@ public class LevelParkedVehicle {
                 ", vehicleType='" + vehicleType + '\'' +
                 '}';
     }
+
 }
