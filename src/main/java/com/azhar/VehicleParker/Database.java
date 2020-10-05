@@ -1,6 +1,9 @@
 package com.azhar.VehicleParker;
 
 
+import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
+import com.azhar.VehicleParker.Dao.LevelDao;
+import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.dbclient.AllowedVehicleRepository;
 import com.azhar.VehicleParker.dbclient.LevelRepository;
 import com.azhar.VehicleParker.dbclient.LevelParkedVehicleRepository;
@@ -18,19 +21,14 @@ import java.util.Random;
 
 @Component
 public class Database {
-    private static List<Level> levelList = new ArrayList<Level>();
-    private static List<Vehicle> vehicleList = new ArrayList<Vehicle>();
-    private static List<LevelParkedVehicle> levelAllowedVehicleList = new ArrayList<LevelParkedVehicle>();
-
     @Autowired
-    LevelRepository levelRepository;
+    LevelDao levelDao;
     @Autowired
-    VehicleRepository vehicleRepository;
+    VehicleDao vehicleDao;
     @Autowired
-    AllowedVehicleRepository allowedVehicleRepository;
-
+    AllowedVehicleDao allowedVehicleDao;
     public void loadData() {
-        loadVehicles();
+        //loadVehicles();
         loadLevels();
     }
 
@@ -44,14 +42,14 @@ public class Database {
             addLevel(allowedVehicles, 2,"van", 4);
             addLevel(allowedVehicles, 3, "bike",15);
             level.setAllowedVehicles(allowedVehicles);
-            levelRepository.save(level);
+            levelDao.insert(level);
         }
         //adding extra level where only truck can be parked
         Level level = new Level(6);
         List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
         addLevel(allowedVehicles,4,"truck",4);
         level.setAllowedVehicles(allowedVehicles);
-        levelRepository.save(level);
+        levelDao.insert(level);
 
         //adding extra level where bus and container can be parked
         level = new Level(7);
@@ -59,23 +57,23 @@ public class Database {
         addLevel(allowedVehicles,1,"bus",4);
         addLevel(allowedVehicles,5,"container",3);
         level.setAllowedVehicles(allowedVehicles);
-        levelRepository.save(level);
+        levelDao.insert(level);
     }
     private void addLevel(List<AllowedVehicle> allowedVehicles, int type, String name, int MAX_SLOT) {
-        Vehicle vehicle = vehicleRepository.getOne(type);
+        Vehicle vehicle = vehicleDao.findById(type);
         AllowedVehicle allowedVehicle = new AllowedVehicle(MAX_SLOT,0,vehicle);
-        allowedVehicleRepository.save(allowedVehicle);
+        allowedVehicleDao.insert(allowedVehicle);
         allowedVehicles.add(allowedVehicle);
     }
 
 
-    private void loadVehicles() {
-        vehicleList.add(new Vehicle(0, "car"));
-        vehicleList.add(new Vehicle(1, "bus"));
-        vehicleList.add(new Vehicle(2, "van"));
-        vehicleList.add(new Vehicle(3, "bike"));
-        vehicleList.add(new Vehicle(4, "truck"));
-    }
+//    private void loadVehicles() {
+//        vehicleList.add(new Vehicle(0, "car"));
+//        vehicleList.add(new Vehicle(1, "bus"));
+//        vehicleList.add(new Vehicle(2, "van"));
+//        vehicleList.add(new Vehicle(3, "bike"));
+//        vehicleList.add(new Vehicle(4, "truck"));
+//    }
 
 
 

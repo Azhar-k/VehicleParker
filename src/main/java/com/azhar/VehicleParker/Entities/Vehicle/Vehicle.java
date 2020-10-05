@@ -1,8 +1,6 @@
 package com.azhar.VehicleParker.Entities.Vehicle;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "Vehicle")
 @Entity

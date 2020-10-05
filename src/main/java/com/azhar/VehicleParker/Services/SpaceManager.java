@@ -1,44 +1,15 @@
 package com.azhar.VehicleParker.Services;
 
-import com.azhar.VehicleParker.Dao.Interfaces.LevelDao;
-import com.azhar.VehicleParker.Dao.Interfaces.LevelParkedVehicleDao;
-import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.Entities.Building.Level;
+
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class SpaceManager implements com.azhar.VehicleParker.Services.Interfaces.SpaceManager {
+@Component
+public interface SpaceManager {
+    public List<LevelParkedVehicle> getLevelVehicleList();
+    public List<LevelSpace> getLAvailableSpace();
 
-    @Autowired
-    LevelDao levelDao;
-
-    @Autowired
-    LevelParkedVehicleDao levelParkedVehicleDao;
-
-
-    public List<LevelParkedVehicle> getLevelVehicleList() {
-        return levelParkedVehicleDao.getLevelParkedVehicleList();
-    }
-
-    @Override
-    public List<LevelSpace> getLAvailableSpace() {
-        List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
-        for (Level level : levelDao.getLevelList()) {
-            LevelSpace levelSpace = new LevelSpace(level.getLevelNumber());
-            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
-                int freeSlot = allowedVehicle.getFreeSlots();
-                levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
-
-            }
-            availableSpace.add(levelSpace);
-
-        }
-        return availableSpace;
-    }
 }

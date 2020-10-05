@@ -1,91 +1,15 @@
 package com.azhar.VehicleParker.Services;
 
-import com.azhar.VehicleParker.Dao.Interfaces.AllowedVehicleDao;
-import com.azhar.VehicleParker.Dao.Interfaces.LevelDao;
-import com.azhar.VehicleParker.Dao.Interfaces.LevelParkedVehicleDao;
-import com.azhar.VehicleParker.Dao.Interfaces.VehicleDao;
-import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.Entities.Building.Level;
+
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class UnParkingService implements com.azhar.VehicleParker.Services.Interfaces.UnParkingService {
-
-    @Autowired
-    LevelDao levelDao;
-    @Autowired
-    AllowedVehicleDao allowedVehicleDao;
-    @Autowired
-    LevelParkedVehicleDao levelParkedVehicleDao;
-    @Autowired
-    VehicleDao vehicleDao;
-
-    public ParkResponse unPark(LevelParkedVehicle inputLevelParkedVehicle) {
-        ParkResponse parkResponse;
-        try {
-            LevelParkedVehicle levelParkedVehicleResponse = unParkVehicle(inputLevelParkedVehicle);
-            parkResponse = new ParkResponse(true, "vehicle unparked", levelParkedVehicleResponse);
-
-        } catch (Exception e) {
-            parkResponse = new ParkResponse(false, e.getMessage(), null);
-        }
-        return parkResponse;
-    }
-
-
-    public LevelParkedVehicle unParkVehicle(LevelParkedVehicle inputLevelParkedVehicle) throws Exception {
-        LevelParkedVehicle levelParkedVehicle = getValidLevelParkedVehicle(inputLevelParkedVehicle.getId());
-        if (levelParkedVehicle == null) {
-            //no levelvehicle exist with the id entered by user
-            throw new Exception("This vehicle is not parked here");
-        }
-
-        boolean isSlotEmptied = emptySlot(levelParkedVehicle);
-        if (!isSlotEmptied) {
-            throw new Exception("Some error occured.Please try again");
-        }
-        return levelParkedVehicle;
-    }
-
-    public LevelParkedVehicle getValidLevelParkedVehicle(int levelParkedVehicleId) {
-        //find out the parked vehicle
-        LevelParkedVehicle levelParkedVehicle =levelParkedVehicleDao.getLevelParkedVehicleById(levelParkedVehicleId);
-        return levelParkedVehicle;
-
-    }
-
-    public Boolean emptySlot(LevelParkedVehicle levelParkedVehicle) {
-        boolean isLevelAllowedVehicleRemoved = removeLevelAllowedVehicle(levelParkedVehicle);
-        if (isLevelAllowedVehicleRemoved) {
-            int levelNumber = levelParkedVehicle.getLevelNumber();
-            int parkedVehicleId = levelParkedVehicle.getVehicleType();
-
-            Level level = levelDao.getLevelByLevelNumber(levelNumber);
-            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()) {
-                if (allowedVehicle.getVehicle().getId() == parkedVehicleId) {
-
-                    int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
-                    int updatedOccupiedSlot = currentOccupiedSlot - 1;
-                    allowedVehicle.setOccupiedSlots(updatedOccupiedSlot);
-
-                    allowedVehicleDao.update(allowedVehicle);
-                }
-
-            }
-            levelDao.update(level);
-
-        }
-        return true;
-
-    }
-
-    private boolean removeLevelAllowedVehicle(LevelParkedVehicle levelParkedVehicle) {
-        levelParkedVehicleDao.delete(levelParkedVehicle);
-        return true;
-    }
-
-
+@Component
+public interface UnParkingService {
+    public ParkResponse unPark(LevelParkedVehicle levelVehicleMap);
+    public LevelParkedVehicle unParkVehicle(LevelParkedVehicle inputLevelVehicle) throws Exception;
+    public LevelParkedVehicle getValidLevelParkedVehicle(int levelVehicleId);
+    public Boolean emptySlot(LevelParkedVehicle levelParkedVehicle);
+    public boolean removeLevelAllowedVehicle(LevelParkedVehicle levelParkedVehicle);
 }

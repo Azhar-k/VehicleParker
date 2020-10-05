@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 public class AllowedVehicle {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     @ManyToOne
     private Vehicle vehicle;
