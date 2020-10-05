@@ -12,10 +12,20 @@ public class LevelParkedVehicle {
     private int id;
     private int levelNumber;
     private int vehicleType;
+    private String vehicleName;
+    private String vehicleNumber;
 
     public LevelParkedVehicle(int levelNumber, int vehicleType) {
         this.levelNumber = levelNumber;
         this.vehicleType = vehicleType;
+    }
+
+    public LevelParkedVehicle( int levelNumber, int vehicleType, String vehicleName, String vehicleNumber) {
+
+        this.levelNumber = levelNumber;
+        this.vehicleType = vehicleType;
+        this.vehicleName = vehicleName;
+        this.vehicleNumber = vehicleNumber;
     }
 
 
@@ -48,6 +58,22 @@ public class LevelParkedVehicle {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getVehicleName() {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
+    }
+
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
+
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
     }
 
     @Override

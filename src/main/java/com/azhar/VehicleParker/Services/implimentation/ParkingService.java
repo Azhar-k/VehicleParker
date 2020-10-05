@@ -4,6 +4,7 @@ import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
+import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
 import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
@@ -29,11 +30,11 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
     @Autowired
     SpaceManager spaceManager;
 
-    public ParkResponse park(Vehicle inputVehicle) {
+    public ParkResponse park(ParkRequest parkRequest) {
         ParkResponse parkResponse;
         try {
             //try to park a vehicle
-            LevelParkedVehicle levelParkedVehicle = parkVehicle(inputVehicle);
+            LevelParkedVehicle levelParkedVehicle = parkVehicle(parkRequest);
             //format the api response
             parkResponse = new ParkResponse(true, "vehicle parked", levelParkedVehicle);
 
@@ -45,10 +46,10 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
     }
 
 
-    public LevelParkedVehicle parkVehicle(Vehicle inputVehicle) throws Exception {
+    public LevelParkedVehicle parkVehicle(ParkRequest parkRequest) throws Exception {
 
         //validate the vehicle given by user
-        Vehicle vehicle = getVehicle(inputVehicle.getName());
+        Vehicle vehicle = getVehicle(parkRequest.getVehicleName());
         if (vehicle == null) {
             throw new Exception("This vehicle can not be parked here");
         }
@@ -60,7 +61,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
             throw new Exception("Parking Space is Full for " + vehicle.getName());
         }
         //close the slot in database and get a unique id for this parking
-        LevelParkedVehicle levelParkedVehicle = fillSlot(availableLevelNumber, vehicle.getId());
+        LevelParkedVehicle levelParkedVehicle = fillSlot(availableLevelNumber, vehicle.getId(),vehicle.getName(),parkRequest.getVehicleNumber());
         if (levelParkedVehicle == null) {
             throw new Exception("some error occured");
         }
@@ -93,9 +94,9 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         return levelNo;
     }
 
-    public LevelParkedVehicle fillSlot(int levelNumber, int parkedVehicleId) {
+    public LevelParkedVehicle fillSlot(int levelNumber, int parkedVehicleId,String vehicleName,String vehicleNumber) {
 
-        LevelParkedVehicle levelAllowedVehicle = addLevelAllowedVehicle(levelNumber, parkedVehicleId);
+        LevelParkedVehicle levelAllowedVehicle = addLevelAllowedVehicle(levelNumber, parkedVehicleId,vehicleName,vehicleNumber);
         if (levelAllowedVehicle != null) {
             Level level = levelDao.getLevelByLevelNumber(levelNumber);
 
@@ -119,12 +120,12 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
 
     }
 
-    public LevelParkedVehicle addLevelAllowedVehicle(int levelNumber, int parkedVehicleId) {
+    public LevelParkedVehicle addLevelAllowedVehicle(int levelNumber, int parkedVehicleId, String vehicleName,String vehicleNumber) {
         LevelParkedVehicle levelParkedVehicle = null;
 
         try {
 
-            levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId);
+            levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId,vehicleName,vehicleNumber);
             levelParkedVehicleDao.insert(levelParkedVehicle);
         } catch (Exception e) {
             levelParkedVehicle = null;
