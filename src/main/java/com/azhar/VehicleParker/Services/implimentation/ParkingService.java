@@ -78,7 +78,6 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         int levelNo = -1;
 
         for (LevelSpace levelSpace : spaceManager.getLAvailableSpace()) {
-            //index of availabeSpace list is the level number
             try {
                 int freeSlot = levelSpace.getAvailabeSlots().get(vehicle.getName());
                 if (freeSlot > 0) {
