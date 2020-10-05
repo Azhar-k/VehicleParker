@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker.Services;
 
-import com.azhar.VehicleParker.Dao.LevelDao;
+import com.azhar.VehicleParker.Dao.Interfaces.LevelDao;
+import com.azhar.VehicleParker.Dao.Interfaces.VehicleDao;
 import com.azhar.VehicleParker.Database;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
@@ -24,6 +25,8 @@ public class ParkingServiceTest {
     ParkingService parkingService;
     @Autowired
     LevelDao levelDao;
+    @Autowired
+    VehicleDao vehicleDao;
 
     @BeforeAll
     public static void init() {
@@ -47,7 +50,7 @@ public class ParkingServiceTest {
 
     @Test
     public void getAvailableLevelNumberGivenVehicle() {
-        for (Vehicle vehicle : levelDao.getVehicleList()) {
+        for (Vehicle vehicle : vehicleDao.getVehicleList()) {
             int expected = 0;//all vehicle types except truck has slot in 0th level
             if (vehicle.getName().equals("truck")) {
                 //truck has slot in 6th level only

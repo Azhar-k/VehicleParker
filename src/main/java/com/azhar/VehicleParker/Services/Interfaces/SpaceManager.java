@@ -11,6 +11,5 @@ import java.util.List;
 public interface SpaceManager {
     public List<LevelParkedVehicle> getLevelVehicleList();
     public List<LevelSpace> getLAvailableSpace();
-`
-    public List<LevelSpace> getAvailableSpace();
+
 }

@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LevelParkedVehicleRepository extends JpaRepository<LevelParkedVehicle,Integer> {
 
+   public LevelParkedVehicle findLevelParkedVehicleById(int levelParkedVehicleId);
 }

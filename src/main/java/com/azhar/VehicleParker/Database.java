@@ -25,22 +25,9 @@ public class Database {
     @Autowired
     LevelRepository levelRepository;
     @Autowired
-    LevelParkedVehicleRepository levelParkedVehicleRepository;
-    @Autowired
     VehicleRepository vehicleRepository;
     @Autowired
     AllowedVehicleRepository allowedVehicleRepository;
-
-    public List<LevelParkedVehicle> getLevelAllowedVehicleList() {
-        return levelAllowedVehicleList;
-    }
-    public List<Level> getLevelList() {
-
-        return levelRepository.findAll();
-    }
-    public List<Vehicle> getVehicleList() {
-        return vehicleRepository.findAll();
-    }
 
     public void loadData() {
         loadVehicles();
@@ -52,9 +39,9 @@ public class Database {
             //all level contains same list of vehicles and free slots
             Level level = new Level(i);
             List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
-            addLevel(allowedVehicles, 0,"car", 3);
+            addLevel(allowedVehicles, 0,"car", 5);
             addLevel(allowedVehicles, 1,"bus", 3);
-            addLevel(allowedVehicles, 2,"van", 3);
+            addLevel(allowedVehicles, 2,"van", 4);
             addLevel(allowedVehicles, 3, "bike",15);
             level.setAllowedVehicles(allowedVehicles);
             levelRepository.save(level);
@@ -62,7 +49,15 @@ public class Database {
         //adding extra level where only truck can be parked
         Level level = new Level(6);
         List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
-        addLevel(allowedVehicles,4,"truck",2);
+        addLevel(allowedVehicles,4,"truck",4);
+        level.setAllowedVehicles(allowedVehicles);
+        levelRepository.save(level);
+
+        //adding extra level where bus and container can be parked
+        level = new Level(7);
+        allowedVehicles = new ArrayList<AllowedVehicle>();
+        addLevel(allowedVehicles,1,"bus",4);
+        addLevel(allowedVehicles,5,"container",3);
         level.setAllowedVehicles(allowedVehicles);
         levelRepository.save(level);
     }
@@ -84,52 +79,28 @@ public class Database {
 
 
 
-    public Boolean emptySlot(LevelParkedVehicle levelAllowedVehicle) {
-        boolean isLevelAllowedVehicleRemoved = removeLevelAllowedVehicle(levelAllowedVehicle);
-        if (isLevelAllowedVehicleRemoved) {
-            int levelNumber = levelAllowedVehicle.getLevelNumber();
-            int allowedVehicleid = levelAllowedVehicle.getVehicleType();
 
-            Level level = getLevelList().get(levelNumber);
-            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
-                if(allowedVehicle.getVehicle().getId()==allowedVehicleid){
-                    int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
-                    int updatedOccupiedSlot = currentOccupiedSlot - 1;
-                    allowedVehicle.setOccupiedSlots(updatedOccupiedSlot);
-                }
-                allowedVehicleRepository.save(allowedVehicle);
-            }
-            levelRepository.save(level);
 
-        }
-        return true;
-
-    }
-    private boolean removeLevelAllowedVehicle(LevelParkedVehicle levelAllowedVehicle) {
-        levelParkedVehicleRepository.delete(levelAllowedVehicle);
-        return true;
-    }
-
-    private int getUniquieVehicleMapId() {
-        Random random = new Random();
-
-        while (true) {
-            int x = random.nextInt(900) + 100;
-            if (!isLevelAllowedVehicleMapIdExist(x)) {
-                return x;
-            }
-        }
-
-    }
-    private boolean isLevelAllowedVehicleMapIdExist(int id) {
-
-        for (LevelParkedVehicle levelAllowedVehicle : getLevelAllowedVehicleList()) {
-            if (levelAllowedVehicle.getId() == id) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    private int getUniquieVehicleMapId() {
+//        Random random = new Random();
+//
+//        while (true) {
+//            int x = random.nextInt(900) + 100;
+//            if (!isLevelAllowedVehicleMapIdExist(x)) {
+//                return x;
+//            }
+//        }
+//
+//    }
+//    private boolean isLevelAllowedVehicleMapIdExist(int id) {
+//
+//        for (LevelParkedVehicle levelAllowedVehicle : getLevelAllowedVehicleList()) {
+//            if (levelAllowedVehicle.getId() == id) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
 
 
