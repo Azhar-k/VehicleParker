@@ -69,13 +69,13 @@ public class Database {
     }
 
 
-//    private void loadVehicles() {
-//        vehicleList.add(new Vehicle(0, "car"));
-//        vehicleList.add(new Vehicle(1, "bus"));
-//        vehicleList.add(new Vehicle(2, "van"));
-//        vehicleList.add(new Vehicle(3, "bike"));
-//        vehicleList.add(new Vehicle(4, "truck"));
-//    }
+    private void loadVehicles() {
+        vehicleRepository.save(new Vehicle( "car"));
+        vehicleRepository.save(new Vehicle( "bus"));
+        vehicleRepository.save(new Vehicle( "van"));
+        vehicleRepository.save(new Vehicle( "bike"));
+        vehicleRepository.save(new Vehicle( "truck"));
+    }
 
 }
 

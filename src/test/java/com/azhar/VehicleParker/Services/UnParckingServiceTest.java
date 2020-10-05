@@ -2,6 +2,7 @@ package com.azhar.VehicleParker.Services;
 
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Database;
+import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
@@ -39,7 +40,7 @@ public class UnParckingServiceTest {
 
         @Test
         public void givenValidId() throws Exception {
-            LevelParkedVehicle expected = parkingService.parkVehicle(new Vehicle("bus"));
+            LevelParkedVehicle expected = parkingService.parkVehicle(new ParkRequest());
             LevelParkedVehicle actual = unParkingService.getValidLevelParkedVehicle(expected.getId());
             assertEquals(expected,actual);
         }
@@ -62,7 +63,7 @@ public class UnParckingServiceTest {
         @Test
         public void givenValidLevelVehicle() throws Exception {
 
-            LevelParkedVehicle expected = parkingService.parkVehicle(new Vehicle("bus"));
+            LevelParkedVehicle expected = parkingService.parkVehicle(new ParkRequest());
             LevelParkedVehicle actual = unParkingService.unParkVehicle(expected);
             assertEquals(expected,actual);
 
@@ -87,7 +88,7 @@ public class UnParckingServiceTest {
 
         @Test
         public void givenValidLevelVehicle() throws Exception {
-            LevelParkedVehicle levelVehicle = parkingService.parkVehicle(new Vehicle("car"));
+            LevelParkedVehicle levelVehicle = parkingService.parkVehicle(new ParkRequest());
             ParkResponse actual = unParkingService.unPark(levelVehicle);
             ParkResponse expected = new ParkResponse(true,"vehicle unparked",levelVehicle);
             assertAll(()->{

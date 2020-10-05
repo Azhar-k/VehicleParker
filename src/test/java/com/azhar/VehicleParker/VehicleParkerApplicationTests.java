@@ -8,7 +8,7 @@ class VehicleParkerApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println("context loaded");
+
     }
 
 }

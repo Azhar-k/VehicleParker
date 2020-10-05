@@ -18,6 +18,7 @@ public class LevelParkedVehicle {
         this.vehicleType = vehicleType;
     }
 
+
     public LevelParkedVehicle() {
     }
 

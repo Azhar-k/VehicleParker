@@ -5,6 +5,7 @@ import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Database;
+import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
 import com.azhar.VehicleParker.Entities.Building.Level;
@@ -45,17 +46,22 @@ public class ParkingServiceTest {
     VehicleDao vehicleDao;
 
    @Autowired
+   Database database;
+
+
+   @Autowired
     SpaceManager spaceManager;
 
     @BeforeAll
     public static void init() {
-
+        //database.loadData();
     }
 
     @Nested
     public class getVehicleTest {
         @Test
         public void GivenInValidType() {
+            database.loadData();
 //            Mockito.when(vehicleDao.getVehicleByName("jeep")).thenReturn(findByName("jeep"));
             assertNull(parkingService.getVehicle("jeep"));
         }
@@ -71,6 +77,7 @@ public class ParkingServiceTest {
     @ParameterizedTest(name = "vehicle name")
     @CsvSource(value = {"1", "2", "3", "4","5"})
     public void getAvailableLevelNumberGivenVehicle(int vehicleId) {
+        database.loadData();
 //        Mockito.when(spaceManager.getLAvailableSpace()).thenReturn(getLAvailableSpace());
         Vehicle vehicle = vehicleDao.findById(vehicleId);
 
@@ -94,12 +101,13 @@ public class ParkingServiceTest {
 
         @Test
         public void GivenInValidVehicle() {
+            database.loadData();
             Vehicle vehicle = new Vehicle("jeep");
 
 //            Mockito.when(vehicleDao.getVehicleByName(vehicle.getName())).thenReturn(findByName(vehicle.getName()));
 //            Mockito.when(spaceManager.getLAvailableSpace()).thenReturn(getLAvailableSpace());
             try {
-                parkingService.parkVehicle(vehicle);
+                parkingService.parkVehicle(new ParkRequest());
             } catch (Exception exception) {
                 assertEquals("This vehicle can not be parked here", exception.getMessage());
             }
@@ -114,15 +122,13 @@ public class ParkingServiceTest {
 //            Mockito.when(vehicleDao.getVehicleByName(vehicle.getName())).thenReturn(findByName(vehicle.getName()));
 //            Mockito.when(spaceManager.getLAvailableSpace()).thenReturn(getLAvailableSpace());
 
-            levelVehicle = parkingService.parkVehicle(vehicle);
+            levelVehicle = parkingService.parkVehicle(new ParkRequest());
             assertAll(
                     () -> {
                         assertTrue(100 <= levelVehicle.getId() && levelVehicle.getId() < 1000);
                         assertTrue(levelVehicle.getLevelNumber() >= 0);//negative values indicate space is full. can not park vehicle there
                     }
             );
-
-
         }
 
         @Test
@@ -131,7 +137,7 @@ public class ParkingServiceTest {
             try {
                 for (int i = 0; i < 50; i++) {
                     //100 slot is not available for car
-                    parkingService.parkVehicle(vehicle);
+                    parkingService.parkVehicle(new ParkRequest());
                 }
             } catch (Exception exception) {
                 assertEquals("Parking Space is Full for " + vehicle.getName(), exception.getMessage());
@@ -144,11 +150,12 @@ public class ParkingServiceTest {
         @ParameterizedTest(name = "vehicle name")
         @CsvSource(value = {"bus", "bike", "van", "truck"})
         public void GivenValidVehicle(String vehicleName) throws Exception {
+            database.loadData();
             Vehicle vehicle = new Vehicle(vehicleName);
 
-            LevelParkedVehicle levelVehicle = parkingService.parkVehicle(vehicle);
+            LevelParkedVehicle levelVehicle = parkingService.parkVehicle(new ParkRequest());
             ParkResponse expected = new ParkResponse(true, "vehicle parked", levelVehicle);
-            ParkResponse actual = parkingService.park(vehicle);
+            ParkResponse actual = parkingService.park(new ParkRequest());
             assertAll(() -> {
                 assertEquals(expected.isSucces(), actual.isSucces());
                 assertEquals(expected.getMessage(), actual.getMessage());

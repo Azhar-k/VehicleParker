@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Vehicle {
     @Id
+    @GeneratedValue
     private int id;
     private String name;
 
