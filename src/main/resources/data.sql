@@ -8,11 +8,11 @@
 --);
 
 
-insert into Vehicle(id,name) values(0,'car');
-insert into Vehicle(id,name) values(1,'bus');
-insert into Vehicle(id,name) values(2,'van');
-insert into Vehicle(id,name) values(3,'bike');
-insert into Vehicle(id,name) values(4,'truck');
-insert into Vehicle(id,name) values(5,'container');
+insert into Vehicle(id,name,parking_rate) values(0,'car',20);
+insert into Vehicle(id,name,parking_rate) values(1,'bus',40);
+insert into Vehicle(id,name,parking_rate) values(2,'van',20);
+insert into Vehicle(id,name,parking_rate) values(3,'bike',10);
+insert into Vehicle(id,name,parking_rate) values(4,'truck',70);
+insert into Vehicle(id,name,parking_rate) values(5,'container',100);
 
 
