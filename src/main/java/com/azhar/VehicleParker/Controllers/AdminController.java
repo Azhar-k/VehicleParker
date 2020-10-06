@@ -2,14 +2,13 @@ package com.azhar.VehicleParker.Controllers;
 
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.Entities.ApiResponses.EditLevelResponse;
+import com.azhar.VehicleParker.Entities.ApiResponses.EditVehicleResponse;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
-import com.azhar.VehicleParker.Services.EditLevelService;
-import com.azhar.VehicleParker.Services.ParkingService;
-import com.azhar.VehicleParker.Services.SpaceManager;
-import com.azhar.VehicleParker.Services.UnParkingService;
+import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,8 @@ public class AdminController {
     SpaceManager spaceManager;
     @Autowired
     EditLevelService editLevelService;
-
+    @Autowired
+    EditVehicleService editVehicleService;
 
     @GetMapping(path = "/getLevels")
     public List<Level> getLevelList(){
@@ -44,6 +44,26 @@ public class AdminController {
     @PostMapping(path = "/editLevel")
     public EditLevelResponse editLevel(@RequestBody Level level){
         return editLevelService.editLevel(level);
+    }
+
+    @GetMapping(path = "/getVehicles")
+    public List<Vehicle> getVehicleList(){
+
+        return spaceManager.getVehicles();
+    }
+    @PostMapping(path = "/addVehicle")
+    public EditVehicleResponse addVehicle(@RequestBody Vehicle inputVehicle){
+        return editVehicleService.insertVehicle(inputVehicle);
+    }
+
+    @PostMapping(path = "/deleteVehicle")
+    public EditVehicleResponse deleteVehicle(@RequestBody Vehicle inputVehicle){
+
+        return editVehicleService.deleteVehicle(inputVehicle);
+    }
+    @PostMapping(path = "/editVehicle")
+    public EditVehicleResponse editVehicle(@RequestBody Vehicle inputVehicle){
+        return editVehicleService.editVehicle(inputVehicle);
     }
 
 

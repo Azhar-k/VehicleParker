@@ -6,13 +6,12 @@ import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.EditLevelResponse;
 import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
 import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class EditLevelService implements com.azhar.VehicleParker.Services.EditLevelService {
 
     @Autowired
@@ -30,7 +29,7 @@ public class EditLevelService implements com.azhar.VehicleParker.Services.EditLe
             try {
                 for (AllowedVehicle allowedVehicle : inputLevel.getAllowedVehicles()) {
                     Vehicle inputVehicle = allowedVehicle.getVehicle();
-                    Vehicle vehicle = vehicleDao.getOne(inputVehicle.getId());
+                    Vehicle vehicle = vehicleDao.getVehicleById(inputVehicle.getId());
                     System.out.println("at here:"+vehicle.getId());
                     allowedVehicle.setVehicle(vehicle);
                     allowedVehicleDao.insert(allowedVehicle);

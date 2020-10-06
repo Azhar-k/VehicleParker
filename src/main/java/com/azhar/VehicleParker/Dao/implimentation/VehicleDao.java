@@ -28,7 +28,7 @@ public class VehicleDao implements com.azhar.VehicleParker.Dao.VehicleDao {
     }
 
     @Override
-    public Vehicle getOne(int id) throws VehicleNotFound {
+    public Vehicle getVehicleById(int id) throws VehicleNotFound {
         Vehicle vehicle=null;
         try {
             vehicle= vehicleRepository.getOne(id);
@@ -36,5 +36,10 @@ public class VehicleDao implements com.azhar.VehicleParker.Dao.VehicleDao {
             throw new VehicleNotFound("Vehicle not exist");
         }
         return vehicle;
+    }
+
+    @Override
+    public Vehicle insert(Vehicle inputVehicle) {
+        return vehicleRepository.save(inputVehicle);
     }
 }

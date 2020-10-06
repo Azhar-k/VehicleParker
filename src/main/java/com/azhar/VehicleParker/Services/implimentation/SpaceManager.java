@@ -2,10 +2,12 @@ package com.azhar.VehicleParker.Services.implimentation;
 
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
+import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
 import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,9 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
 
     @Autowired
     LevelParkedVehicleDao levelParkedVehicleDao;
+
+    @Autowired
+    VehicleDao vehicleDao;
 
     @Override
     public List<LevelParkedVehicle> getLevelVehicleList() {
@@ -51,6 +56,10 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
         return levelDao.getLevelBySortedLevelNumber();
     }
 
+    @Override
+    public List<Vehicle> getVehicles() {
+        return vehicleDao.getVehicleList();
+    }
 
 
     class SortbyLevelNumber implements Comparator<Level>

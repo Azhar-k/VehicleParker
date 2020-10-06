@@ -11,6 +11,7 @@ public interface EditLevelService {
     public EditLevelResponse insertLevel(Level level);
     public EditLevelResponse deleteLevel(Level level);
     public EditLevelResponse editLevel(Level level);
+
     public  Boolean isLevelExist(Level level);
     public Boolean isLevelContainVehicles(Level level);
 }
