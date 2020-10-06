@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker.Entities.Building;
 
 import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ public class AllowedVehicle {
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     @ManyToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})//to handle serializer not found exception.
     private Vehicle vehicle;
     private int MAX_SLOTS;
     private int occupiedSlots;
@@ -64,5 +66,16 @@ public class AllowedVehicle {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    @Override
+    public String toString() {
+        return "AllowedVehicle{" +
+                "id=" + id +
+                ", vehicle=" + vehicle +
+                ", MAX_SLOTS=" + MAX_SLOTS +
+                ", occupiedSlots=" + occupiedSlots +
+                ", freeSlots=" + freeSlots +
+                '}';
     }
 }

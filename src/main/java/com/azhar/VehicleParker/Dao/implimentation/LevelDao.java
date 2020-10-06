@@ -33,6 +33,11 @@ public class LevelDao implements com.azhar.VehicleParker.Dao.LevelDao {
     }
 
     @Override
+    public void delete(Level inputLevel) {
+        levelRepository.delete(inputLevel);
+    }
+
+    @Override
     public Level getLevelByLevelNumber(int levelNumber) {
         return levelRepository.findLevelByLevelNumber(levelNumber);
     }

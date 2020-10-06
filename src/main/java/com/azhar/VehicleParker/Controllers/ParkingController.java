@@ -32,12 +32,6 @@ public class ParkingController {
             return spaceManager.getLAvailableSpace();
     }
 
-    @GetMapping(path = "/getLevels")
-    public List<Level> getLevelList(){
-
-        return spaceManager.getLevelList();
-    }
-
     @GetMapping(path = "/getParkedVehicles")
     public List<LevelParkedVehicle> getParkedVehicles(){
 

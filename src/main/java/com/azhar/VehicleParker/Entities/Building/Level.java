@@ -7,14 +7,22 @@ import java.util.List;
 @Entity
 public class Level {
     @Id
-    @GeneratedValue
-    private int id;
     private int levelNumber;
     @ManyToMany(targetEntity= AllowedVehicle.class)
     private List<AllowedVehicle> allowedVehicles ;
 
 
     public Level() {
+    }
+
+    public Level(int id, int levelNumber, List<AllowedVehicle> allowedVehicles) {
+        this.levelNumber = levelNumber;
+        this.allowedVehicles = allowedVehicles;
+    }
+
+    public Level(int levelNumber, List<AllowedVehicle> allowedVehicles) {
+        this.levelNumber = levelNumber;
+        this.allowedVehicles = allowedVehicles;
     }
 
     public Level(int levelNumber) {
@@ -37,13 +45,7 @@ public class Level {
         return allowedVehicles;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {

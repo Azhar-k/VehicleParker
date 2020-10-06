@@ -55,8 +55,6 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
 
     class SortbyLevelNumber implements Comparator<Level>
     {
-        // Used for sorting in ascending order of
-        // levelNumber
         public int compare(Level a, Level b)
         {
             return a.getLevelNumber() - b.getLevelNumber();

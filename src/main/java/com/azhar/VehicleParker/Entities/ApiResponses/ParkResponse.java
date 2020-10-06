@@ -2,31 +2,13 @@ package com.azhar.VehicleParker.Entities.ApiResponses;
 
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 
-public class ParkResponse {
-    private boolean isSucces;
-    private String message;
+public class ParkResponse extends Response {
+
     private LevelParkedVehicle levelVehicleMap;
 
     public ParkResponse(boolean isSucces, String message, LevelParkedVehicle levelVehicleMap) {
-        this.isSucces = isSucces;
-        this.message = message;
+        super(isSucces, message);
         this.levelVehicleMap = levelVehicleMap;
-    }
-
-    public boolean isSucces() {
-        return isSucces;
-    }
-
-    public void setSucces(boolean succes) {
-        isSucces = succes;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public LevelParkedVehicle getVehicleMap() {
