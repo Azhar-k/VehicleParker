@@ -27,7 +27,7 @@ public class EditVehicleService implements com.azhar.VehicleParker.Services.Edit
 
         }
         else {
-            editVehicleResponse=new EditVehicleResponse(true,"vehicle already exist",null);
+            editVehicleResponse=new EditVehicleResponse(true,"vehicle already exist",validVehicle);
         }
         return editVehicleResponse;
     }
@@ -38,8 +38,8 @@ public class EditVehicleService implements com.azhar.VehicleParker.Services.Edit
         Vehicle validVehicle = validateVehicle(inputVehicle);
         if(validVehicle!=null){
             try {
-                vehicleDao.delete(inputVehicle);
-                editVehicleResponse=new EditVehicleResponse(true,"vehicle deleted",null);
+                vehicleDao.delete(validVehicle);
+                editVehicleResponse=new EditVehicleResponse(true,"vehicle deleted",validVehicle);
 
             } catch (Exception e) {
                 editVehicleResponse=new EditVehicleResponse(true,"something went wrong "+e.getMessage(),null);
@@ -59,6 +59,7 @@ public class EditVehicleService implements com.azhar.VehicleParker.Services.Edit
         Vehicle validVehicle = validateVehicle(inputVehicle);
         if(validVehicle!=null){
             try {
+                inputVehicle.setId(validVehicle.getId());
                 Vehicle vehicle=vehicleDao.update(inputVehicle);
                 editVehicleResponse=new EditVehicleResponse(true,"vehicle edited",vehicle);
 

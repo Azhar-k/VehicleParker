@@ -29,7 +29,7 @@ public class EditLevelService implements com.azhar.VehicleParker.Services.EditLe
             try {
                 for (AllowedVehicle allowedVehicle : inputLevel.getAllowedVehicles()) {
                     Vehicle inputVehicle = allowedVehicle.getVehicle();
-                    Vehicle vehicle = vehicleDao.getVehicleById(inputVehicle.getId());
+                    Vehicle vehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
                     System.out.println("at here:"+vehicle.getId());
                     allowedVehicle.setVehicle(vehicle);
                     allowedVehicleDao.insert(allowedVehicle);
@@ -90,13 +90,15 @@ public class EditLevelService implements com.azhar.VehicleParker.Services.EditLe
             if(!isLevelContainVehicles(inputLevel)){
                 try {
                     for(AllowedVehicle allowedVehicle:inputLevel.getAllowedVehicles()){
+                        Vehicle inputVehicle = allowedVehicle.getVehicle();
+                        Vehicle validVehicle=vehicleDao.getVehicleByName(inputVehicle.getName());
+                        allowedVehicle.setVehicle(validVehicle);
                         allowedVehicleDao.update(allowedVehicle);
                     }
-                    //System.out.println(inputLevel.getId());
                     levelDao.update(inputLevel);
                     editLevelResponse = new EditLevelResponse(true,"Level edited",inputLevel);
                 } catch (Exception e) {
-                    editLevelResponse=new EditLevelResponse(false,"something went wrong..please try again",null);
+                    editLevelResponse=new EditLevelResponse(false,"something went wrong..please try again"+e.getMessage(),null);
                 }
             }
             else {
