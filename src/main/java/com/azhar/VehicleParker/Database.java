@@ -38,23 +38,23 @@ public class Database {
         //adding extra level where only truck can be parked
         Level level = new Level(1);
         List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
-        addLevel(allowedVehicles,1,"bus",15);
+        addLevel(allowedVehicles,1,15);//bus
         level.setAllowedVehicles(allowedVehicles);
         levelRepository.save(level);
         //adding extra level where bus and container can be parked
         level = new Level(0);
         allowedVehicles = new ArrayList<AllowedVehicle>();
-        addLevel(allowedVehicles,5,"container",3);
-        addLevel(allowedVehicles,4,"truck",10);
+        addLevel(allowedVehicles,5,3);//container
+        addLevel(allowedVehicles,4,10);//truck
         level.setAllowedVehicles(allowedVehicles);
         levelRepository.save(level);
         for (int i = 2; i < 8; i++) {
             //all level contains same list of vehicles and free slots
             level = new Level(i);
             allowedVehicles = new ArrayList<AllowedVehicle>();
-            addLevel(allowedVehicles, 0,"car", 10);
-            addLevel(allowedVehicles, 2,"van", 8);
-            addLevel(allowedVehicles, 3, "bike",15);
+            addLevel(allowedVehicles, 0, 10);//car is added
+            addLevel(allowedVehicles, 2, 8);//van is addded
+            addLevel(allowedVehicles, 3,15);//bike is added
             level.setAllowedVehicles(allowedVehicles);
             levelRepository.save(level);
         }
@@ -62,7 +62,7 @@ public class Database {
 
 
     }
-    private void addLevel(List<AllowedVehicle> allowedVehicles, int type, String name, int MAX_SLOT) {
+    private void addLevel(List<AllowedVehicle> allowedVehicles, int type, int MAX_SLOT) {
         Vehicle vehicle = vehicleRepository.getOne(type);
         AllowedVehicle allowedVehicle = new AllowedVehicle(MAX_SLOT,0,vehicle);
         allowedVehicleRepository.save(allowedVehicle);
