@@ -34,17 +34,47 @@ public class EditVehicleService implements com.azhar.VehicleParker.Services.Edit
 
     @Override
     public EditVehicleResponse deleteVehicle(Vehicle inputVehicle) {
-        return null;
+        EditVehicleResponse editVehicleResponse;
+        Vehicle validVehicle = validateVehicle(inputVehicle);
+        if(validVehicle!=null){
+            try {
+                vehicleDao.delete(inputVehicle);
+                editVehicleResponse=new EditVehicleResponse(true,"vehicle deleted",null);
+
+            } catch (Exception e) {
+                editVehicleResponse=new EditVehicleResponse(true,"something went wrong "+e.getMessage(),null);
+            }
+
+        }
+        else {
+            editVehicleResponse=new EditVehicleResponse(true,"vehicle do not exist",null);
+        }
+        return editVehicleResponse;
+
     }
 
     @Override
     public EditVehicleResponse editVehicle(Vehicle inputVehicle) {
-        return null;
+        EditVehicleResponse editVehicleResponse;
+        Vehicle validVehicle = validateVehicle(inputVehicle);
+        if(validVehicle!=null){
+            try {
+                Vehicle vehicle=vehicleDao.update(inputVehicle);
+                editVehicleResponse=new EditVehicleResponse(true,"vehicle edited",vehicle);
+
+            } catch (Exception e) {
+                editVehicleResponse=new EditVehicleResponse(true,"something went wrong "+e.getMessage(),null);
+            }
+
+        }
+        else {
+            editVehicleResponse=new EditVehicleResponse(true,"vehicle do not exist",null);
+        }
+        return editVehicleResponse;
     }
 
     @Override
     public Vehicle validateVehicle(Vehicle inputVehicle) {
-        boolean isVehicleExist=false;
         Vehicle vehicle=vehicleDao.getVehicleByName(inputVehicle.getName());
 
         return vehicle;

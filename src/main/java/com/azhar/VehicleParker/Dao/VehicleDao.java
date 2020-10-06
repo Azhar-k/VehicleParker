@@ -17,4 +17,8 @@ public interface VehicleDao {
     public Vehicle getVehicleById(int id) throws VehicleNotFound;
 
     public Vehicle insert(Vehicle inputVehicle);
+
+    public Vehicle update(Vehicle inputVehicle);
+
+    public void delete(Vehicle inputVehicle);
 }

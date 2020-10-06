@@ -26,6 +26,8 @@ public class AdminController {
     @Autowired
     EditVehicleService editVehicleService;
 
+
+    //end points for level
     @GetMapping(path = "/getLevels")
     public List<Level> getLevelList(){
 
@@ -46,6 +48,8 @@ public class AdminController {
         return editLevelService.editLevel(level);
     }
 
+
+    //end points for vehicle
     @GetMapping(path = "/getVehicles")
     public List<Vehicle> getVehicleList(){
 

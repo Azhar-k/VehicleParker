@@ -42,4 +42,14 @@ public class VehicleDao implements com.azhar.VehicleParker.Dao.VehicleDao {
     public Vehicle insert(Vehicle inputVehicle) {
         return vehicleRepository.save(inputVehicle);
     }
+
+    @Override
+    public Vehicle update(Vehicle inputVehicle) {
+        return vehicleRepository.save(inputVehicle);
+    }
+
+    @Override
+    public void delete(Vehicle inputVehicle) {
+        vehicleRepository.delete(inputVehicle);
+    }
 }
