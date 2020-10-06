@@ -48,7 +48,7 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
 
     @Override
     public List<Level> getLevelList() {
-        return levelDao.getLevelList();
+        return levelDao.getLevelBySortedLevelNumber();
     }
 
 

@@ -37,7 +37,10 @@ public class LevelDao implements com.azhar.VehicleParker.Dao.LevelDao {
         return levelRepository.findLevelByLevelNumber(levelNumber);
     }
 
-
+    @Override
+    public List<Level> getLevelBySortedLevelNumber() {
+        return levelRepository.findByOrderByLevelNumberAsc();
+    }
 
 
 }

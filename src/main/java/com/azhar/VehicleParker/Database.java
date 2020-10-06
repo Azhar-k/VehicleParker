@@ -35,31 +35,32 @@ public class Database {
     }
 
     private void loadLevels() {
-        for (int i = 0; i < 6; i++) {
+        //adding extra level where only truck can be parked
+        Level level = new Level(1);
+        List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
+        addLevel(allowedVehicles,1,"bus",15);
+        level.setAllowedVehicles(allowedVehicles);
+        levelRepository.save(level);
+        //adding extra level where bus and container can be parked
+        level = new Level(0);
+        allowedVehicles = new ArrayList<AllowedVehicle>();
+        addLevel(allowedVehicles,5,"container",3);
+        addLevel(allowedVehicles,4,"truck",10);
+        level.setAllowedVehicles(allowedVehicles);
+        levelRepository.save(level);
+        for (int i = 2; i < 8; i++) {
             //all level contains same list of vehicles and free slots
-            Level level = new Level(i);
-            List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
-            addLevel(allowedVehicles, 0,"car", 5);
-            addLevel(allowedVehicles, 1,"bus", 3);
-            addLevel(allowedVehicles, 2,"van", 4);
+            level = new Level(i);
+            allowedVehicles = new ArrayList<AllowedVehicle>();
+            addLevel(allowedVehicles, 0,"car", 10);
+            addLevel(allowedVehicles, 2,"van", 8);
             addLevel(allowedVehicles, 3, "bike",15);
             level.setAllowedVehicles(allowedVehicles);
             levelRepository.save(level);
         }
-        //adding extra level where only truck can be parked
-        Level level = new Level(6);
-        List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
-        addLevel(allowedVehicles,4,"truck",4);
-        level.setAllowedVehicles(allowedVehicles);
-        levelRepository.save(level);
 
-        //adding extra level where bus and container can be parked
-        level = new Level(7);
-        allowedVehicles = new ArrayList<AllowedVehicle>();
-        addLevel(allowedVehicles,1,"bus",4);
-        addLevel(allowedVehicles,5,"container",3);
-        level.setAllowedVehicles(allowedVehicles);
-        levelRepository.save(level);
+
+
     }
     private void addLevel(List<AllowedVehicle> allowedVehicles, int type, String name, int MAX_SLOT) {
         Vehicle vehicle = vehicleRepository.getOne(type);

@@ -14,6 +14,7 @@ public interface LevelDao {
     public Level insert(Level level);
 
     public Level getLevelByLevelNumber(int levelNumber);
+    public List<Level> getLevelBySortedLevelNumber();
 
 
 }
