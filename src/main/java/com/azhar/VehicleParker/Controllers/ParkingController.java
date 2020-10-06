@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker.Controllers;
 
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
+import com.azhar.VehicleParker.Entities.Building.Level;
 import com.azhar.VehicleParker.Entities.Building.LevelSpace;
 import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
@@ -29,6 +30,12 @@ public class ParkingController {
     @GetMapping(path = "/getAvailableSpace")
     public List<LevelSpace> getAvailableSpace(){
             return spaceManager.getLAvailableSpace();
+    }
+
+    @GetMapping(path = "/getLevels")
+    public List<Level> getLevelList(){
+
+        return spaceManager.getLevelList();
     }
 
     @GetMapping(path = "/getParkedVehicles")
