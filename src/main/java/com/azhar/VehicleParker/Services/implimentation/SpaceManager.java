@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+levimport java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -29,7 +30,9 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
     @Override
     public List<LevelSpace> getLAvailableSpace() {
         List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
-        for (Level level : levelDao.getLevelList()) {
+        List<Level> levelList = levelDao.getLevelList();
+        levelList.sort(new SortbyLevelNumber());
+        for (Level level : levelList) {
             LevelSpace levelSpace = new LevelSpace(level.getLevelNumber());
             for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                 int freeSlot = allowedVehicle.getFreeSlots();
@@ -42,10 +45,22 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
         return availableSpace;
     }
 
+
     @Override
     public List<Level> getLevelList() {
         return levelDao.getLevelList();
     }
 
+
+
+    class SortbyLevelNumber implements Comparator<Level>
+    {
+        // Used for sorting in ascending order of
+        // levelNumber
+        public int compare(Level a, Level b)
+        {
+            return a.getLevelNumber() - b.getLevelNumber();
+        }
+    }
 
 }
