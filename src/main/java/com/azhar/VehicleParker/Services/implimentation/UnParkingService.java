@@ -3,9 +3,9 @@ package com.azhar.VehicleParker.Services.implimentation;
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
-import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.entities.Building.Level;
+import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +49,7 @@ public class UnParkingService implements com.azhar.VehicleParker.Services.UnPark
 
     public LevelParkedVehicle getValidLevelParkedVehicle(int levelParkedVehicleId) {
         //find out the parked vehicle
-        LevelParkedVehicle levelParkedVehicle =levelParkedVehicleDao.getLevelParkedVehicleById(levelParkedVehicleId);
+        LevelParkedVehicle levelParkedVehicle = levelParkedVehicleDao.getLevelParkedVehicleById(levelParkedVehicleId);
         return levelParkedVehicle;
 
     }
@@ -61,7 +61,7 @@ public class UnParkingService implements com.azhar.VehicleParker.Services.UnPark
             int parkedVehicleId = levelParkedVehicle.getVehicleType();
 
             Level level = levelDao.getLevelByLevelNumber(levelNumber);
-            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()) {
+            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                 if (allowedVehicle.getVehicle().getId() == parkedVehicleId) {
 
                     int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();

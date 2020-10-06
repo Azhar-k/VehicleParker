@@ -1,11 +1,9 @@
 package com.azhar.VehicleParker.Controllers;
 
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.Entities.LevelSpace;
+import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
-import com.azhar.VehicleParker.Entities.Vehicle.*;
 
 import com.azhar.VehicleParker.Services.ParkingService;
 import com.azhar.VehicleParker.Services.SpaceManager;
@@ -28,29 +26,27 @@ public class ParkingController {
     UnParkingService unParkingService;
 
     @GetMapping(path = "/getAvailableSpace")
-    public List<LevelSpace> getAvailableSpace(){
-            return spaceManager.getLAvailableSpace();
+    public List<LevelSpace> getAvailableSpace() {
+        return spaceManager.getLAvailableSpace();
     }
 
     @GetMapping(path = "/getParkedVehicles")
-    public List<LevelParkedVehicle> getParkedVehicles(){
+    public List<LevelParkedVehicle> getParkedVehicles() {
 
         return spaceManager.getLevelVehicleList();
     }
 
     @PostMapping(path = "/park")
-    public ParkResponse park(@RequestBody ParkRequest parkRequest){
+    public ParkResponse park(@RequestBody ParkRequest parkRequest) {
 
         return parkingService.park(parkRequest);
     }
 
-    @PostMapping(path = "/unpark",consumes = "application/json",produces = "application/json")
-    public ParkResponse unpark(@RequestBody LevelParkedVehicle levelVehicleMap){
+    @PostMapping(path = "/unpark", consumes = "application/json", produces = "application/json")
+    public ParkResponse unpark(@RequestBody LevelParkedVehicle levelVehicleMap) {
 
         return unParkingService.unPark(levelVehicleMap);
     }
-
-
 
 
 }

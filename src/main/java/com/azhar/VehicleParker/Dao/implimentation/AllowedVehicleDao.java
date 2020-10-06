@@ -1,7 +1,7 @@
 package com.azhar.VehicleParker.Dao.implimentation;
 
-import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.dbclient.AllowedVehicleRepository;
+import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.dbClients.AllowedVehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,13 +11,13 @@ public class AllowedVehicleDao implements com.azhar.VehicleParker.Dao.AllowedVeh
     AllowedVehicleRepository allowedVehicleRepository;
 
     @Override
-    public AllowedVehicle update(AllowedVehicle allowedVehicle){
+    public AllowedVehicle update(AllowedVehicle allowedVehicle) {
         return allowedVehicleRepository.save(allowedVehicle);
     }
 
     @Override
     public AllowedVehicle getAllowedVehicleByVehicleId(int parkedVehicleId) {
-        return allowedVehicleRepository.findAllowedVehicleByVehicleId(parkedVehicleId   );
+        return allowedVehicleRepository.findAllowedVehicleByVehicleId(parkedVehicleId);
     }
 
     @Override

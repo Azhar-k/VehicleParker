@@ -8,5 +8,6 @@ import java.time.LocalDate;
 @Service
 public interface StatisticsService {
     public StatisticsResponse getAmountByDate(LocalDate localDate);
-    public StatisticsResponse countOfParkedVehiclesByDateAndType(LocalDate localDate,String vehicleType);
+
+    public StatisticsResponse countOfParkedVehiclesByDateAndType(LocalDate localDate, String vehicleType);
 }

@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Entities;
+package com.azhar.VehicleParker.db.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,9 +20,9 @@ public class LevelParkedVehicle {
     private LocalDate date;
     private LocalTime time;
 
-    public LevelParkedVehicle( int levelNumber, int vehicleType, String vehicleName, String vehicleNumber) {
-        this.date=LocalDate.now();
-        this.time=LocalTime.now();
+    public LevelParkedVehicle(int levelNumber, int vehicleType, String vehicleName, String vehicleNumber) {
+        this.date = LocalDate.now();
+        this.time = LocalTime.now();
         this.levelNumber = levelNumber;
         this.vehicleType = vehicleType;
         this.vehicleName = vehicleName;
@@ -54,7 +54,7 @@ public class LevelParkedVehicle {
     }
 
     public int getId() {
-        return  this.id;
+        return this.id;
     }
 
     public void setId(int id) {

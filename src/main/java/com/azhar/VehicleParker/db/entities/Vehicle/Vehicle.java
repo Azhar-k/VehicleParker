@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Entities.Vehicle;
+package com.azhar.VehicleParker.db.entities.Vehicle;
 
 import javax.persistence.*;
 
@@ -21,10 +21,6 @@ public class Vehicle {
         this.parkingRate = parkingRate;
     }
 
-    public Vehicle(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public Vehicle() {
     }

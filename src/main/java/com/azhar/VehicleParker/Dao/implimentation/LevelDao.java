@@ -1,9 +1,9 @@
 package com.azhar.VehicleParker.Dao.implimentation;
 
 
-import com.azhar.VehicleParker.Database;
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.dbclient.LevelRepository;
+import com.azhar.VehicleParker.InitialLoading;
+import com.azhar.VehicleParker.db.entities.Building.Level;
+import com.azhar.VehicleParker.db.dbClients.LevelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class LevelDao implements com.azhar.VehicleParker.Dao.LevelDao {
 
     @Autowired
-    Database database;
+    InitialLoading initialLoading;
     @Autowired
     LevelRepository levelRepository;
 

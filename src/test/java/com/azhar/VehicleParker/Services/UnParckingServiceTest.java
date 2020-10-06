@@ -3,8 +3,8 @@
 //import com.azhar.VehicleParker.Dao.LevelDao;
 //import com.azhar.VehicleParker.Database;
 //import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
-//import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
-//import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+//import com.azhar.VehicleParker.db.dbclient.entities.LevelParkedVehicle;
+//import com.azhar.VehicleParker.db.dbclient.entities.Vehicle.Vehicle;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.Nested;
 //import org.junit.jupiter.api.Test;

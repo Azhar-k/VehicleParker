@@ -1,7 +1,5 @@
 package com.azhar.VehicleParker.Entities.ApiResponses;
 
-import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
-
 public class Response {
     private boolean isSucces;
     private String message;

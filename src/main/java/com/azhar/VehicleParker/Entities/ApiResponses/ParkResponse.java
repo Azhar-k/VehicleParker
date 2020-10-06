@@ -1,6 +1,6 @@
 package com.azhar.VehicleParker.Entities.ApiResponses;
 
-import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
 
 public class ParkResponse extends Response {
 

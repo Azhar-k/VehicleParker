@@ -1,6 +1,6 @@
-package com.azhar.VehicleParker.Entities.Building;
+package com.azhar.VehicleParker.db.entities.Building;
 
-import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -20,12 +20,12 @@ public class AllowedVehicle {
     public AllowedVehicle() {
     }
 
-    public AllowedVehicle( int MAX_SLOTS, int occupiedSlots, Vehicle vehicle) {
+    public AllowedVehicle(int MAX_SLOTS, int occupiedSlots, Vehicle vehicle) {
 
         this.MAX_SLOTS = MAX_SLOTS;
         this.occupiedSlots = occupiedSlots;
-        this.freeSlots = this.MAX_SLOTS-this.occupiedSlots;
-        this.vehicle=vehicle;
+        this.freeSlots = this.MAX_SLOTS - this.occupiedSlots;
+        this.vehicle = vehicle;
     }
 
     public int getId() {
@@ -53,7 +53,7 @@ public class AllowedVehicle {
     }
 
     public int getFreeSlots() {
-        return this.getMAX_SLOTS()-this.getOccupiedSlots();
+        return this.getMAX_SLOTS() - this.getOccupiedSlots();
     }
 
     public void setFreeSlots(int freeSlots) {

@@ -23,6 +23,6 @@ public class StatisticsController {
 
     @GetMapping("/getAmountByDate/{localDate}/{vehicleType}")
     public StatisticsResponse getCountByDateAndTime(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate localDate, @PathVariable String vehicleType) {
-        return statisticsService.countOfParkedVehiclesByDateAndType(localDate,vehicleType);
+        return statisticsService.countOfParkedVehiclesByDateAndType(localDate, vehicleType);
     }
 }

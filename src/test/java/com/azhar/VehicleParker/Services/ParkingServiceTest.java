@@ -6,11 +6,11 @@
 //import com.azhar.VehicleParker.Dao.VehicleDao;
 //import com.azhar.VehicleParker.Database;
 //import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
-//import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
-//import com.azhar.VehicleParker.Entities.Building.Level;
-//import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-//import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
-//import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+//import com.azhar.VehicleParker.db.dbclient.entities.Building.AllowedVehicle;
+//import com.azhar.VehicleParker.db.dbclient.entities.Building.Level;
+//import com.azhar.VehicleParker.db.dbclient.entities.Building.LevelSpace;
+//import com.azhar.VehicleParker.db.dbclient.entities.LevelParkedVehicle;
+//import com.azhar.VehicleParker.db.dbclient.entities.Vehicle.Vehicle;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.Nested;
 //import org.junit.jupiter.api.Test;

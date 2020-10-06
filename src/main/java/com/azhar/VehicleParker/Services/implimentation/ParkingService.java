@@ -5,12 +5,12 @@ import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
-import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.entities.Building.Level;
+import com.azhar.VehicleParker.Entities.LevelSpace;
+import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
-import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
 import com.azhar.VehicleParker.Services.SpaceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
             throw new Exception("Parking Space is Full for " + vehicle.getName());
         }
         //close the slot in database and get a unique id for this parking
-        LevelParkedVehicle levelParkedVehicle = fillSlot(availableLevelNumber, vehicle.getId(),vehicle.getName(),parkRequest.getVehicleNumber());
+        LevelParkedVehicle levelParkedVehicle = fillSlot(availableLevelNumber, vehicle.getId(), vehicle.getName(), parkRequest.getVehicleNumber());
         if (levelParkedVehicle == null) {
             throw new Exception("some error occured");
         }
@@ -93,13 +93,13 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         return levelNo;
     }
 
-    public LevelParkedVehicle fillSlot(int levelNumber, int parkedVehicleId,String vehicleName,String vehicleNumber) {
+    public LevelParkedVehicle fillSlot(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber) {
 
-        LevelParkedVehicle levelAllowedVehicle = addLevelAllowedVehicle(levelNumber, parkedVehicleId,vehicleName,vehicleNumber);
+        LevelParkedVehicle levelAllowedVehicle = addLevelAllowedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber);
         if (levelAllowedVehicle != null) {
             Level level = levelDao.getLevelByLevelNumber(levelNumber);
 
-            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()) {
+            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                 if (allowedVehicle.getVehicle().getId() == parkedVehicleId) {
 
                     int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
@@ -119,12 +119,12 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
 
     }
 
-    public LevelParkedVehicle addLevelAllowedVehicle(int levelNumber, int parkedVehicleId, String vehicleName,String vehicleNumber) {
+    public LevelParkedVehicle addLevelAllowedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber) {
         LevelParkedVehicle levelParkedVehicle = null;
 
         try {
 
-            levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId,vehicleName,vehicleNumber);
+            levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber);
             levelParkedVehicleDao.insert(levelParkedVehicle);
         } catch (Exception e) {
             levelParkedVehicle = null;

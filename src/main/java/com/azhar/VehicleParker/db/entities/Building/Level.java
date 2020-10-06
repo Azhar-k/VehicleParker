@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Entities.Building;
+package com.azhar.VehicleParker.db.entities.Building;
 
 
 import javax.persistence.*;
@@ -8,8 +8,8 @@ import java.util.List;
 public class Level {
     @Id
     private int levelNumber;
-    @ManyToMany(targetEntity= AllowedVehicle.class)
-    private List<AllowedVehicle> allowedVehicles ;
+    @ManyToMany(targetEntity = AllowedVehicle.class)
+    private List<AllowedVehicle> allowedVehicles;
 
 
     public Level() {
@@ -44,7 +44,6 @@ public class Level {
     public List<AllowedVehicle> getAllowedVehicles() {
         return allowedVehicles;
     }
-
 
 
     @Override

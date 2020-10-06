@@ -3,11 +3,11 @@ package com.azhar.VehicleParker.Services.implimentation;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
-import com.azhar.VehicleParker.Entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.Building.LevelSpace;
-import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
-import com.azhar.VehicleParker.Entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.entities.Building.Level;
+import com.azhar.VehicleParker.Entities.LevelSpace;
+import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,10 +62,8 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
     }
 
 
-    class SortbyLevelNumber implements Comparator<Level>
-    {
-        public int compare(Level a, Level b)
-        {
+    class SortbyLevelNumber implements Comparator<Level> {
+        public int compare(Level a, Level b) {
             return a.getLevelNumber() - b.getLevelNumber();
         }
     }

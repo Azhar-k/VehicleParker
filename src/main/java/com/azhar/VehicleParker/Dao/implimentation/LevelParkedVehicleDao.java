@@ -1,7 +1,7 @@
 package com.azhar.VehicleParker.Dao.implimentation;
 
-import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
-import com.azhar.VehicleParker.dbclient.LevelParkedVehicleRepository;
+import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.dbClients.LevelParkedVehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ public class LevelParkedVehicleDao implements com.azhar.VehicleParker.Dao.LevelP
 
     @Override
     public LevelParkedVehicle insert(LevelParkedVehicle levelParkedVehicle) {
-       return levelParkedVehicleRepository.save(levelParkedVehicle);
+        return levelParkedVehicleRepository.save(levelParkedVehicle);
     }
 
     @Override

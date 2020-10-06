@@ -1,9 +1,6 @@
 package com.azhar.VehicleParker;
 
 
-import com.azhar.VehicleParker.dbclient.LevelRepository;
-import com.azhar.VehicleParker.dbclient.VehicleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,17 +9,17 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class VehicleParkerApplication implements CommandLineRunner {
 
-	static ApplicationContext applicationContext;
+    static ApplicationContext applicationContext;
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		applicationContext =SpringApplication.run(VehicleParkerApplication.class, args);
-		Database database = applicationContext.getBean(Database.class);
-		database.loadData();
-	}
+        applicationContext = SpringApplication.run(VehicleParkerApplication.class, args);
+        InitialLoading initialLoading = applicationContext.getBean(InitialLoading.class);
+        initialLoading.loadData();
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
+    @Override
+    public void run(String... args) throws Exception {
 
-	}
+    }
 }

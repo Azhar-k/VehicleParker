@@ -1,7 +1,6 @@
 package com.azhar.VehicleParker.Entities.ApiResponses;
 
-import com.azhar.VehicleParker.Entities.Building.Level;
-import com.azhar.VehicleParker.Entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.entities.Building.Level;
 
 public class EditLevelResponse extends Response {
 
