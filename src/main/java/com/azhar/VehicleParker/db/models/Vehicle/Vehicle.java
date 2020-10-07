@@ -2,12 +2,12 @@ package com.azhar.VehicleParker.db.models.Vehicle;
 
 import javax.persistence.*;
 
-@Table(name = "Vehicle")
 @Entity
 public class Vehicle {
     @Id
     @GeneratedValue
     private int id;
+    @Column(unique=true)
     private String name;
     private int parkingRate;
 

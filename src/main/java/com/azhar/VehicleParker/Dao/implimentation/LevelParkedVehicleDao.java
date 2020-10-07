@@ -5,6 +5,7 @@ import com.azhar.VehicleParker.db.repositories.LevelParkedVehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -31,5 +32,15 @@ public class LevelParkedVehicleDao implements com.azhar.VehicleParker.Dao.LevelP
     @Override
     public LevelParkedVehicle getLevelParkedVehicleById(int levelParkedVehicleId) {
         return levelParkedVehicleRepository.findLevelParkedVehicleById(levelParkedVehicleId);
+    }
+
+    @Override
+    public List<LocalDate> getDistinctDate() {
+        return levelParkedVehicleRepository.findDistinctDate();
+    }
+
+    @Override
+    public int findCountByDateAndVehicleName(String vehicleName, LocalDate localDate) {
+        return levelParkedVehicleRepository.findCountByDateAndVehicleName(vehicleName, localDate);
     }
 }

@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 public class AllowedVehicle {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     int id;
     @ManyToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})//to handle serializer not found exception.

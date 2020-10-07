@@ -15,7 +15,7 @@ public class VehicleParkerApplication implements CommandLineRunner {
 
         applicationContext = SpringApplication.run(VehicleParkerApplication.class, args);
         InitialLoading initialLoading = applicationContext.getBean(InitialLoading.class);
-        initialLoading.loadData();
+        //initialLoading.loadData();//call when initial loading is required
     }
 
     @Override

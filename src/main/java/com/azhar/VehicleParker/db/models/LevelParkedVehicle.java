@@ -15,8 +15,8 @@ public class LevelParkedVehicle {
     private int id;
     private int levelNumber;
     private int vehicleType;
-    @Column(unique=true)
     private String vehicleName;
+    @Column(unique=true)
     private String vehicleNumber;
     private LocalDate date;
     private LocalTime time;

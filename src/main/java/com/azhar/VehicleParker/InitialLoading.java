@@ -25,7 +25,7 @@ public class InitialLoading {
     AllowedVehicleRepository allowedVehicleRepository;
 
     public void loadData() {
-        //loadVehicles();//vehicles are loaded through data.sql. no need to load them from here
+        loadVehicles();
         loadLevels();
     }
 
@@ -33,23 +33,23 @@ public class InitialLoading {
         //adding extra level where only truck can be parked
         Level level = new Level(1);
         List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
-        addAllowedVehiclesToList(allowedVehicles, 1, 15);//bus
+        addAllowedVehiclesToList(allowedVehicles, "bus", 15);//bus
         level.setAllowedVehicles(allowedVehicles);
         levelRepository.save(level);
         //adding extra level where bus and container can be parked
         level = new Level(0);
         allowedVehicles = new ArrayList<AllowedVehicle>();
-        addAllowedVehiclesToList(allowedVehicles, 5, 3);//container
-        addAllowedVehiclesToList(allowedVehicles, 4, 10);//truck
+        addAllowedVehiclesToList(allowedVehicles, "container", 3);//container
+        addAllowedVehiclesToList(allowedVehicles, "truck", 10);//truck
         level.setAllowedVehicles(allowedVehicles);
         levelRepository.save(level);
         for (int i = 2; i < 8; i++) {
             //all level contains same list of vehicles and free slots
             level = new Level(i);
             allowedVehicles = new ArrayList<AllowedVehicle>();
-            addAllowedVehiclesToList(allowedVehicles, 0, 10);//car is added
-            addAllowedVehiclesToList(allowedVehicles, 2, 8);//van is addded
-            addAllowedVehiclesToList(allowedVehicles, 3, 15);//bike is added
+            addAllowedVehiclesToList(allowedVehicles, "car", 10);//car is added
+            addAllowedVehiclesToList(allowedVehicles, "van", 8);//van is addded
+            addAllowedVehiclesToList(allowedVehicles, "bike", 15);//bike is added
             level.setAllowedVehicles(allowedVehicles);
             levelRepository.save(level);
         }
@@ -57,8 +57,8 @@ public class InitialLoading {
 
     }
 
-    private void addAllowedVehiclesToList(List<AllowedVehicle> allowedVehicles, int type, int MAX_SLOT) {
-        Vehicle vehicle = vehicleRepository.getOne(type);
+    private void addAllowedVehiclesToList(List<AllowedVehicle> allowedVehicles, String name, int MAX_SLOT) {
+        Vehicle vehicle = vehicleRepository.findVehicleByName(name);
         AllowedVehicle allowedVehicle = new AllowedVehicle(MAX_SLOT, 0, vehicle);
         allowedVehicleRepository.save(allowedVehicle);
         allowedVehicles.add(allowedVehicle);
@@ -71,6 +71,8 @@ public class InitialLoading {
         vehicleRepository.save(new Vehicle("van",20));
         vehicleRepository.save(new Vehicle("bike",10));
         vehicleRepository.save(new Vehicle("truck",70));
+        vehicleRepository.save(new Vehicle("container",100));
+
     }
 
 }

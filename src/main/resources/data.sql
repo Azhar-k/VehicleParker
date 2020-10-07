@@ -7,12 +7,12 @@
 --primary key(type)
 --);
 
-
-insert into Vehicle(id,name,parking_rate) values(0,'car',20);
-insert into Vehicle(id,name,parking_rate) values(1,'bus',40);
-insert into Vehicle(id,name,parking_rate) values(2,'van',20);
-insert into Vehicle(id,name,parking_rate) values(3,'bike',10);
-insert into Vehicle(id,name,parking_rate) values(4,'truck',70);
-insert into Vehicle(id,name,parking_rate) values(5,'container',100);
+--
+--insert into Vehicle(id,name,parking_rate) values('car',20);
+--insert into Vehicle(id,name,parking_rate) values('bus',40);
+--insert into Vehicle(id,name,parking_rate) values('van',20);
+--insert into Vehicle(id,name,parking_rate) values('bike',10);
+--insert into Vehicle(id,name,parking_rate) values('truck',70);
+--insert into Vehicle(id,name,parking_rate) values('container',100);
 
 
