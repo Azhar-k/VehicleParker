@@ -1,7 +1,7 @@
 package com.azhar.VehicleParker.Dao.implimentation;
 
-import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
-import com.azhar.VehicleParker.db.dbClients.LevelParkedVehicleRepository;
+import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.repositories.LevelParkedVehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

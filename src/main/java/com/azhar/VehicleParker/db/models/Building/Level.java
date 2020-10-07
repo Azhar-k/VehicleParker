@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.db.entities.Building;
+package com.azhar.VehicleParker.db.models.Building;
 
 
 import javax.persistence.*;

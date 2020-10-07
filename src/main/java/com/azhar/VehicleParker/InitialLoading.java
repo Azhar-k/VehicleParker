@@ -1,12 +1,12 @@
 package com.azhar.VehicleParker;
 
 
-import com.azhar.VehicleParker.db.dbClients.AllowedVehicleRepository;
-import com.azhar.VehicleParker.db.dbClients.LevelRepository;
-import com.azhar.VehicleParker.db.dbClients.VehicleRepository;
-import com.azhar.VehicleParker.db.entities.Building.Level;
-import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.repositories.AllowedVehicleRepository;
+import com.azhar.VehicleParker.db.repositories.LevelRepository;
+import com.azhar.VehicleParker.db.repositories.VehicleRepository;
+import com.azhar.VehicleParker.db.models.Building.Level;
+import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

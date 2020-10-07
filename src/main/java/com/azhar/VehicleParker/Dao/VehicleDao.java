@@ -1,7 +1,7 @@
 package com.azhar.VehicleParker.Dao;
 
 import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
-import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 
 import java.util.List;
 

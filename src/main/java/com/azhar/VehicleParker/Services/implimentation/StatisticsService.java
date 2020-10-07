@@ -3,7 +3,7 @@ package com.azhar.VehicleParker.Services.implimentation;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.StatisticsResponse;
-import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

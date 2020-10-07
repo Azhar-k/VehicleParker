@@ -1,7 +1,7 @@
 package com.azhar.VehicleParker.Dao;
 
 
-import com.azhar.VehicleParker.db.entities.Building.Level;
+import com.azhar.VehicleParker.db.models.Building.Level;
 
 import java.util.List;
 

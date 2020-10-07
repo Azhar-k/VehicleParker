@@ -1,8 +1,8 @@
 package com.azhar.VehicleParker.Dao.implimentation;
 
 import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
-import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
-import com.azhar.VehicleParker.db.dbClients.VehicleRepository;
+import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.repositories.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

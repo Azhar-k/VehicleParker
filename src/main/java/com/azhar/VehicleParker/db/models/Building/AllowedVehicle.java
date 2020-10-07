@@ -1,6 +1,6 @@
-package com.azhar.VehicleParker.db.entities.Building;
+package com.azhar.VehicleParker.db.models.Building;
 
-import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;

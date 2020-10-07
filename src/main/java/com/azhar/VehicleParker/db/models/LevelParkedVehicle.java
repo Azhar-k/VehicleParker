@@ -1,11 +1,10 @@
-package com.azhar.VehicleParker.db.entities;
+package com.azhar.VehicleParker.db.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 //map a vehicle to a level. Id will be unique to this maping
 @Entity

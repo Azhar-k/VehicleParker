@@ -1,6 +1,6 @@
 package com.azhar.VehicleParker.Entities.ApiResponses;
 
-import com.azhar.VehicleParker.db.entities.Building.Level;
+import com.azhar.VehicleParker.db.models.Building.Level;
 
 public class LevelResponse extends Response {
 

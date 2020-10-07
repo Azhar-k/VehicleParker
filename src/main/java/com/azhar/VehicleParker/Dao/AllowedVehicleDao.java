@@ -1,6 +1,6 @@
 package com.azhar.VehicleParker.Dao;
 
-import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 
 public interface AllowedVehicleDao {
     public AllowedVehicle update(AllowedVehicle allowedVehicle);

@@ -1,7 +1,7 @@
 package com.azhar.VehicleParker.Dao.implimentation;
 
-import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.db.dbClients.AllowedVehicleRepository;
+import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.repositories.AllowedVehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

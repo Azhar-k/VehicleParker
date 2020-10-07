@@ -1,10 +1,10 @@
 package com.azhar.VehicleParker.Services;
 
 
-import com.azhar.VehicleParker.db.entities.Building.Level;
+import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.Entities.LevelSpace;
-import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
-import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

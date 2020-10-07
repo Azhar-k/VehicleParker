@@ -3,11 +3,11 @@ package com.azhar.VehicleParker.Services.implimentation;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
-import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.db.entities.Building.Level;
+import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.Entities.LevelSpace;
-import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
-import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

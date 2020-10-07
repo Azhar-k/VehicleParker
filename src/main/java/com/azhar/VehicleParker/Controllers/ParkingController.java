@@ -2,7 +2,7 @@ package com.azhar.VehicleParker.Controllers;
 
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.Entities.LevelSpace;
-import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 
 import com.azhar.VehicleParker.Services.ParkingService;

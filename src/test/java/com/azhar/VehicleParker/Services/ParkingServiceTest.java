@@ -9,10 +9,10 @@ import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.LevelSpace;
 import com.azhar.VehicleParker.Services.implimentation.ParkingService;
 
-import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
-import com.azhar.VehicleParker.db.entities.Building.Level;
-import com.azhar.VehicleParker.db.entities.LevelParkedVehicle;
-import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.models.Building.Level;
+import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
+import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,9 +21,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;

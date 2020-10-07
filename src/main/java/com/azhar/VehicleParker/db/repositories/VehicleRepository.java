@@ -1,7 +1,7 @@
-package com.azhar.VehicleParker.db.dbClients;
+package com.azhar.VehicleParker.db.repositories;
 
 
-import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
+import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
