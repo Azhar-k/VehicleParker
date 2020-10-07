@@ -1,5 +1,6 @@
 package com.azhar.VehicleParker.Entities.ApiResponses;
 
+//Parent for all responses
 public class Response {
     private boolean isSucces;
     private String message;

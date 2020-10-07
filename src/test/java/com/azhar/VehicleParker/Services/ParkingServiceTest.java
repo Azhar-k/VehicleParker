@@ -57,13 +57,13 @@ public class ParkingServiceTest {
         public void GivenInValidType() {
 
             Mockito.when(vehicleDao.getVehicleByName("jeep")).thenReturn(findVehicleByName("jeep"));
-            assertNull(parkingService.getVehicle("jeep"));
+            assertNull(parkingService.getVehicleByName("jeep"));
         }
 
         @Test
         public void GivenValidType() {
             Mockito.when(vehicleDao.getVehicleByName("car")).thenReturn(findVehicleByName("car"));
-            assertNotNull(parkingService.getVehicle("car"));
+            assertNotNull(parkingService.getVehicleByName("car"));
         }
     }
 

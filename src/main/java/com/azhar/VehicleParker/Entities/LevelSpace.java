@@ -3,7 +3,7 @@ package com.azhar.VehicleParker.Entities;
 import java.util.HashMap;
 import java.util.Map;
 
-//represent level number and available spaces of each type
+//represent level number and available spaces of each type of vehicle in that level
 public class LevelSpace {
     private int levelNumber;
     private Map<String, Integer> availabeSlots = new HashMap<String, Integer>();

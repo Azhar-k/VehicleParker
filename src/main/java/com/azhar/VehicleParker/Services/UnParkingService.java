@@ -15,5 +15,5 @@ public interface UnParkingService {
 
     public Boolean emptySlot(LevelParkedVehicle levelParkedVehicle);
 
-    public boolean removeLevelAllowedVehicle(LevelParkedVehicle levelParkedVehicle);
+    public boolean removeLevelParkedVehicle(LevelParkedVehicle levelParkedVehicle);
 }

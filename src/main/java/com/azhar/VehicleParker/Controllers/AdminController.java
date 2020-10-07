@@ -6,10 +6,7 @@ import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import com.azhar.VehicleParker.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,51 +21,54 @@ public class AdminController {
 
 
     //end points for level
-    @GetMapping(path = "/getLevels")
+    @GetMapping(path = "/levels")
     public List<Level> getLevelList() {
 
         return spaceManager.getLevelList();
     }
 
-    @PostMapping(path = "/addLevel")
+    @PostMapping(path = "/levels")
     public LevelResponse addLevel(@RequestBody Level level) {
         return levelService.insertLevel(level);
     }
 
-    @PostMapping(path = "/deleteLevel")
+    @PutMapping(path = "/levels")
+    public LevelResponse editLevel(@RequestBody Level level) {
+        return levelService.editLevel(level);
+    }
+
+    @DeleteMapping(path = "/levels")
     public LevelResponse deleteLevel(@RequestBody Level level) {
 
         return levelService.deleteLevel(level);
     }
 
-    @PostMapping(path = "/editLevel")
-    public LevelResponse editLevel(@RequestBody Level level) {
-        return levelService.editLevel(level);
-    }
+
 
 
     //end points for vehicle
-    @GetMapping(path = "/getVehicles")
+    @GetMapping(path = "/vehicles")
     public List<Vehicle> getVehicleList() {
 
         return spaceManager.getVehicles();
     }
 
-    @PostMapping(path = "/addVehicle")
+    @PostMapping(path = "/vehicles")
     public VehicleResponse addVehicle(@RequestBody Vehicle inputVehicle) {
         return vehicleService.insertVehicle(inputVehicle);
     }
+    @PutMapping(path = "/vehicles")
+    public VehicleResponse editVehicle(@RequestBody Vehicle inputVehicle) {
+        return vehicleService.editVehicle(inputVehicle);
+    }
 
-    @PostMapping(path = "/deleteVehicle")
+    @DeleteMapping(path = "/vehicles")
     public VehicleResponse deleteVehicle(@RequestBody Vehicle inputVehicle) {
 
         return vehicleService.deleteVehicle(inputVehicle);
     }
 
-    @PostMapping(path = "/editVehicle")
-    public VehicleResponse editVehicle(@RequestBody Vehicle inputVehicle) {
-        return vehicleService.editVehicle(inputVehicle);
-    }
+
 
 
 }

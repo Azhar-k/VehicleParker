@@ -27,10 +27,12 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
         if (!isLevelExist(inputLevel)) {
             try {
                 for (AllowedVehicle allowedVehicle : inputLevel.getAllowedVehicles()) {
+
                     Vehicle inputVehicle = allowedVehicle.getVehicle();
-                    Vehicle vehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
-                    System.out.println("at here:" + vehicle.getId());
-                    allowedVehicle.setVehicle(vehicle);
+                    //input vehicle should be validated before inserting.User may try to add non recognised vehicle
+                    Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+                    //input vehicle from user is replaced with recognised vehicle got from database
+                    allowedVehicle.setVehicle(recognisedVehicle);
                     allowedVehicleDao.insert(allowedVehicle);
                 }
                 Level level = levelDao.insert(inputLevel);
@@ -87,8 +89,10 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
                 try {
                     for (AllowedVehicle allowedVehicle : inputLevel.getAllowedVehicles()) {
                         Vehicle inputVehicle = allowedVehicle.getVehicle();
-                        Vehicle validVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
-                        allowedVehicle.setVehicle(validVehicle);
+                        //input vehicle should be validated before inserting.User may try to add non recognised vehicle
+                        Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+                        //input vehicle from user is replaced with recognised vehicle got from database
+                        allowedVehicle.setVehicle(recognisedVehicle);
                         allowedVehicleDao.update(allowedVehicle);
                     }
                     levelDao.update(inputLevel);

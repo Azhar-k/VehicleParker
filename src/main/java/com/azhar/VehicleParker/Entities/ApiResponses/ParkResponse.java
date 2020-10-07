@@ -2,6 +2,7 @@ package com.azhar.VehicleParker.Entities.ApiResponses;
 
 import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
 
+//Used to provide responses for all services of ParkService and UnParkService
 public class ParkResponse extends Response {
 
     private LevelParkedVehicle levelVehicleMap;

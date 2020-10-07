@@ -2,6 +2,7 @@ package com.azhar.VehicleParker.Entities.ApiResponses;
 
 import com.azhar.VehicleParker.db.models.Building.Level;
 
+//Used to provide responses for all services of LevelService
 public class LevelResponse extends Response {
 
     private Level level;

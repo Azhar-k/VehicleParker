@@ -40,8 +40,13 @@ public class UnParkingService implements com.azhar.VehicleParker.Services.UnPark
             throw new Exception("This vehicle is not parked here");
         }
 
+        //remove the LevelParkedVehicle for this parking
+        boolean isLevelParkedVehicleRemoved = removeLevelParkedVehicle(levelParkedVehicle);
+        //Empty the slot in the level
         boolean isSlotEmptied = emptySlot(levelParkedVehicle);
-        if (!isSlotEmptied) {
+
+        boolean isDatabaseOperationsSuccess = isSlotEmptied&&isLevelParkedVehicleRemoved;
+        if (!isDatabaseOperationsSuccess ) {
             throw new Exception("Some error occured.Please try again");
         }
         return levelParkedVehicle;
@@ -55,12 +60,14 @@ public class UnParkingService implements com.azhar.VehicleParker.Services.UnPark
     }
 
     public Boolean emptySlot(LevelParkedVehicle levelParkedVehicle) {
-        boolean isLevelAllowedVehicleRemoved = removeLevelAllowedVehicle(levelParkedVehicle);
-        if (isLevelAllowedVehicleRemoved) {
+        boolean isSlotEmptied = false;
+        try {
             int levelNumber = levelParkedVehicle.getLevelNumber();
             int parkedVehicleId = levelParkedVehicle.getVehicleType();
 
+            //find out level in which vehicle parked
             Level level = levelDao.getLevelByLevelNumber(levelNumber);
+
             for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                 if (allowedVehicle.getVehicle().getId() == parkedVehicleId) {
 
@@ -70,18 +77,22 @@ public class UnParkingService implements com.azhar.VehicleParker.Services.UnPark
 
                     allowedVehicleDao.update(allowedVehicle);
                 }
-
             }
             levelDao.update(level);
+            isSlotEmptied = true;
+        } catch (Exception e) {
 
         }
-        return true;
-
+        return isSlotEmptied;
     }
 
-    public boolean removeLevelAllowedVehicle(LevelParkedVehicle levelParkedVehicle) {
-        levelParkedVehicleDao.delete(levelParkedVehicle);
-        return true;
+    public boolean removeLevelParkedVehicle(LevelParkedVehicle levelParkedVehicle) {
+        try {
+            levelParkedVehicleDao.delete(levelParkedVehicle);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 

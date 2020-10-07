@@ -1,5 +1,6 @@
 package com.azhar.VehicleParker.Entities.ApiRequests;
 
+//Parking request should have vehicle name(type determined from name) and vehicle number
 public class ParkRequest {
     private String VehicleName;
     private String vehicleNumber;

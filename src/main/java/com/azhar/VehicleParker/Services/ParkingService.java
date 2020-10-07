@@ -13,12 +13,12 @@ public interface ParkingService {
 
     public LevelParkedVehicle parkVehicle(ParkRequest parkRequest) throws Exception;
 
-    public Vehicle getVehicle(String name);
+    public Vehicle getVehicleByName(String name);
 
     public int getAvailableLevelNumber(Vehicle vehicle);
 
-    public LevelParkedVehicle fillSlot(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
+    public boolean fillSlot(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
 
-    public LevelParkedVehicle addLevelAllowedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
+    public LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
 
 }
