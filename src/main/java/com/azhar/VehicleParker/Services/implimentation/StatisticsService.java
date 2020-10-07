@@ -20,7 +20,7 @@ public class StatisticsService implements com.azhar.VehicleParker.Services.Stati
     public StatisticsResponse getAmountByDate(LocalDate localDate) {
         int amount = 0;
         for (LevelParkedVehicle levelParkedVehicle : levelParkedVehicleDao.getLevelParkedVehicleList()) {
-            if (levelParkedVehicle.getDate().equals(localDate)) {
+            if (levelParkedVehicle.getDate().compareTo(localDate)==0) {
                 String vehicleName = levelParkedVehicle.getVehicleName();
                 int vehiclerate = vehicleDao.getVehicleByName(vehicleName).getParkingRate();
                 amount += vehiclerate;
@@ -35,7 +35,7 @@ public class StatisticsService implements com.azhar.VehicleParker.Services.Stati
         if (isVehicleValid(vehicleType)) {
             int count = 0;
             for (LevelParkedVehicle levelParkedVehicle : levelParkedVehicleDao.getLevelParkedVehicleList()) {
-                if (levelParkedVehicle.getDate().equals(localDate) && levelParkedVehicle.getVehicleName().equals(vehicleType)) {
+                if (levelParkedVehicle.getDate().compareTo(localDate)==0 && levelParkedVehicle.getVehicleName().equals(vehicleType)) {
                     count += 1;
                 }
             }

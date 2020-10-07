@@ -89,7 +89,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
                 try {
                     for (AllowedVehicle allowedVehicle : inputLevel.getAllowedVehicles()) {
                         Vehicle inputVehicle = allowedVehicle.getVehicle();
-                        //input vehicle should be validated before inserting.User may try to add non recognised vehicle
+                        //input vehicle should be validated before editing.User may try to add non recognised vehicle
                         Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
                         //input vehicle from user is replaced with recognised vehicle got from database
                         allowedVehicle.setVehicle(recognisedVehicle);
