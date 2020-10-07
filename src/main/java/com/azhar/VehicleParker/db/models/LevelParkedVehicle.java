@@ -1,5 +1,6 @@
 package com.azhar.VehicleParker.db.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ public class LevelParkedVehicle {
     private int id;
     private int levelNumber;
     private int vehicleType;
+    @Column(unique=true)
     private String vehicleName;
     private String vehicleNumber;
     private LocalDate date;
