@@ -1,7 +1,7 @@
 package com.azhar.VehicleParker.Controllers;
 
-import com.azhar.VehicleParker.Entities.ApiResponses.EditLevelResponse;
-import com.azhar.VehicleParker.Entities.ApiResponses.EditVehicleResponse;
+import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
+import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
 import com.azhar.VehicleParker.db.entities.Building.Level;
 import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
 import com.azhar.VehicleParker.Services.*;
@@ -31,18 +31,18 @@ public class AdminController {
     }
 
     @PostMapping(path = "/addLevel")
-    public EditLevelResponse addLevel(@RequestBody Level level) {
+    public LevelResponse addLevel(@RequestBody Level level) {
         return levelService.insertLevel(level);
     }
 
     @PostMapping(path = "/deleteLevel")
-    public EditLevelResponse deleteLevel(@RequestBody Level level) {
+    public LevelResponse deleteLevel(@RequestBody Level level) {
 
         return levelService.deleteLevel(level);
     }
 
     @PostMapping(path = "/editLevel")
-    public EditLevelResponse editLevel(@RequestBody Level level) {
+    public LevelResponse editLevel(@RequestBody Level level) {
         return levelService.editLevel(level);
     }
 
@@ -55,18 +55,18 @@ public class AdminController {
     }
 
     @PostMapping(path = "/addVehicle")
-    public EditVehicleResponse addVehicle(@RequestBody Vehicle inputVehicle) {
+    public VehicleResponse addVehicle(@RequestBody Vehicle inputVehicle) {
         return vehicleService.insertVehicle(inputVehicle);
     }
 
     @PostMapping(path = "/deleteVehicle")
-    public EditVehicleResponse deleteVehicle(@RequestBody Vehicle inputVehicle) {
+    public VehicleResponse deleteVehicle(@RequestBody Vehicle inputVehicle) {
 
         return vehicleService.deleteVehicle(inputVehicle);
     }
 
     @PostMapping(path = "/editVehicle")
-    public EditVehicleResponse editVehicle(@RequestBody Vehicle inputVehicle) {
+    public VehicleResponse editVehicle(@RequestBody Vehicle inputVehicle) {
         return vehicleService.editVehicle(inputVehicle);
     }
 

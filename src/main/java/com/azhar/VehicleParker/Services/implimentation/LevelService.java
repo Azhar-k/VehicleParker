@@ -3,7 +3,7 @@ package com.azhar.VehicleParker.Services.implimentation;
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
-import com.azhar.VehicleParker.Entities.ApiResponses.EditLevelResponse;
+import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
 import com.azhar.VehicleParker.db.entities.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.entities.Building.Level;
 import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
@@ -21,8 +21,8 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
     VehicleDao vehicleDao;
 
     @Override
-    public EditLevelResponse insertLevel(Level inputLevel) {
-        EditLevelResponse editLevelResponse = null;
+    public LevelResponse insertLevel(Level inputLevel) {
+        LevelResponse editLevelResponse = null;
 
         if (!isLevelExist(inputLevel)) {
             try {
@@ -34,16 +34,16 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
                     allowedVehicleDao.insert(allowedVehicle);
                 }
                 Level level = levelDao.insert(inputLevel);
-                editLevelResponse = new EditLevelResponse(true, "Level added", level);
+                editLevelResponse = new LevelResponse(true, "Level added", level);
 
             } catch (Exception e) {
                 String errorMessage = e.getMessage();
-                editLevelResponse = new EditLevelResponse(false, errorMessage, null);
+                editLevelResponse = new LevelResponse(false, errorMessage, null);
             }
 
         } else {
             String errorMessage = "level already exist";
-            editLevelResponse = new EditLevelResponse(false, errorMessage, null);
+            editLevelResponse = new LevelResponse(false, errorMessage, null);
         }
 
         return editLevelResponse;
@@ -52,8 +52,8 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
 
 
     @Override
-    public EditLevelResponse deleteLevel(Level inputLevel) {
-        EditLevelResponse editLevelResponse = null;
+    public LevelResponse deleteLevel(Level inputLevel) {
+        LevelResponse editLevelResponse = null;
 
         boolean isLevelExist = isLevelExist(inputLevel);
 
@@ -62,23 +62,23 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
                 try {
                     Level level = levelDao.getLevelByLevelNumber(inputLevel.getLevelNumber());
                     levelDao.delete(level);
-                    editLevelResponse = new EditLevelResponse(true, "Level deleted", null);
+                    editLevelResponse = new LevelResponse(true, "Level deleted", null);
                 } catch (Exception e) {
-                    editLevelResponse = new EditLevelResponse(false, "something went wrong..please try again", null);
+                    editLevelResponse = new LevelResponse(false, "something went wrong..please try again", null);
                 }
             } else {
-                editLevelResponse = new EditLevelResponse(false, "Level can not be deleted. It contains vehicle", null);
+                editLevelResponse = new LevelResponse(false, "Level can not be deleted. It contains vehicle", null);
             }
 
         } else {
-            editLevelResponse = new EditLevelResponse(false, "input Level does not exist", null);
+            editLevelResponse = new LevelResponse(false, "input Level does not exist", null);
         }
         return editLevelResponse;
     }
 
     @Override
-    public EditLevelResponse editLevel(Level inputLevel) {
-        EditLevelResponse editLevelResponse = null;
+    public LevelResponse editLevel(Level inputLevel) {
+        LevelResponse editLevelResponse = null;
 
         boolean isLevelExist = isLevelExist(inputLevel);
 
@@ -92,16 +92,16 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
                         allowedVehicleDao.update(allowedVehicle);
                     }
                     levelDao.update(inputLevel);
-                    editLevelResponse = new EditLevelResponse(true, "Level edited", inputLevel);
+                    editLevelResponse = new LevelResponse(true, "Level edited", inputLevel);
                 } catch (Exception e) {
-                    editLevelResponse = new EditLevelResponse(false, "something went wrong..please try again" + e.getMessage(), null);
+                    editLevelResponse = new LevelResponse(false, "something went wrong..please try again" + e.getMessage(), null);
                 }
             } else {
-                editLevelResponse = new EditLevelResponse(false, "Level can not be edited. It contains vehicle", null);
+                editLevelResponse = new LevelResponse(false, "Level can not be edited. It contains vehicle", null);
             }
 
         } else {
-            editLevelResponse = new EditLevelResponse(false, "input Level does not exist", null);
+            editLevelResponse = new LevelResponse(false, "input Level does not exist", null);
         }
         return editLevelResponse;
     }

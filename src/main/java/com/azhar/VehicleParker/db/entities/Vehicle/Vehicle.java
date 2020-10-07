@@ -21,6 +21,10 @@ public class Vehicle {
         this.parkingRate = parkingRate;
     }
 
+    public Vehicle(String name, int parkingRate) {
+        this.name = name;
+        this.parkingRate = parkingRate;
+    }
 
     public Vehicle() {
     }

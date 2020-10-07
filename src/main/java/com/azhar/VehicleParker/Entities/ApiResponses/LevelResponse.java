@@ -2,11 +2,11 @@ package com.azhar.VehicleParker.Entities.ApiResponses;
 
 import com.azhar.VehicleParker.db.entities.Building.Level;
 
-public class EditLevelResponse extends Response {
+public class LevelResponse extends Response {
 
     private Level level;
 
-    public EditLevelResponse(boolean isSucces, String message, Level level) {
+    public LevelResponse(boolean isSucces, String message, Level level) {
         super(isSucces, message);
         this.level = level;
     }

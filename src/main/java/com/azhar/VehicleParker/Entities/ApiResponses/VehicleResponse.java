@@ -2,11 +2,11 @@ package com.azhar.VehicleParker.Entities.ApiResponses;
 
 import com.azhar.VehicleParker.db.entities.Vehicle.Vehicle;
 
-public class EditVehicleResponse extends Response {
+public class VehicleResponse extends Response {
 
     private Vehicle vehicle;
 
-    public EditVehicleResponse(boolean isSucces, String message, Vehicle vehicle) {
+    public VehicleResponse(boolean isSucces, String message, Vehicle vehicle) {
         super(isSucces, message);
         this.vehicle = vehicle;
     }
