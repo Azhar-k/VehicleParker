@@ -126,7 +126,6 @@ public class ParkingServiceTest {
                     () -> {
                         assertTrue(actual.getId() < 1000);
                         assertTrue(actual.getLevelNumber() >= 0);//negative values indicate space is full. can not park vehicle there
-                        ;
                     }
             );
         }

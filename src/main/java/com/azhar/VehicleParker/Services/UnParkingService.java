@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface UnParkingService {
-    public ParkResponse unPark(LevelParkedVehicle levelVehicleMap);
+    ParkResponse unPark(LevelParkedVehicle levelVehicleMap);
 
-    public LevelParkedVehicle unParkVehicle(LevelParkedVehicle inputLevelVehicle) throws Exception;
+    LevelParkedVehicle unParkVehicle(LevelParkedVehicle inputLevelVehicle) throws Exception;
 
-    public LevelParkedVehicle getValidLevelParkedVehicle(int levelVehicleId);
+    LevelParkedVehicle getValidLevelParkedVehicle(int levelVehicleId);
 
-    public Boolean emptySlot(LevelParkedVehicle levelParkedVehicle);
+    Boolean emptySlot(LevelParkedVehicle levelParkedVehicle);
 
-    public boolean removeLevelParkedVehicle(LevelParkedVehicle levelParkedVehicle);
+    boolean removeLevelParkedVehicle(LevelParkedVehicle levelParkedVehicle);
 }

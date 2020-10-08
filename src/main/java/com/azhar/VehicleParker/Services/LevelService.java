@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface LevelService {
-    public LevelResponse insertLevel(Level level);
+    LevelResponse insertLevel(Level level);
 
-    public LevelResponse deleteLevel(Level level);
+    LevelResponse deleteLevel(Level level);
 
-    public LevelResponse editLevel(Level level);
+    LevelResponse editLevel(Level level);
 
-    public Boolean isLevelExist(Level level);
+    Boolean isLevelExist(Level level);
 
-    public Boolean isLevelContainVehicles(Level level);
+    Boolean isLevelContainVehicles(Level level);
 }

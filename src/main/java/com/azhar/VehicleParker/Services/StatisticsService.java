@@ -9,9 +9,9 @@ import java.util.List;
 
 @Service
 public interface StatisticsService {
-    public StatisticsResponse getAmountByDate(LocalDate localDate);
+    StatisticsResponse getAmountByDate(LocalDate localDate);
 
-    public StatisticsResponse countOfParkedVehiclesByDateAndType(LocalDate localDate, String vehicleType);
+    StatisticsResponse countOfParkedVehiclesByDateAndType(LocalDate localDate, String vehicleType);
 
-    public List<Statistics> getStatistics();
+    List<Statistics> getStatistics();
 }

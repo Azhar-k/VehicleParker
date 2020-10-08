@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface VehicleService {
-    public VehicleResponse insertVehicle(Vehicle inputVehicle);
+    VehicleResponse insertVehicle(Vehicle inputVehicle);
 
-    public VehicleResponse deleteVehicle(Vehicle inputVehicle);
+    VehicleResponse deleteVehicle(Vehicle inputVehicle);
 
-    public VehicleResponse editVehicle(Vehicle inputVehicle);
+    VehicleResponse editVehicle(Vehicle inputVehicle);
 
-    public Vehicle validateVehicle(Vehicle inputVehicle);
+    Vehicle validateVehicle(Vehicle inputVehicle);
 }

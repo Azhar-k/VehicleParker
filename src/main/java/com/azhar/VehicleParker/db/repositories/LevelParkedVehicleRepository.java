@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface LevelParkedVehicleRepository extends JpaRepository<LevelParkedVehicle, Integer> {
 
-    public LevelParkedVehicle findLevelParkedVehicleById(int levelParkedVehicleId);
+    LevelParkedVehicle findLevelParkedVehicleById(int levelParkedVehicleId);
     @Query("SELECT DISTINCT l.date FROM LevelParkedVehicle l")
-    public List<LocalDate> findDistinctDate();
+    List<LocalDate> findDistinctDate();
     @Query(value = "SELECT COUNT(*) FROM LevelParkedVehicle l WHERE l.vehicleName= ?1 AND l.date= ?2")
-    public int findCountByDateAndVehicleName(String vehicleName,LocalDate localDate);
+    int findCountByDateAndVehicleName(String vehicleName, LocalDate localDate);
 }

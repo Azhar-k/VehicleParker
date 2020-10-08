@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component;
 @Component
 public interface ParkingService {
 
-    public ParkResponse park(ParkRequest parkRequest);
+    ParkResponse park(ParkRequest parkRequest);
 
-    public LevelParkedVehicle parkVehicle(ParkRequest parkRequest) throws Exception;
+    LevelParkedVehicle parkVehicle(ParkRequest parkRequest) throws Exception;
 
-    public Vehicle getVehicleByName(String name);
+    Vehicle getVehicleByName(String name);
 
-    public int getAvailableLevelNumber(Vehicle vehicle);
+    int getAvailableLevelNumber(Vehicle vehicle);
 
-    public boolean fillSlot(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
+    boolean fillSlot(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
 
-    public LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
+    LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
 
 }

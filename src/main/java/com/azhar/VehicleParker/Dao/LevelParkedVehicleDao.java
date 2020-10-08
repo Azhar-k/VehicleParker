@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface LevelParkedVehicleDao {
 
-    public LevelParkedVehicle insert(LevelParkedVehicle levelAllowedVehicle);
+    LevelParkedVehicle insert(LevelParkedVehicle levelAllowedVehicle);
 
-    public List<LevelParkedVehicle> getLevelParkedVehicleList();
+    List<LevelParkedVehicle> getLevelParkedVehicleList();
 
-    public void delete(LevelParkedVehicle levelAllowedVehicle);
+    void delete(LevelParkedVehicle levelAllowedVehicle);
 
-    public LevelParkedVehicle getLevelParkedVehicleById(int levelParkedVehicleId);
+    LevelParkedVehicle getLevelParkedVehicleById(int levelParkedVehicleId);
 
-    public List<LocalDate> getDistinctDate();
+    List<LocalDate> getDistinctDate();
 
-    public int findCountByDateAndVehicleName(String vehicleName,LocalDate localDate);
+    int findCountByDateAndVehicleName(String vehicleName, LocalDate localDate);
 }

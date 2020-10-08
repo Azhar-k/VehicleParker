@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface VehicleDao {
 
-    public List<Vehicle> getVehicleList();
+    List<Vehicle> getVehicleList();
 
     Vehicle getVehicleByName(String name);
 
-    public Vehicle findById(int id);
+    Vehicle findById(int id);
 
-    public Vehicle getVehicleById(int id) throws VehicleNotFound;
+    Vehicle getVehicleById(int id) throws VehicleNotFound;
 
-    public Vehicle insert(Vehicle inputVehicle);
+    Vehicle insert(Vehicle inputVehicle);
 
-    public Vehicle update(Vehicle inputVehicle);
+    Vehicle update(Vehicle inputVehicle);
 
-    public void delete(Vehicle inputVehicle);
+    void delete(Vehicle inputVehicle);
 }

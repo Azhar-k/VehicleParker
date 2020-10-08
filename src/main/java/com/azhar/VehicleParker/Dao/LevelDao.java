@@ -7,17 +7,17 @@ import java.util.List;
 
 
 public interface LevelDao {
-    public List<Level> getLevelList();
+    List<Level> getLevelList();
 
-    public Level update(Level level);
+    Level update(Level level);
 
-    public Level insert(Level level);
+    Level insert(Level level);
 
-    public void delete(Level inputLevel);
+    void delete(Level inputLevel);
 
-    public Level getLevelByLevelNumber(int levelNumber);
+    Level getLevelByLevelNumber(int levelNumber);
 
-    public List<Level> getLevelBySortedLevelNumber();
+    List<Level> getLevelBySortedLevelNumber();
 
 
 }

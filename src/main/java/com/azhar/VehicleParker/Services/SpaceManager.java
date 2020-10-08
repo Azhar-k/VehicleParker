@@ -11,12 +11,12 @@ import java.util.List;
 
 @Component
 public interface SpaceManager {
-    public List<LevelParkedVehicle> getLevelVehicleList();
+    List<LevelParkedVehicle> getLevelVehicleList();
 
-    public List<LevelSpace> getLAvailableSpace();
+    List<LevelSpace> getLAvailableSpace();
 
-    public List<Level> getLevelList();
+    List<Level> getLevelList();
 
-    public List<Vehicle> getVehicles();
+    List<Vehicle> getVehicles();
 
 }

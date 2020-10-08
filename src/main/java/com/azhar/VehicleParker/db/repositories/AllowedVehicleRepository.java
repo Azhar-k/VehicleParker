@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AllowedVehicleRepository extends JpaRepository<AllowedVehicle, Integer> {
 
-    public AllowedVehicle findAllowedVehicleByVehicleId(int id);
+    AllowedVehicle findAllowedVehicleByVehicleId(int id);
 }
