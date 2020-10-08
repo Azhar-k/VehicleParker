@@ -60,7 +60,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
 
             throw new Exception("Parking Space is Full for " + vehicle.getName());
         }
-        ////Create a levelParkedVehicle for this parking get a unique id for this parking.Unique id is attribute of LevelParkedVehicle
+        //Create a levelParkedVehicle for this parking get a unique id for this parking.Unique id is attribute of LevelParkedVehicle
         LevelParkedVehicle levelParkedVehicle = addLevelParkedVehicle(availableLevelNumber, vehicle.getId(), vehicle.getName(), parkRequest.getVehicleNumber());
         if(levelParkedVehicle==null){
             throw new Exception("This vehicle is already parked ");
@@ -100,6 +100,20 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         return levelNo;
     }
 
+    public LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber) {
+        LevelParkedVehicle levelParkedVehicle = null;
+
+        try {
+
+            levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber);
+            levelParkedVehicleDao.insert(levelParkedVehicle);
+        } catch (Exception e) {
+            levelParkedVehicle = null;
+        }
+
+        return levelParkedVehicle;
+    }
+
     public boolean fillSlot(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber) {
         boolean isSlotFilled = false;
         try{
@@ -129,20 +143,5 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         return isSlotFilled;
 
     }
-
-    public LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber) {
-        LevelParkedVehicle levelParkedVehicle = null;
-
-        try {
-
-            levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber);
-            levelParkedVehicleDao.insert(levelParkedVehicle);
-        } catch (Exception e) {
-            levelParkedVehicle = null;
-        }
-
-        return levelParkedVehicle;
-    }
-
 
 }
