@@ -2,7 +2,7 @@ package com.azhar.VehicleParker.Controllers;
 
 import com.azhar.VehicleParker.Entities.ApiResponses.StatisticsResponse;
 import com.azhar.VehicleParker.Entities.Statistics;
-import com.azhar.VehicleParker.Services.StatisticsService;
+import com.azhar.VehicleParker.UnitTests.Services.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;

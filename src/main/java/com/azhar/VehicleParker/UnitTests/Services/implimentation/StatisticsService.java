@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Services.implimentation;
+package com.azhar.VehicleParker.UnitTests.Services.implimentation;
 
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
@@ -16,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class StatisticsService implements com.azhar.VehicleParker.Services.StatisticsService {
+public class StatisticsService implements com.azhar.VehicleParker.UnitTests.Services.StatisticsService {
     @Autowired
     LevelParkedVehicleDao levelParkedVehicleDao;
     @Autowired

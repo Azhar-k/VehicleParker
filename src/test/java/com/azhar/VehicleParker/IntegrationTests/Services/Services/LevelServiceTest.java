@@ -1,14 +1,13 @@
-package com.azhar.VehicleParker.Services;
+package com.azhar.VehicleParker.IntegrationTests.Services.Services;
 
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
-import com.azhar.VehicleParker.Services.implimentation.LevelService;
-import org.junit.jupiter.api.Test;
+import com.azhar.VehicleParker.UnitTests.Services.implimentation.LevelService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 //Not implimented.
 @SpringBootTest
 public class LevelServiceTest {

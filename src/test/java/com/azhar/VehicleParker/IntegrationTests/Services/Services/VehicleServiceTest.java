@@ -1,8 +1,8 @@
-package com.azhar.VehicleParker.Services;
+package com.azhar.VehicleParker.IntegrationTests.Services.Services;
 
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
-import com.azhar.VehicleParker.Services.implimentation.VehicleService;
+import com.azhar.VehicleParker.UnitTests.Services.implimentation.VehicleService;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
