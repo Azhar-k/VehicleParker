@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.UnitTests.Services.implimentation;
+package com.azhar.VehicleParker.Services.implimentation;
 
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LevelService implements com.azhar.VehicleParker.UnitTests.Services.LevelService {
+public class LevelService implements com.azhar.VehicleParker.Services.LevelService {
 
     @Autowired
     LevelDao levelDao;

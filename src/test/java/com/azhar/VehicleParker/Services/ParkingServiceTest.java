@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.IntegrationTests.Services.Services;
+package com.azhar.VehicleParker.Services;
 
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
@@ -7,8 +7,8 @@ import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.LevelSpace;
-import com.azhar.VehicleParker.UnitTests.Services.SpaceManager;
-import com.azhar.VehicleParker.UnitTests.Services.implimentation.ParkingService;
+import com.azhar.VehicleParker.Services.implimentation.ParkingService;
+
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.models.LevelParkedVehicle;

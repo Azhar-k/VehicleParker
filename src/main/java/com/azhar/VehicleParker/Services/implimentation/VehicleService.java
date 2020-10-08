@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.UnitTests.Services.implimentation;
+package com.azhar.VehicleParker.Services.implimentation;
 
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VehicleService implements com.azhar.VehicleParker.UnitTests.Services.VehicleService {
+public class VehicleService implements com.azhar.VehicleParker.Services.VehicleService {
 
     @Autowired
     VehicleDao vehicleDao;

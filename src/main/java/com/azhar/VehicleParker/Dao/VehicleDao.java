@@ -19,5 +19,5 @@ public interface VehicleDao {
 
     Vehicle update(Vehicle inputVehicle);
 
-    void delete(Vehicle inputVehicle);
+    boolean delete(Vehicle inputVehicle);
 }

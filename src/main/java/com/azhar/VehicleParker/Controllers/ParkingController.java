@@ -5,9 +5,9 @@ import com.azhar.VehicleParker.Entities.LevelSpace;
 import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 
-import com.azhar.VehicleParker.UnitTests.Services.ParkingService;
-import com.azhar.VehicleParker.UnitTests.Services.SpaceManager;
-import com.azhar.VehicleParker.UnitTests.Services.UnParkingService;
+import com.azhar.VehicleParker.Services.ParkingService;
+import com.azhar.VehicleParker.Services.SpaceManager;
+import com.azhar.VehicleParker.Services.UnParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

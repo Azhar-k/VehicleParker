@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.UnitTests.Services;
+package com.azhar.VehicleParker.Services;
 
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;

@@ -50,7 +50,8 @@ public class VehicleDao implements com.azhar.VehicleParker.Dao.VehicleDao {
     }
 
     @Override
-    public void delete(Vehicle inputVehicle) {
+    public boolean delete(Vehicle inputVehicle) {
         vehicleRepository.delete(inputVehicle);
+        return true;
     }
 }

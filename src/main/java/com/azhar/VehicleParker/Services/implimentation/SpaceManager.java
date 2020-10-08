@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.UnitTests.Services.implimentation;
+package com.azhar.VehicleParker.Services.implimentation;
 
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
@@ -16,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class SpaceManager implements com.azhar.VehicleParker.UnitTests.Services.SpaceManager {
+public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManager {
 
     @Autowired
     LevelDao levelDao;
