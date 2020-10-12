@@ -17,6 +17,7 @@ public class AllowedVehicle {
     private int occupiedSlots;
     private int freeSlots;
 
+
     public AllowedVehicle() {
     }
 

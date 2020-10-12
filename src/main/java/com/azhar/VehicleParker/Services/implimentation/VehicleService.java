@@ -1,7 +1,11 @@
 package com.azhar.VehicleParker.Services.implimentation;
 
+import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
+import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
+import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
+import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,10 @@ public class VehicleService implements com.azhar.VehicleParker.Services.VehicleS
 
     @Autowired
     VehicleDao vehicleDao;
+    @Autowired
+    LevelDao levelDao;
+    @Autowired
+    AllowedVehicleDao allowedVehicleDao;
 
     @Override
     public VehicleResponse insertVehicle(Vehicle inputVehicle) {
@@ -22,6 +30,7 @@ public class VehicleService implements com.azhar.VehicleParker.Services.VehicleS
                 editVehicleResponse = new VehicleResponse(true, "vehicle added", vehicle);
 
             } catch (Exception e) {
+                e.printStackTrace();
                 editVehicleResponse = new VehicleResponse(true, e.getMessage(), null);
             }
 
@@ -37,10 +46,12 @@ public class VehicleService implements com.azhar.VehicleParker.Services.VehicleS
         Vehicle validVehicle = validateVehicle(inputVehicle);
         if (validVehicle != null) {
             try {
+                deleteVehicleFromAllLevels(validVehicle);
                 vehicleDao.delete(validVehicle);
                 editVehicleResponse = new VehicleResponse(true, "vehicle deleted", validVehicle);
 
             } catch (Exception e) {
+                e.printStackTrace();
                 editVehicleResponse = new VehicleResponse(true, "something went wrong " + e.getMessage(), null);
             }
 
@@ -48,6 +59,24 @@ public class VehicleService implements com.azhar.VehicleParker.Services.VehicleS
             editVehicleResponse = new VehicleResponse(true, "vehicle do not exist", null);
         }
         return editVehicleResponse;
+
+    }
+
+    private void deleteVehicleFromAllLevels(Vehicle validVehicle) throws Exception {
+        try {
+            for(Level level:levelDao.getLevelList()){
+                for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+                    if(allowedVehicle.getVehicle().getName().equals(validVehicle.getName())){
+                        allowedVehicleDao.delete(allowedVehicle);
+                        break;
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("vehicle can not be deleted. Some error occured");
+        }
 
     }
 

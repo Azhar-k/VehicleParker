@@ -17,8 +17,18 @@ public interface ParkingService {
 
     int getAvailableLevelNumber(Vehicle vehicle);
 
-    boolean fillSlot(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
+    boolean fillSlot(int levelNumber, int parkedVehicleId);
 
-    LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber);
+    LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber, int parkingRate);
+
+    ParkResponse unPark(LevelParkedVehicle levelVehicleMap);
+
+    LevelParkedVehicle unParkVehicle(LevelParkedVehicle inputLevelVehicle) throws Exception;
+
+    LevelParkedVehicle getValidLevelParkedVehicle(int levelVehicleId);
+
+    Boolean emptySlot(LevelParkedVehicle levelParkedVehicle);
+
+    boolean removeLevelParkedVehicle(LevelParkedVehicle levelParkedVehicle);
 
 }

@@ -20,18 +20,28 @@ public class LevelParkedVehicle {
     private String vehicleNumber;
     private LocalDate date;
     private LocalTime time;
+    private int parkingRate;
 
-    public LevelParkedVehicle(int levelNumber, int vehicleType, String vehicleName, String vehicleNumber) {
+    public LevelParkedVehicle(int levelNumber, int vehicleType, String vehicleName, String vehicleNumber, int parkingRate) {
         this.date = LocalDate.now();
         this.time = LocalTime.now();
         this.levelNumber = levelNumber;
         this.vehicleType = vehicleType;
         this.vehicleName = vehicleName;
         this.vehicleNumber = vehicleNumber;
+        this.parkingRate = parkingRate;
     }
 
 
     public LevelParkedVehicle() {
+    }
+
+    public int getParkingRate() {
+        return parkingRate;
+    }
+
+    public void setParkingRate(int parkingRate) {
+        this.parkingRate = parkingRate;
     }
 
     public LevelParkedVehicle(int id) {

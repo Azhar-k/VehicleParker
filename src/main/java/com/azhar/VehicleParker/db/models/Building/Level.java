@@ -8,17 +8,13 @@ import java.util.List;
 public class Level {
     @Id
     private int levelNumber;
-    @ManyToMany(targetEntity = AllowedVehicle.class)
+    @OneToMany(targetEntity = AllowedVehicle.class)
     private List<AllowedVehicle> allowedVehicles;
 
 
     public Level() {
     }
 
-    public Level(int id, int levelNumber, List<AllowedVehicle> allowedVehicles) {
-        this.levelNumber = levelNumber;
-        this.allowedVehicles = allowedVehicles;
-    }
 
     public Level(int levelNumber, List<AllowedVehicle> allowedVehicles) {
         this.levelNumber = levelNumber;

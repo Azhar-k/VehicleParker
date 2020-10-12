@@ -27,7 +27,7 @@ public class VehicleServiceTest {
     public class ValidateVehicleTest {
         @Test
         void validateVehicleGivenExistingVehicle() {
-            Vehicle inputVehicle = new Vehicle(0, "car", 20);
+            Vehicle inputVehicle = new Vehicle( "car", 20);
 
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
 
@@ -43,7 +43,7 @@ public class VehicleServiceTest {
 
         @Test
         void validateVehicleGivenNewVehicle() {
-            Vehicle inputVehicle = new Vehicle(0, "car", 20);
+            Vehicle inputVehicle = new Vehicle( "car", 20);
 
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
             Vehicle actual = vehicleService.validateVehicle(inputVehicle);

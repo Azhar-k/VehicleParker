@@ -8,4 +8,6 @@ public interface AllowedVehicleDao {
     AllowedVehicle getAllowedVehicleByVehicleId(int parkedVehicleId);
 
     AllowedVehicle insert(AllowedVehicle allowedVehicle);
+
+    void delete(AllowedVehicle allowedVehicle);
 }

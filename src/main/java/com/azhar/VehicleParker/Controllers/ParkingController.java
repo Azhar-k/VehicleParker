@@ -7,7 +7,6 @@ import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 
 import com.azhar.VehicleParker.Services.ParkingService;
 import com.azhar.VehicleParker.Services.SpaceManager;
-import com.azhar.VehicleParker.Services.UnParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +21,6 @@ public class ParkingController {
     SpaceManager spaceManager;
     @Autowired
     ParkingService parkingService;
-    @Autowired
-    UnParkingService unParkingService;
 
     @GetMapping(path = "/getAvailableSpace")
     public List<LevelSpace> getAvailableSpace() {
@@ -45,7 +42,7 @@ public class ParkingController {
     @PostMapping(path = "/unpark", consumes = "application/json", produces = "application/json")
     public ParkResponse unpark(@RequestBody LevelParkedVehicle levelVehicleMap) {
 
-        return unParkingService.unPark(levelVehicleMap);
+        return parkingService.unPark(levelVehicleMap);
     }
 
 

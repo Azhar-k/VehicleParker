@@ -61,13 +61,13 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
             throw new Exception("Parking Space is Full for " + vehicle.getName());
         }
         //Create a levelParkedVehicle for this parking get a unique id for this parking.Unique id is attribute of LevelParkedVehicle
-        LevelParkedVehicle levelParkedVehicle = addLevelParkedVehicle(availableLevelNumber, vehicle.getId(), vehicle.getName(), parkRequest.getVehicleNumber());
+        LevelParkedVehicle levelParkedVehicle = addLevelParkedVehicle(availableLevelNumber, vehicle.getId(), vehicle.getName(), parkRequest.getVehicleNumber(),vehicle.getParkingRate());
         if(levelParkedVehicle==null){
             throw new Exception("This vehicle is already parked ");
         }
 
         //close the slot in the level corresponding to the parking
-        boolean isSlotFilled = fillSlot(availableLevelNumber, vehicle.getId(), vehicle.getName(), parkRequest.getVehicleNumber());
+        boolean isSlotFilled = fillSlot(availableLevelNumber, vehicle.getId());
 
         if (isSlotFilled==false) {
             throw new Exception("some error occured..Please try again");
@@ -100,12 +100,12 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         return levelNo;
     }
 
-    public LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber) {
+    public LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber,int parkingRate) {
         LevelParkedVehicle levelParkedVehicle = null;
 
         try {
 
-            levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber);
+            levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber,parkingRate);
             levelParkedVehicleDao.insert(levelParkedVehicle);
         } catch (Exception e) {
             levelParkedVehicle = null;
@@ -114,7 +114,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         return levelParkedVehicle;
     }
 
-    public boolean fillSlot(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber) {
+    public boolean fillSlot(int levelNumber, int parkedVehicleId) {
         boolean isSlotFilled = false;
         try{
             Level level = levelDao.getLevelByLevelNumber(levelNumber);
@@ -137,11 +137,83 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         } catch (Exception e) {
 
         }
-
-
-
         return isSlotFilled;
 
+    }
+
+    public ParkResponse unPark(LevelParkedVehicle inputLevelParkedVehicle) {
+        ParkResponse parkResponse;
+        try {
+            LevelParkedVehicle levelParkedVehicleResponse = unParkVehicle(inputLevelParkedVehicle);
+            parkResponse = new ParkResponse(true, "vehicle unparked", levelParkedVehicleResponse);
+
+        } catch (Exception e) {
+            parkResponse = new ParkResponse(false, e.getMessage(), null);
+        }
+        return parkResponse;
+    }
+
+
+    public LevelParkedVehicle unParkVehicle(LevelParkedVehicle inputLevelParkedVehicle) throws Exception {
+        LevelParkedVehicle levelParkedVehicle = getValidLevelParkedVehicle(inputLevelParkedVehicle.getId());
+        if (levelParkedVehicle == null) {
+            //no levelAllowedvehicle exist with the id entered by user
+            throw new Exception("This vehicle is not parked here");
+        }
+
+        //remove the LevelParkedVehicle for this parking
+        boolean isLevelParkedVehicleRemoved = removeLevelParkedVehicle(levelParkedVehicle);
+        //Empty the slot in the level
+        boolean isSlotEmptied = emptySlot(levelParkedVehicle);
+
+        boolean isDatabaseOperationsSuccess = isSlotEmptied&&isLevelParkedVehicleRemoved;
+        if (!isDatabaseOperationsSuccess ) {
+            throw new Exception("Some error occured.Please try again");
+        }
+        return levelParkedVehicle;
+    }
+
+    public LevelParkedVehicle getValidLevelParkedVehicle(int levelParkedVehicleId) {
+        //find out the parked vehicle
+        LevelParkedVehicle levelParkedVehicle = levelParkedVehicleDao.getLevelParkedVehicleById(levelParkedVehicleId);
+        return levelParkedVehicle;
+
+    }
+
+    public Boolean emptySlot(LevelParkedVehicle levelParkedVehicle) {
+        boolean isSlotEmptied = false;
+        try {
+            int levelNumber = levelParkedVehicle.getLevelNumber();
+            int parkedVehicleId = levelParkedVehicle.getVehicleType();
+
+            //find out level in which vehicle parked
+            Level level = levelDao.getLevelByLevelNumber(levelNumber);
+
+            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
+                if (allowedVehicle.getVehicle().getId() == parkedVehicleId) {
+
+                    int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
+                    int updatedOccupiedSlot = currentOccupiedSlot - 1;
+                    allowedVehicle.setOccupiedSlots(updatedOccupiedSlot);
+
+                    allowedVehicleDao.update(allowedVehicle);
+                }
+            }
+            levelDao.update(level);
+            isSlotEmptied = true;
+        } catch (Exception e) {
+
+        }
+        return isSlotEmptied;
+    }
+
+    public boolean removeLevelParkedVehicle(LevelParkedVehicle levelParkedVehicle) {
+        try {
+            levelParkedVehicleDao.delete(levelParkedVehicle);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

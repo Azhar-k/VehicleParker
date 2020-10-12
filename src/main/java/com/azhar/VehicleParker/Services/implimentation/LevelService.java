@@ -10,6 +10,8 @@ import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LevelService implements com.azhar.VehicleParker.Services.LevelService {
 
@@ -26,17 +28,12 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
 
         if (!isLevelExist(inputLevel)) {
             try {
-                for (AllowedVehicle allowedVehicle : inputLevel.getAllowedVehicles()) {
-
-                    Vehicle inputVehicle = allowedVehicle.getVehicle();
-                    //input vehicle should be validated before inserting.User may try to add non recognised vehicle
-                    Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
-                    //input vehicle from user is replaced with recognised vehicle got from database
-                    allowedVehicle.setVehicle(recognisedVehicle);
-                    allowedVehicleDao.insert(allowedVehicle);
+                //Vehicles allowed for this level is inserted into database
+                boolean isAllowedVehiclesInserted = insertAllowedVehicles(inputLevel.getAllowedVehicles());
+                if(isAllowedVehiclesInserted){
+                    Level level = levelDao.insert(inputLevel);
+                    editLevelResponse = new LevelResponse(true, "Level added", level);
                 }
-                Level level = levelDao.insert(inputLevel);
-                editLevelResponse = new LevelResponse(true, "Level added", level);
 
             } catch (Exception e) {
                 String errorMessage = e.getMessage();
@@ -52,6 +49,23 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
 
     }
 
+    private boolean insertAllowedVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
+        for (AllowedVehicle allowedVehicle : allowedVehicles) {
+            try {
+                Vehicle inputVehicle = allowedVehicle.getVehicle();
+                //input vehicle should be validated before editing.User may try to add non recognised vehicle
+                Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+                //input vehicle from user is replaced with recognised vehicle got from database
+                allowedVehicle.setVehicle(recognisedVehicle);
+                allowedVehicleDao.update(allowedVehicle);
+            } catch (Exception e) {
+                throw e;
+            }
+           
+        }
+        return true;
+    }
+
 
     @Override
     public LevelResponse deleteLevel(Level inputLevel) {
@@ -63,6 +77,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
             if (!isLevelContainVehicles(inputLevel)) {
                 try {
                     Level level = levelDao.getLevelByLevelNumber(inputLevel.getLevelNumber());
+                    removeAllowedVehicleMapping(level);
                     levelDao.delete(level);
                     editLevelResponse = new LevelResponse(true, "Level deleted", null);
                 } catch (Exception e) {
@@ -78,6 +93,17 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
         return editLevelResponse;
     }
 
+    private void removeAllowedVehicleMapping(Level level) throws Exception {
+        try{
+            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+                allowedVehicleDao.delete(allowedVehicle);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     @Override
     public LevelResponse editLevel(Level inputLevel) {
         LevelResponse editLevelResponse = null;
@@ -87,16 +113,13 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
         if (isLevelExist) {
             if (!isLevelContainVehicles(inputLevel)) {
                 try {
-                    for (AllowedVehicle allowedVehicle : inputLevel.getAllowedVehicles()) {
-                        Vehicle inputVehicle = allowedVehicle.getVehicle();
-                        //input vehicle should be validated before editing.User may try to add non recognised vehicle
-                        Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
-                        //input vehicle from user is replaced with recognised vehicle got from database
-                        allowedVehicle.setVehicle(recognisedVehicle);
-                        allowedVehicleDao.update(allowedVehicle);
+                    //Vehicles allowed for this level is inserted into database
+                    boolean isAllowedVehiclesInserted = insertAllowedVehicles(inputLevel.getAllowedVehicles());
+                    if(isAllowedVehiclesInserted){
+                        levelDao.update(inputLevel);
+                        editLevelResponse = new LevelResponse(true, "Level edited", inputLevel);
                     }
-                    levelDao.update(inputLevel);
-                    editLevelResponse = new LevelResponse(true, "Level edited", inputLevel);
+                    
                 } catch (Exception e) {
                     editLevelResponse = new LevelResponse(false, "something went wrong..please try again" + e.getMessage(), null);
                 }

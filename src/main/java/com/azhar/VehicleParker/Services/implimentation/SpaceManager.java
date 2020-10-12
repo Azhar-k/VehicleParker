@@ -34,6 +34,7 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
 
     @Override
     public List<LevelSpace> getLAvailableSpace() {
+        //create a list of available space by checking all the levels
         List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
         List<Level> levelList = levelDao.getLevelList();
         levelList.sort(new SortbyLevelNumber());
