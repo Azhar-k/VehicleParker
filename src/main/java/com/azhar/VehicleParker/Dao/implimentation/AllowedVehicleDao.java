@@ -5,6 +5,8 @@ import com.azhar.VehicleParker.db.repositories.AllowedVehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class AllowedVehicleDao implements com.azhar.VehicleParker.Dao.AllowedVehicleDao {
     @Autowired
@@ -28,5 +30,10 @@ public class AllowedVehicleDao implements com.azhar.VehicleParker.Dao.AllowedVeh
     @Override
     public void delete(AllowedVehicle allowedVehicle) {
         allowedVehicleRepository.delete(allowedVehicle);
+    }
+
+    @Override
+    public List<AllowedVehicle> getAllowedVehiclesByLevelNumber(int levelNumber) {
+        return allowedVehicleRepository.findByLevelLevelNumber(levelNumber);
     }
 }

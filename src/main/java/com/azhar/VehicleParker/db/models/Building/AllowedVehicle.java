@@ -16,17 +16,27 @@ public class AllowedVehicle {
     private int MAX_SLOTS;
     private int occupiedSlots;
     private int freeSlots;
-
+    @OneToOne
+    @JoinColumn(name = "levelNumber", referencedColumnName = "levelNumber")
+    private Level level;
 
     public AllowedVehicle() {
     }
 
-    public AllowedVehicle(int MAX_SLOTS, int occupiedSlots, Vehicle vehicle) {
-
+    public AllowedVehicle(int MAX_SLOTS, int occupiedSlots, Vehicle vehicle,Level level) {
+        this.level=level;
         this.MAX_SLOTS = MAX_SLOTS;
         this.occupiedSlots = occupiedSlots;
         this.freeSlots = this.MAX_SLOTS - this.occupiedSlots;
         this.vehicle = vehicle;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 
     public int getId() {

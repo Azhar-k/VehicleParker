@@ -64,7 +64,7 @@ public class UnParckingServiceTest {
         public void emptySlot() {
             Level level = new Level(0);
             Vehicle vehicle = new Vehicle(0, "car", 20);
-            AllowedVehicle allowedVehicle = new AllowedVehicle(15, 0, vehicle);
+            AllowedVehicle allowedVehicle = new AllowedVehicle(15, 0, vehicle,level);
             List<AllowedVehicle> allowedVehicleList = new ArrayList<AllowedVehicle>();
             allowedVehicleList.add(allowedVehicle);
             level.setAllowedVehicles(allowedVehicleList);
@@ -96,7 +96,7 @@ public class UnParckingServiceTest {
             LevelParkedVehicle expected = new LevelParkedVehicle(0, 0, "car", "xx xx xx xxxx",20);
             Level level = new Level(0);
             Vehicle vehicle = new Vehicle(0, "car", 20);
-            AllowedVehicle allowedVehicle = new AllowedVehicle(15, 0, vehicle);
+            AllowedVehicle allowedVehicle = new AllowedVehicle(15, 0, vehicle,level);
             List<AllowedVehicle> allowedVehicleList = new ArrayList<AllowedVehicle>();
             allowedVehicleList.add(allowedVehicle);
             level.setAllowedVehicles(allowedVehicleList);
@@ -141,7 +141,7 @@ public class UnParckingServiceTest {
             LevelParkedVehicle input = new LevelParkedVehicle(100);
             Level level = new Level(0);
             Vehicle vehicle = new Vehicle(0, "car", 20);
-            AllowedVehicle allowedVehicle = new AllowedVehicle(15, 0, vehicle);
+            AllowedVehicle allowedVehicle = new AllowedVehicle(15, 0, vehicle,level);
 
             List<AllowedVehicle> allowedVehicleList = new ArrayList<AllowedVehicle>();
             allowedVehicleList.add(allowedVehicle);

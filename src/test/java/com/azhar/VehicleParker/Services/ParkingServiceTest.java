@@ -184,34 +184,34 @@ public class ParkingServiceTest {
             //all level contains same list of vehicles and free slots
             Level level = new Level(i);
             List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
-            addLevel(allowedVehicles, 0, "car", 5);
-            addLevel(allowedVehicles, 1, "bus", 3);
-            addLevel(allowedVehicles, 2, "van", 4);
-            addLevel(allowedVehicles, 3, "bike", 15);
+            addLevel(level,allowedVehicles, 0, "car", 5);
+            addLevel(level,allowedVehicles, 1, "bus", 3);
+            addLevel(level,allowedVehicles, 2, "van", 4);
+            addLevel(level,allowedVehicles, 3, "bike", 15);
             level.setAllowedVehicles(allowedVehicles);
             levelList.add(level);
         }
         //adding extra level where only truck can be parked
         Level level = new Level(6);
         List<AllowedVehicle> allowedVehicles = new ArrayList<AllowedVehicle>();
-        addLevel(allowedVehicles, 4, "truck", 4);
+        addLevel(level,allowedVehicles, 4, "truck", 4);
         level.setAllowedVehicles(allowedVehicles);
         levelList.add(level);
 
         //adding extra level where bus and container can be parked
         level = new Level(7);
         allowedVehicles = new ArrayList<AllowedVehicle>();
-        addLevel(allowedVehicles, 1, "bus", 4);
-        addLevel(allowedVehicles, 5, "container", 3);
+        addLevel(level,allowedVehicles, 1, "bus", 4);
+        addLevel(level,allowedVehicles, 5, "container", 3);
         level.setAllowedVehicles(allowedVehicles);
         levelList.add(level);
 
         return levelList;
     }
 
-    private void addLevel(List<AllowedVehicle> allowedVehicles, int type, String name, int MAX_SLOT) {
+    private void addLevel(Level level,List<AllowedVehicle> allowedVehicles, int type, String name, int MAX_SLOT) {
         Vehicle vehicle = findVehicleById(type);
-        AllowedVehicle allowedVehicle = new AllowedVehicle(MAX_SLOT, 0, vehicle);
+        AllowedVehicle allowedVehicle = new AllowedVehicle(MAX_SLOT, 0, vehicle,level);
         allowedVehicles.add(allowedVehicle);
     }
 

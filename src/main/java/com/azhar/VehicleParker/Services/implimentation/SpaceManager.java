@@ -1,5 +1,6 @@
 package com.azhar.VehicleParker.Services.implimentation;
 
+import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
@@ -27,6 +28,10 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
     @Autowired
     VehicleDao vehicleDao;
 
+    @Autowired
+    AllowedVehicleDao allowedVehicleDao;
+
+
     @Override
     public List<LevelParkedVehicle> getLevelVehicleList() {
         return levelParkedVehicleDao.getLevelParkedVehicleList();
@@ -40,7 +45,7 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
         levelList.sort(new SortbyLevelNumber());
         for (Level level : levelList) {
             LevelSpace levelSpace = new LevelSpace(level.getLevelNumber());
-            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
+            for (AllowedVehicle allowedVehicle : allowedVehicleDao.getAllowedVehiclesByLevelNumber(level.getLevelNumber())) {
                 int freeSlot = allowedVehicle.getFreeSlots();
                 levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
 
