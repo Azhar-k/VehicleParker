@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Vehicle {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(unique=true)
     private String name;

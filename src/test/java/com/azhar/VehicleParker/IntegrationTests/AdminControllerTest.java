@@ -1,10 +1,14 @@
 package com.azhar.VehicleParker.IntegrationTests;
 
 import com.azhar.VehicleParker.Dao.implimentation.VehicleDao;
+import com.azhar.VehicleParker.InitialLoading;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +32,20 @@ public class AdminControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+    @Autowired
+    InitialLoading initialLoading;
 
 
 
-    @Before
-    public void setup() {
-
+    @BeforeEach
+    public void initEach() throws Exception {
+        System.out.println("loaded");
+        initialLoading.loadData();
+        //park a single vehicle for testing some endpoints
+        mockMvc.perform(post("/park")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"vehicleName\": \"car\" , \"vehicleNumber\":\"KL 11 BC 5978\" }")
+        );//this vehicle is parked in level 2 always.
     }
 
 
@@ -43,7 +55,7 @@ public class AdminControllerTest {
         mockMvc.perform(get("/vehicles"))
                 .andExpect(jsonPath("$[0].id").value("1"))
                 .andExpect(jsonPath("$[0].name").value("car"))
-                .andExpect(jsonPath("$[0].parkingRate").value(25))
+                .andExpect(jsonPath("$[0].parkingRate").value(20    ))
                 .andExpect(jsonPath("$[1].id").value("2"))
                 .andExpect(jsonPath("$[1].name").value("bus"))
                 .andExpect(jsonPath("$[1].parkingRate").value(40))
@@ -78,12 +90,6 @@ public class AdminControllerTest {
                 .content("{ \"name\": \"jeep\" , \"parkingRate\":25 }")
         ).andExpect(jsonPath("$.message").value("vehicle added"));
 
-        //delete the vehicle added for testing
-        mockMvc.perform(MockMvcRequestBuilders.delete("/vehicles")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content("{ \"name\": \"jeep\" }"));
-
     }
 
     @Test
@@ -106,13 +112,12 @@ public class AdminControllerTest {
     }
 
     @Test
-    @Ignore
     public void testDeleteVehicleGivenExistingVehicle() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/vehicles")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content("{ \"name\": \"jeep\" }")
+                .content("{ \"name\": \"bike\" }")
         ).andExpect(jsonPath("$.message").value("vehicle deleted"));
 
     }
@@ -149,11 +154,6 @@ public class AdminControllerTest {
                         " \t\n" +
                         " }")
         ).andExpect(jsonPath("$.message").value("Level added"));
-        //delete the level added for testing
-        mockMvc.perform(delete("/levels")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"levelNumber\": 100}")
-        ).andExpect(jsonPath("$.message").value("Level deleted"));
 
     }
 
@@ -206,13 +206,12 @@ public class AdminControllerTest {
     }
 
     @Test
-    @Ignore
     public void testEditLevelGivenExistingLevel() throws Exception {
         mockMvc.perform(put("/levels")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"levelNumber\": 100,\n" +
+                        "        \"levelNumber\": 1,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
@@ -254,11 +253,11 @@ public class AdminControllerTest {
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testDeleteLevelGivenExistingLevel() throws Exception {
         mockMvc.perform(delete("/levels")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"levelNumber\": 100}")
+                .content("{\"levelNumber\": 1}")
         ).andExpect(jsonPath("$.message").value("Level deleted"));
 
     }

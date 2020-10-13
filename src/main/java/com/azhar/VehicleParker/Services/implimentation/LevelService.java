@@ -88,6 +88,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
                     levelDao.delete(level);
                     editLevelResponse = new LevelResponse(true, "Level deleted", null);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     editLevelResponse = new LevelResponse(false, "something went wrong..please try again", null);
                 }
             } else {
