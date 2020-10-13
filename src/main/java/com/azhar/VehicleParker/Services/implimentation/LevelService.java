@@ -4,6 +4,7 @@ import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
+import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
@@ -29,11 +30,11 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
         if (!isLevelExist(inputLevel)) {
             try {
                 //Vehicles allowed for this level is inserted into database
-                boolean isAllowedVehiclesInserted = insertAllowedVehicles(inputLevel.getAllowedVehicles());
-                if(isAllowedVehiclesInserted){
-                    Level level = levelDao.insert(inputLevel);
-                    editLevelResponse = new LevelResponse(true, "Level added", level);
-                }
+                insertAllowedVehicles(inputLevel.getAllowedVehicles());
+
+                Level level = levelDao.insert(inputLevel);
+                editLevelResponse = new LevelResponse(true, "Level added", level);
+
 
             } catch (Exception e) {
                 String errorMessage = e.getMessage();
@@ -49,21 +50,27 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
 
     }
 
-    private boolean insertAllowedVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
+    private void insertAllowedVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
         for (AllowedVehicle allowedVehicle : allowedVehicles) {
             try {
                 Vehicle inputVehicle = allowedVehicle.getVehicle();
                 //input vehicle should be validated before editing.User may try to add non recognised vehicle
                 Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+                if(recognisedVehicle==null){
+                    throw new VehicleNotFound("vehicle not valid");
+                }
                 //input vehicle from user is replaced with recognised vehicle got from database
                 allowedVehicle.setVehicle(recognisedVehicle);
                 allowedVehicleDao.update(allowedVehicle);
+
             } catch (Exception e) {
+
                 throw e;
+
             }
-           
+
         }
-        return true;
+
     }
 
 
@@ -94,9 +101,11 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
     }
 
     private void removeAllowedVehicleMapping(Level level) throws Exception {
-        try{
-            for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+        try {
+            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
+                level.getAllowedVehicles().remove(allowedVehicle);
                 allowedVehicleDao.delete(allowedVehicle);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,12 +123,12 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
             if (!isLevelContainVehicles(inputLevel)) {
                 try {
                     //Vehicles allowed for this level is inserted into database
-                    boolean isAllowedVehiclesInserted = insertAllowedVehicles(inputLevel.getAllowedVehicles());
-                    if(isAllowedVehiclesInserted){
-                        levelDao.update(inputLevel);
-                        editLevelResponse = new LevelResponse(true, "Level edited", inputLevel);
-                    }
-                    
+                    insertAllowedVehicles(inputLevel.getAllowedVehicles());
+
+                    levelDao.update(inputLevel);
+                    editLevelResponse = new LevelResponse(true, "Level edited", inputLevel);
+
+
                 } catch (Exception e) {
                     editLevelResponse = new LevelResponse(false, "something went wrong..please try again" + e.getMessage(), null);
                 }

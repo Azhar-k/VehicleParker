@@ -182,6 +182,30 @@ public class AdminControllerTest {
     }
 
     @Test
+    public void testAddLevelGivenInvalidVehicle() throws Exception {
+        mockMvc.perform(post("/levels")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(" {\n" +
+                        "       \n" +
+                        "        \"levelNumber\": 100,\n" +
+                        "        \"allowedVehicles\": [\n" +
+                        "            {\n" +
+                        "                \n" +
+                        "                \"vehicle\": {\n" +
+                        "                    \n" +
+                        "                    \"name\": \"train\"\n" +
+                        "                },\n" +
+                        "                \"occupiedSlots\": 0,\n" +
+                        "                \"max_SLOTS\": 15\n" +
+                        "            }\n" +
+                        "        ]\n" +
+                        " \t\n" +
+                        " }")
+        ).andExpect(jsonPath("$.message").value("vehicle not valid"));
+
+    }
+
+    @Test
     @Ignore
     public void testEditLevelGivenExistingLevel() throws Exception {
         mockMvc.perform(put("/levels")
@@ -246,5 +270,17 @@ public class AdminControllerTest {
         ).andExpect(jsonPath("$.message").value("input Level does not exist"));
 
     }
+
+    @Test
+    public void testDeleteLevelGivenLevelContainsVehicle() throws Exception {
+
+        mockMvc.perform(delete("/levels")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"levelNumber\": 2}")//assume level 2 contains vehicle
+        ).andExpect(jsonPath("$.message").value("Level can not be deleted. It contains vehicle"));
+
+    }
+
+
 
 }

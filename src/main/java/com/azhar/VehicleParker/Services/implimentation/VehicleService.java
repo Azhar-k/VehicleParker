@@ -67,6 +67,7 @@ public class VehicleService implements com.azhar.VehicleParker.Services.VehicleS
             for(Level level:levelDao.getLevelList()){
                 for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
                     if(allowedVehicle.getVehicle().getName().equals(validVehicle.getName())){
+                        level.getAllowedVehicles().remove(allowedVehicle);
                         allowedVehicleDao.delete(allowedVehicle);
                         break;
                     }
