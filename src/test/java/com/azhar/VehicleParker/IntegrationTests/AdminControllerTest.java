@@ -1,11 +1,7 @@
 package com.azhar.VehicleParker.IntegrationTests;
 
 
-import com.azhar.VehicleParker.InitialLoading;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +19,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class AdminControllerTest {
-
+class AdminControllerTest {
+    //public modifier for the class hasbeen removed to solve junit vintage error
     @Autowired
     MockMvc mockMvc;
-    @Autowired
-    InitialLoading initialLoading;
 
     @BeforeEach
     public void initEach() throws Exception {
-        System.out.println("loaded");
-        initialLoading.loadData();
-        //park a single vehicle for testing delete level end point. level can not be deleted if it contains vehicle
         mockMvc.perform(post("/park")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"vehicleName\": \"car\" , \"vehicleNumber\":\"KL 11 BC 5978\" }")
@@ -133,7 +124,7 @@ public class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"levelNumber\": 100,\n" +
+                        "        \"number\": 100,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
@@ -157,7 +148,7 @@ public class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"levelNumber\": 1,\n" +
+                        "        \"number\": 1,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
@@ -181,7 +172,7 @@ public class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"levelNumber\": 100,\n" +
+                        "        \"number\": 100,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
@@ -205,7 +196,7 @@ public class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"levelNumber\": 1,\n" +
+                        "        \"number\": 1,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
@@ -228,7 +219,7 @@ public class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"levelNumber\": 1000,\n" +
+                        "        \"number\": 1000,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
@@ -247,20 +238,18 @@ public class AdminControllerTest {
     }
 
     @Test
-    @Disabled
     public void testDeleteLevelGivenExistingLevel() throws Exception {
         mockMvc.perform(delete("/levels")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"levelNumber\": 1}")
+                .content("{\"number\": 1}")
         ).andExpect(jsonPath("$.message").value("Level deleted"));
 
     }
     @Test
-    @Ignore
     public void testDeleteLevelGivenNewLevel() throws Exception {
         mockMvc.perform(delete("/levels")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"levelNumber\": 100}")
+                .content("{\"number\": 10}")
         ).andExpect(jsonPath("$.message").value("input Level does not exist"));
 
     }
@@ -270,7 +259,7 @@ public class AdminControllerTest {
 
         mockMvc.perform(delete("/levels")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"levelNumber\": 2}")//assume level 2 contains vehicle
+                .content("{\"number\": 2}")//assume level 2 contains vehicle
         ).andExpect(jsonPath("$.message").value("Level can not be deleted. It contains vehicle"));
 
     }

@@ -12,7 +12,7 @@ import java.util.List;
 public class Level {
     @Id
     private int number;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "level")
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval=true, mappedBy = "level")
     @LazyCollection(LazyCollectionOption.FALSE)
     public List<AllowedVehicle> allowedVehicles;
 
@@ -50,7 +50,7 @@ public class Level {
     @Override
     public String toString() {
         return "Level{" +
-                "levelNumber=" + number +
+                "number=" + number +
                 ", allowedVehicles=" + allowedVehicles +
                 '}';
     }

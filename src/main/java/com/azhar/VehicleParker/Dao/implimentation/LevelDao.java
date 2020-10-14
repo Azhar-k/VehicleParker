@@ -1,7 +1,6 @@
 package com.azhar.VehicleParker.Dao.implimentation;
 
 
-import com.azhar.VehicleParker.InitialLoading;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.repositories.LevelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import java.util.List;
 @Repository
 public class LevelDao implements com.azhar.VehicleParker.Dao.LevelDao {
 
-    @Autowired
-    InitialLoading initialLoading;
     @Autowired
     LevelRepository levelRepository;
 
@@ -39,6 +36,7 @@ public class LevelDao implements com.azhar.VehicleParker.Dao.LevelDao {
 
     @Override
     public Level getLevelByLevelNumber(int levelNumber) {
+
         return levelRepository.findLevelByNumber(levelNumber);
     }
 

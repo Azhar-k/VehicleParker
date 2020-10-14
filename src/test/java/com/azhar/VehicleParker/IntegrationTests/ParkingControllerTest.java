@@ -1,9 +1,7 @@
 package com.azhar.VehicleParker.IntegrationTests;
 
-import com.azhar.VehicleParker.InitialLoading;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,18 +18,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class ParkingControllerTest {
-
+class ParkingControllerTest {
+    //public modifier for the class hasbeen removed to solve junit vintage error
     @Autowired
     MockMvc mockMvc;
-    @Autowired
-    InitialLoading initialLoading;
+
 
 
     @BeforeEach
     public void initEach() throws Exception {
-        System.out.println("loaded");
-        initialLoading.loadData();
         //park a single vehicle for testing some use cases.
         mockMvc.perform(post("/park")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -80,9 +75,6 @@ public class ParkingControllerTest {
         ).andExpect(jsonPath("$.message").value("Parking Space is Full for container"));
     }
 
-    @Test
-    public void unParkVehicleGivenValidId(){
-
-    }
+    //add tests for unparking
 
 }

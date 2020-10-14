@@ -17,7 +17,6 @@ public class AllowedVehicle {
     private int MAX_SLOTS;
     private int occupiedSlots;
     private int freeSlots;
-
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "level_number", referencedColumnName = "number")

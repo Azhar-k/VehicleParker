@@ -3,6 +3,8 @@ package com.azhar.VehicleParker;
 
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelAllowedVehicle;
+import com.azhar.VehicleParker.Services.LevelService;
+import com.azhar.VehicleParker.db.models.Building.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,18 +14,13 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class VehicleParkerApplication implements CommandLineRunner {
 
-    static ApplicationContext applicationContext;
-    @Autowired
-    AllowedVehicleDao allowedVehicleDao;
     public static void main(String[] args) {
 
-        applicationContext = SpringApplication.run(VehicleParkerApplication.class, args);
-        InitialLoading initialLoading = applicationContext.getBean(InitialLoading.class);
-        //initialLoading.loadData();//call when initial loading is required
+        ApplicationContext applicationContext = SpringApplication.run(VehicleParkerApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(allowedVehicleDao.getAllowedVehiclesByLevelNumber(0));
+
     }
 }

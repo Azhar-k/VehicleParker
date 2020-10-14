@@ -33,8 +33,4 @@ public class AllowedVehicleDao implements com.azhar.VehicleParker.Dao.AllowedVeh
         return true;
     }
 
-    @Override
-    public List<AllowedVehicle> getAllowedVehiclesByLevelNumber(int levelNumber) {
-        return allowedVehicleRepository.findByLevelNumber(levelNumber);
-    }
 }

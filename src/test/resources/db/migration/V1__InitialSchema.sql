@@ -35,9 +35,9 @@ CREATE TABLE `allowed_vehicle` (
   FOREIGN KEY (`level_number`) REFERENCES `level` (`number`),
   FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`)
 ) ;
-insert into `vehicle` (name,parking_rate) values ("car",20),("bus",40),("van",20),("bike",10),("truck",70),("container",100);
+insert into `vehicle` (name,parking_rate) values ('car',20),('bus',40),('van',20),('bike',10),('truck',70),('container',100);
 insert into `level` (number) values (0),(1),(2),(3),(4),(5),(6),(7);
-INSERT INTO `vehicle_parker`.`allowed_vehicle`
+INSERT INTO `allowed_vehicle`
 (`max_slots`,
 `free_slots`,
 `occupied_slots`,

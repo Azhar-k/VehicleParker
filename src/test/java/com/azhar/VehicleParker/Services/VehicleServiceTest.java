@@ -119,7 +119,6 @@ public class VehicleServiceTest {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
             Mockito.when(levelDao.getLevelList()).thenReturn(mockData.loadLevels());
-            Mockito.when(allowedVehicleDao.delete(Mockito.any(AllowedVehicle.class))).thenReturn(true);
             VehicleResponse expected = new VehicleResponse(true, "vehicle deleted", inputVehicle);
             VehicleResponse actual = vehicleService.deleteVehicle(inputVehicle);
             assertEquals(expected.getMessage(), actual.getMessage());

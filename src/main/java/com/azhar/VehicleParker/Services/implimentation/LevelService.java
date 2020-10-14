@@ -30,9 +30,13 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
         if (!isLevelExist(inputLevel)) {
             try {
                 //Vehicles allowed for this level is inserted into database
-                insertAllowedVehicles(inputLevel.getAllowedVehicles());
 
+                insertAllowedVehicles(inputLevel.getAllowedVehicles(),inputLevel);
                 Level level = levelDao.insert(inputLevel);
+                for (AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+                    allowedVehicle.setLevel(level);
+                }
+                levelDao.update(level);
                 editLevelResponse = new LevelResponse(true, "Level added", level);
 
 
@@ -50,7 +54,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
 
     }
 
-    private void insertAllowedVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
+    private void insertAllowedVehicles(List<AllowedVehicle> allowedVehicles,Level level) throws Exception {
         for (AllowedVehicle allowedVehicle : allowedVehicles) {
             try {
                 Vehicle inputVehicle = allowedVehicle.getVehicle();
@@ -84,7 +88,6 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
             if (!isLevelContainVehicles(inputLevel)) {
                 try {
                     Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
-                    removeAllowedVehicleMapping(level);
                     levelDao.delete(level);
                     editLevelResponse = new LevelResponse(true, "Level deleted", null);
                 } catch (Exception e) {
@@ -101,18 +104,6 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
         return editLevelResponse;
     }
 
-    private void removeAllowedVehicleMapping(Level level) throws Exception {
-        try {
-            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
-                level.getAllowedVehicles().remove(allowedVehicle);
-                allowedVehicleDao.delete(allowedVehicle);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
 
     @Override
     public LevelResponse editLevel(Level inputLevel) {
@@ -124,9 +115,15 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
             if (!isLevelContainVehicles(inputLevel)) {
                 try {
                     //Vehicles allowed for this level is inserted into database
-                    insertAllowedVehicles(inputLevel.getAllowedVehicles());
+                    insertAllowedVehicles(inputLevel.getAllowedVehicles(),inputLevel);
 
-                    levelDao.update(inputLevel);
+                    Level level=levelDao.update(inputLevel);
+
+                    for (AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+                        allowedVehicle.setLevel(level);
+                    }
+                    levelDao.update(level);
+
                     editLevelResponse = new LevelResponse(true, "Level edited", inputLevel);
 
 

@@ -39,11 +39,14 @@ public class LevelServiceTest {
 
     @Nested
     public class testInsertLevel{
+
         @Test
         public void givenNewLevel(){
             Level input = mockData.loadLevels().get(0);
-            input.setLevelNumber(100);//change level number to a new level number
+            System.out.println(input.getNumber());
+            input.setNumber(100);//change level number to a new level number
 
+            System.out.println(input.getAllowedVehicles());
             when(levelDao.insert(input)).thenReturn(input);
             when(vehicleDao.getVehicleByName(anyString())).thenReturn(mockData.findVehicleByName("car"));
 
@@ -98,7 +101,7 @@ public class LevelServiceTest {
 
             when(levelDao.getLevelByLevelNumber(anyInt())).thenReturn(mockData.loadLevels().get(0));
 
-            LevelResponse expected = new LevelResponse(true,"level deleted",input);
+            LevelResponse expected = new LevelResponse(true,"Level deleted",input);
             LevelResponse actual = levelService.deleteLevel(input);
 
             assertAll(()->{

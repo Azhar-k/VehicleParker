@@ -45,7 +45,7 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
         levelList.sort(new SortbyLevelNumber());
         for (Level level : levelList) {
             LevelSpace levelSpace = new LevelSpace(level.getNumber());
-            for (AllowedVehicle allowedVehicle : allowedVehicleDao.getAllowedVehiclesByLevelNumber(level.getNumber())) {
+            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                 int freeSlot = allowedVehicle.getFreeSlots();
                 levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
 
