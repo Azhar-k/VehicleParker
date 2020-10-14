@@ -61,7 +61,7 @@ public class LevelServiceTest {
         public void givenExistingLevel(){
             Level input = mockData.loadLevels().get(0);
 
-            when(levelDao.getLevelByLevelNumber(anyInt())).thenReturn(mockData.loadLevels().get(0));
+            when(levelDao.getLevelByLevelNumber(0)).thenReturn(mockData.loadLevels().get(0));
 
             LevelResponse expected = new LevelResponse(false,"level already exist",input);
             LevelResponse actual = levelService.insertLevel(input);
@@ -80,7 +80,7 @@ public class LevelServiceTest {
         public void givenNewLevel(){
             Level input = new Level(100);
 
-            when(levelDao.getLevelByLevelNumber(any())).thenReturn(null);
+            when(levelDao.getLevelByLevelNumber(anyInt())).thenReturn(null);
 
             LevelResponse expected = new LevelResponse(false,"input Level does not exist",input);
             LevelResponse actual = levelService.deleteLevel(input);

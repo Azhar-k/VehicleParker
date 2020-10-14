@@ -77,7 +77,7 @@ public class ParkingControllerTest {
         mockMvc.perform(post("/park")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"vehicleName\": \"container\" , \"vehicleNumber\":\"KL 10 AC 6978\" }")
-        ).andExpect(jsonPath("$.message").value("Parking space is full for container"));
+        ).andExpect(jsonPath("$.message").value("Parking Space is Full for container"));
     }
 
     @Test
