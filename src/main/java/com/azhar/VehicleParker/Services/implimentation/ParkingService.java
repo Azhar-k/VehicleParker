@@ -119,7 +119,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         try{
             Level level = levelDao.getLevelByLevelNumber(levelNumber);
 
-            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
+            for (AllowedVehicle allowedVehicle : allowedVehicleDao.getAllowedVehiclesByLevelNumber(level.getNumber())) {
                 if (allowedVehicle.getVehicle().getId() == parkedVehicleId) {
 
                     int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();

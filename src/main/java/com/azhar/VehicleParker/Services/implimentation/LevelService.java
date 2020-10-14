@@ -83,7 +83,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
         if (isLevelExist) {
             if (!isLevelContainVehicles(inputLevel)) {
                 try {
-                    Level level = levelDao.getLevelByLevelNumber(inputLevel.getLevelNumber());
+                    Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
                     removeAllowedVehicleMapping(level);
                     levelDao.delete(level);
                     editLevelResponse = new LevelResponse(true, "Level deleted", null);
@@ -146,7 +146,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
     @Override
     public Boolean isLevelExist(Level inputLevel) {
         boolean isLevelExist = true;
-        Level level = levelDao.getLevelByLevelNumber(inputLevel.getLevelNumber());
+        Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
         if (level == null) {
             isLevelExist = false;
         }
@@ -156,7 +156,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
     @Override
     public Boolean isLevelContainVehicles(Level level) {
         boolean isLevelContainsVehicle = false;
-        level = levelDao.getLevelByLevelNumber(level.getLevelNumber());
+        level = levelDao.getLevelByLevelNumber(level.getNumber());
         for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
             if (allowedVehicle.getOccupiedSlots() > 0) {
                 isLevelContainsVehicle = true;

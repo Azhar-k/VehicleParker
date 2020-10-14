@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker.db.models.Building;
 
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -17,16 +18,28 @@ public class AllowedVehicle {
     private int occupiedSlots;
     private int freeSlots;
 
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "level_number", referencedColumnName = "number")
+    public Level level;
 
     public AllowedVehicle() {
     }
 
-    public AllowedVehicle(int MAX_SLOTS, int occupiedSlots, Vehicle vehicle) {
-
+    public AllowedVehicle(int MAX_SLOTS, int occupiedSlots, Vehicle vehicle,Level level) {
+        this.level=level;
         this.MAX_SLOTS = MAX_SLOTS;
         this.occupiedSlots = occupiedSlots;
         this.freeSlots = this.MAX_SLOTS - this.occupiedSlots;
         this.vehicle = vehicle;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 
     public int getId() {

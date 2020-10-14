@@ -1,5 +1,6 @@
 package com.azhar.VehicleParker.Services.implimentation;
 
+import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
@@ -27,6 +28,10 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
     @Autowired
     VehicleDao vehicleDao;
 
+    @Autowired
+    AllowedVehicleDao allowedVehicleDao;
+
+
     @Override
     public List<LevelParkedVehicle> getLevelVehicleList() {
         return levelParkedVehicleDao.getLevelParkedVehicleList();
@@ -39,8 +44,8 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
         List<Level> levelList = levelDao.getLevelList();
         levelList.sort(new SortbyLevelNumber());
         for (Level level : levelList) {
-            LevelSpace levelSpace = new LevelSpace(level.getLevelNumber());
-            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
+            LevelSpace levelSpace = new LevelSpace(level.getNumber());
+            for (AllowedVehicle allowedVehicle : allowedVehicleDao.getAllowedVehiclesByLevelNumber(level.getNumber())) {
                 int freeSlot = allowedVehicle.getFreeSlots();
                 levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
 
@@ -65,7 +70,7 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
 
     class SortbyLevelNumber implements Comparator<Level> {
         public int compare(Level a, Level b) {
-            return a.getLevelNumber() - b.getLevelNumber();
+            return a.getNumber() - b.getNumber();
         }
     }
 
