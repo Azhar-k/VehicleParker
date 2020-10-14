@@ -1,33 +1,28 @@
 package com.azhar.VehicleParker.IntegrationTests;
 
-import com.azhar.VehicleParker.Dao.implimentation.VehicleDao;
+
 import com.azhar.VehicleParker.InitialLoading;
-import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
-import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-//This class is incomplete
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AdminControllerTest {
 
     @Autowired
@@ -35,18 +30,17 @@ public class AdminControllerTest {
     @Autowired
     InitialLoading initialLoading;
 
-
-
     @BeforeEach
     public void initEach() throws Exception {
         System.out.println("loaded");
         initialLoading.loadData();
-        //park a single vehicle for testing some endpoints
+        //park a single vehicle for testing delete level end point. level can not be deleted if it contains vehicle
         mockMvc.perform(post("/park")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"vehicleName\": \"car\" , \"vehicleNumber\":\"KL 11 BC 5978\" }")
         );//this vehicle is parked in level 2 always.
     }
+
 
 
     @Test
@@ -262,6 +256,7 @@ public class AdminControllerTest {
 
     }
     @Test
+    @Ignore
     public void testDeleteLevelGivenNewLevel() throws Exception {
         mockMvc.perform(delete("/levels")
                 .contentType(MediaType.APPLICATION_JSON)

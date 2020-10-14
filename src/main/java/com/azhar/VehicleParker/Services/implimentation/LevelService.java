@@ -16,12 +16,12 @@ import java.util.List;
 @Service
 public class LevelService implements com.azhar.VehicleParker.Services.LevelService {
 
-    @Autowired
-    LevelDao levelDao;
-    @Autowired
-    AllowedVehicleDao allowedVehicleDao;
-    @Autowired
-    VehicleDao vehicleDao;
+        @Autowired
+        LevelDao levelDao;
+        @Autowired
+        AllowedVehicleDao allowedVehicleDao;
+        @Autowired
+        VehicleDao vehicleDao;
 
     @Override
     public LevelResponse insertLevel(Level inputLevel) {

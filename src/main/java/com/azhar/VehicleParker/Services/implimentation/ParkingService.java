@@ -63,7 +63,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
         //Create a levelParkedVehicle for this parking get a unique id for this parking.Unique id is attribute of LevelParkedVehicle
         LevelParkedVehicle levelParkedVehicle = addLevelParkedVehicle(availableLevelNumber, vehicle.getId(), vehicle.getName(), parkRequest.getVehicleNumber(),vehicle.getParkingRate());
         if(levelParkedVehicle==null){
-            throw new Exception("This vehicle is already parked ");
+            throw new Exception("This vehicle is already parked");
         }
 
         //close the slot in the level corresponding to the parking

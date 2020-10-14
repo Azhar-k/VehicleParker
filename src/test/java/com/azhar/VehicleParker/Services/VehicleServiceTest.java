@@ -1,8 +1,12 @@
 package com.azhar.VehicleParker.Services;
 
+import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
+import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
+import com.azhar.VehicleParker.MockData;
 import com.azhar.VehicleParker.Services.implimentation.VehicleService;
+import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,15 +17,21 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class VehicleServiceTest {
 
     @Mock
     private VehicleDao vehicleDao;
+    @Mock
+    private LevelDao levelDao;
+    @Mock
+    private AllowedVehicleDao allowedVehicleDao;
 
     @InjectMocks
     private VehicleService vehicleService;
+    MockData mockData = new MockData();
 
     @Nested
     public class ValidateVehicleTest {
@@ -108,8 +118,8 @@ public class VehicleServiceTest {
         void deleteVehicleTestGivenExistingVehicle() {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
-            //Mockito.when(vehicleDao.delete(inputVehicle)).then();
-
+            Mockito.when(levelDao.getLevelList()).thenReturn(mockData.loadLevels());
+            Mockito.when(allowedVehicleDao.delete(Mockito.any(AllowedVehicle.class))).thenReturn(true);
             VehicleResponse expected = new VehicleResponse(true, "vehicle deleted", inputVehicle);
             VehicleResponse actual = vehicleService.deleteVehicle(inputVehicle);
             assertEquals(expected.getMessage(), actual.getMessage());
@@ -124,6 +134,7 @@ public class VehicleServiceTest {
             VehicleResponse actual = vehicleService.deleteVehicle(inputVehicle);
             assertEquals(expected.getMessage(), actual.getMessage());
         }
+
     }
 
 

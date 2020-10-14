@@ -9,5 +9,5 @@ public interface AllowedVehicleDao {
 
     AllowedVehicle insert(AllowedVehicle allowedVehicle);
 
-    void delete(AllowedVehicle allowedVehicle);
+    boolean delete(AllowedVehicle allowedVehicle);
 }

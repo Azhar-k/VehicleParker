@@ -39,7 +39,7 @@ public class InitialLoading {
         //adding extra level where bus and container can be parked
         level = new Level(0);
         allowedVehicles = new ArrayList<AllowedVehicle>();
-        addAllowedVehiclesToList(allowedVehicles, "container", 3);//container
+        addAllowedVehiclesToList(allowedVehicles, "container", 5);//container
         addAllowedVehiclesToList(allowedVehicles, "truck", 10);//truck
         level.setAllowedVehicles(allowedVehicles);
         levelRepository.save(level);

@@ -26,7 +26,8 @@ public class AllowedVehicleDao implements com.azhar.VehicleParker.Dao.AllowedVeh
     }
 
     @Override
-    public void delete(AllowedVehicle allowedVehicle) {
+    public boolean delete(AllowedVehicle allowedVehicle) {
         allowedVehicleRepository.delete(allowedVehicle);
+        return true;
     }
 }
