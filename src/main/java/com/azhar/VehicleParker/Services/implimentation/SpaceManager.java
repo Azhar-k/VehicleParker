@@ -44,8 +44,8 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
         List<Level> levelList = levelDao.getLevelList();
         levelList.sort(new SortbyLevelNumber());
         for (Level level : levelList) {
-            LevelSpace levelSpace = new LevelSpace(level.getLevelNumber());
-            for (AllowedVehicle allowedVehicle : allowedVehicleDao.getAllowedVehiclesByLevelNumber(level.getLevelNumber())) {
+            LevelSpace levelSpace = new LevelSpace(level.getNumber());
+            for (AllowedVehicle allowedVehicle : allowedVehicleDao.getAllowedVehiclesByLevelNumber(level.getNumber())) {
                 int freeSlot = allowedVehicle.getFreeSlots();
                 levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
 
@@ -70,7 +70,7 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
 
     class SortbyLevelNumber implements Comparator<Level> {
         public int compare(Level a, Level b) {
-            return a.getLevelNumber() - b.getLevelNumber();
+            return a.getNumber() - b.getNumber();
         }
     }
 

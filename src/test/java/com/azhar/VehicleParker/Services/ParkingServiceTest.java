@@ -249,7 +249,7 @@ public class ParkingServiceTest {
     private List<LevelSpace> getLAvailableSpace() {
         List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
         for (Level level : loadLevels()) {
-            LevelSpace levelSpace = new LevelSpace(level.getLevelNumber());
+            LevelSpace levelSpace = new LevelSpace(level.getNumber());
             for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                 int freeSlot = allowedVehicle.getFreeSlots();
                 levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);

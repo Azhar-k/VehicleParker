@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public interface LevelRepository extends JpaRepository<Level, Integer> {
-    Level findLevelByLevelNumber(int levelNumber);
+    Level findLevelByNumber(int levelNumber);
 
-    List<Level> findByOrderByLevelNumberAsc();
+    List<Level> findByOrderByNumberAsc();
 }

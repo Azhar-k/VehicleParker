@@ -1,6 +1,6 @@
 CREATE TABLE `level` (
-  `level_number` int NOT NULL,
-  PRIMARY KEY (`level_number`)
+  `number` int NOT NULL,
+  PRIMARY KEY (`number`)
 );
 
 CREATE TABLE `vehicle` (
@@ -32,6 +32,6 @@ CREATE TABLE `allowed_vehicle` (
   `level_number` int DEFAULT NULL,
   `vehicle_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`level_number`) REFERENCES `level` (`level_number`),
+  FOREIGN KEY (`level_number`) REFERENCES `level` (`number`),
   FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`)
 ) ;

@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker.db.models.Building;
 
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -16,9 +17,11 @@ public class AllowedVehicle {
     private int MAX_SLOTS;
     private int occupiedSlots;
     private int freeSlots;
+
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "levelNumber", referencedColumnName = "levelNumber")
-    private Level level;
+    @JoinColumn(name = "level_number", referencedColumnName = "number")
+    public Level level;
 
     public AllowedVehicle() {
     }

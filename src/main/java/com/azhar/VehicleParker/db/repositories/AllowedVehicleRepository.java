@@ -11,5 +11,5 @@ public interface AllowedVehicleRepository extends JpaRepository<AllowedVehicle, 
 
     AllowedVehicle findAllowedVehicleByVehicleId(int id);
 
-    List<AllowedVehicle> findByLevelLevelNumber(int levelNumber);
+    List<AllowedVehicle> findByLevelNumber(int levelNumber);
 }
