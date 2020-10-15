@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Services;
+package com.azhar.VehicleParker.services;
 
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.db.models.LevelParkedVehicle;

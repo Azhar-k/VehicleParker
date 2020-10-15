@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Services.implimentation;
+package com.azhar.VehicleParker.services.implimentation;
 
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LevelService implements com.azhar.VehicleParker.Services.LevelService {
+public class LevelService implements com.azhar.VehicleParker.services.LevelService {
 
         @Autowired
         LevelDao levelDao;
@@ -22,6 +22,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
         AllowedVehicleDao allowedVehicleDao;
         @Autowired
         VehicleDao vehicleDao;
+
 
     @Override
     public List<Level> getLevels() {
@@ -46,11 +47,13 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
 
 
             } catch (Exception e) {
+
                 String errorMessage = e.getMessage();
                 editLevelResponse = new LevelResponse(false, errorMessage, null);
             }
 
         } else {
+
             String errorMessage = "level already exist";
             editLevelResponse = new LevelResponse(false, errorMessage, null);
         }

@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Services;
+package com.azhar.VehicleParker.services;
 
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
@@ -6,8 +6,7 @@ import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
 import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.MockData;
-import com.azhar.VehicleParker.Services.implimentation.VehicleService;
-import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
+import com.azhar.VehicleParker.services.implimentation.VehicleService;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

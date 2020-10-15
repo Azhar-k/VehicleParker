@@ -1,6 +1,5 @@
-package com.azhar.VehicleParker.Services.implimentation;
+package com.azhar.VehicleParker.services.implimentation;
 
-import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class VehicleService implements com.azhar.VehicleParker.Services.VehicleService {
+public class VehicleService implements com.azhar.VehicleParker.services.VehicleService {
 
     @Autowired
     VehicleDao vehicleDao;

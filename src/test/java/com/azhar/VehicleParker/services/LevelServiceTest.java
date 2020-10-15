@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.Services;
+package com.azhar.VehicleParker.services;
 
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
@@ -6,15 +6,13 @@ import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
 import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.MockData;
-import com.azhar.VehicleParker.Services.implimentation.LevelService;
+import com.azhar.VehicleParker.services.implimentation.LevelService;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertAll;

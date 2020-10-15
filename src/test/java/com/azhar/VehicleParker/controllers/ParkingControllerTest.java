@@ -1,4 +1,4 @@
-package com.azhar.VehicleParker.IntegrationTests;
+package com.azhar.VehicleParker.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

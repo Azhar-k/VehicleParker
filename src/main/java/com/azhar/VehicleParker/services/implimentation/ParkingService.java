@@ -1,11 +1,11 @@
-package com.azhar.VehicleParker.Services.implimentation;
+package com.azhar.VehicleParker.services.implimentation;
 
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
-import com.azhar.VehicleParker.Services.SpaceManager;
+import com.azhar.VehicleParker.services.SpaceManager;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.Entities.LevelSpace;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ParkingService implements com.azhar.VehicleParker.Services.ParkingService {
+public class ParkingService implements com.azhar.VehicleParker.services.ParkingService {
 
     @Autowired
     LevelDao levelDao;
