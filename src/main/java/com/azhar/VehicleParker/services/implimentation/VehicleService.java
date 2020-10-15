@@ -1,5 +1,6 @@
 package com.azhar.VehicleParker.services.implimentation;
 
+import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;

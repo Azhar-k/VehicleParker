@@ -8,19 +8,25 @@ import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
+@Slf4j
 public class LevelService implements com.azhar.VehicleParker.services.LevelService {
 
-        @Autowired
-        LevelDao levelDao;
-        @Autowired
-        VehicleDao vehicleDao;
+    @Autowired
+    LevelDao levelDao;
+    @Autowired
+    VehicleDao vehicleDao;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Override
     public List<Level> getLevels() {
@@ -37,7 +43,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
                 validateVehicles(inputLevel.getAllowedVehicles());
                 Level level = levelDao.insert(inputLevel);
                 //allowed vehicles in inputLevel may not contain the level attribute.
-                for (AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+                for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                     allowedVehicle.setLevel(level);
                 }
                 levelDao.update(level);//update the level after changing the allowed vehicle's attribute
@@ -45,7 +51,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
 
             } catch (Exception e) {
-
+                logger.error(e.toString());
                 String errorMessage = e.getMessage();
                 editLevelResponse = new LevelResponse(false, errorMessage, null);
             }
@@ -65,14 +71,14 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
             try {
                 Vehicle inputVehicle = allowedVehicle.getVehicle();
                 Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
-                if(recognisedVehicle==null){
+                if (recognisedVehicle == null) {
                     throw new VehicleNotFound("vehicle not valid");
                 }
                 //input vehicle from user is replaced with recognised vehicle got from database
                 allowedVehicle.setVehicle(recognisedVehicle);
 
             } catch (Exception e) {
-
+                logger.error(e.toString());
                 throw e;
 
             }
@@ -96,6 +102,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
                     editLevelResponse = new LevelResponse(true, "Level deleted", null);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    logger.error(e.toString());
                     editLevelResponse = new LevelResponse(false, "something went wrong..please try again", null);
                 }
             } else {
@@ -121,9 +128,9 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
                     //Vehicles allowed for this level is inserted into database
                     validateVehicles(inputLevel.getAllowedVehicles());
 
-                    Level level=levelDao.update(inputLevel);
+                    Level level = levelDao.update(inputLevel);
 
-                    for (AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
+                    for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                         allowedVehicle.setLevel(level);
                     }
                     levelDao.update(level);
@@ -132,6 +139,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
 
                 } catch (Exception e) {
+                    logger.error(e.toString());
                     editLevelResponse = new LevelResponse(false, "something went wrong..please try again" + e.getMessage(), null);
                 }
             } else {

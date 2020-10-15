@@ -12,10 +12,14 @@ import com.azhar.VehicleParker.Entities.LevelSpace;
 import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class ParkingService implements com.azhar.VehicleParker.services.ParkingService {
 
     @Autowired
@@ -29,6 +33,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
     @Autowired
     SpaceManager spaceManager;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
     public ParkResponse park(ParkRequest parkRequest) {
         ParkResponse parkResponse;
         try {
@@ -85,13 +90,15 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
         int levelNo = -1;
         for (LevelSpace levelSpace : spaceManager.getLAvailableSpace()) {
             try {
-                int freeSlot = levelSpace.getAvailabeSlots().get(vehicle.getName());
-                if (freeSlot > 0) {
-                    levelNo = levelSpace.getLevelNumber();
-                    return levelNo;
+                if(levelSpace.getAvailabeSlots().keySet().contains(vehicle.getName())){
+                    int freeSlot = levelSpace.getAvailabeSlots().get(vehicle.getName());
+                    if (freeSlot > 0) {
+                        levelNo = levelSpace.getLevelNumber();
+                        return levelNo;
+                    }
                 }
-
             } catch (Exception e) {
+                logger.error(e.toString());
                 levelNo = -1;
             }
 
@@ -106,8 +113,10 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
 
             levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber,parkingRate);
             levelParkedVehicleDao.insert(levelParkedVehicle);
+            logger.info("vehicle parked "+levelParkedVehicle);
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("exception occured in addLevelParkedVehicle :",e);
             levelParkedVehicle = null;
         }
 
@@ -135,7 +144,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             isSlotFilled=true;
 
         } catch (Exception e) {
-
+            logger.error(e.toString());
         }
         return isSlotFilled;
 
@@ -202,7 +211,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             levelDao.update(level);
             isSlotEmptied = true;
         } catch (Exception e) {
-
+            logger.error(e.toString());
         }
         return isSlotEmptied;
     }
@@ -212,6 +221,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             levelParkedVehicleDao.delete(levelParkedVehicle);
             return true;
         } catch (Exception e) {
+            logger.error(e.toString());
             return false;
         }
     }
