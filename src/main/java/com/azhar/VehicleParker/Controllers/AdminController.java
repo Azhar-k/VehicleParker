@@ -26,9 +26,8 @@ public class AdminController {
     @GetMapping(path = "/levels")
     public List<Level> getLevelList() {
 
-        return spaceManager.getLevelList();
+        return levelService.getLevels();
     }
-
     @PostMapping(path = "/levels")
     public LevelResponse addLevel(@RequestBody Level level) {
         return levelService.insertLevel(level);
@@ -52,9 +51,8 @@ public class AdminController {
     @GetMapping(path = "/vehicles")
     public List<Vehicle> getVehicleList() {
 
-        return spaceManager.getVehicles();
+        return vehicleService.getVehicles();
     }
-
     @PostMapping(path = "/vehicles")
     public VehicleResponse addVehicle(@RequestBody Vehicle inputVehicle) {
         return vehicleService.insertVehicle(inputVehicle);

@@ -13,7 +13,7 @@ public interface ParkingService {
 
     LevelParkedVehicle parkVehicle(ParkRequest parkRequest) throws Exception;
 
-    Vehicle getVehicleByName(String name);
+    Vehicle getVehicleByName(String name) throws Exception;
 
     int getAvailableLevelNumber(Vehicle vehicle);
 

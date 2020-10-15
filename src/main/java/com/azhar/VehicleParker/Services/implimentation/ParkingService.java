@@ -26,7 +26,6 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
     LevelParkedVehicleDao levelParkedVehicleDao;
     @Autowired
     VehicleDao vehicleDao;
-
     @Autowired
     SpaceManager spaceManager;
 
@@ -60,7 +59,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
 
             throw new Exception("Parking Space is Full for " + vehicle.getName());
         }
-        //Create a levelParkedVehicle for this parking get a unique id for this parking.Unique id is attribute of LevelParkedVehicle
+        //Create a levelParkedVehicle for this parking amd get a unique id for this parking.Unique id is attribute of LevelParkedVehicle
         LevelParkedVehicle levelParkedVehicle = addLevelParkedVehicle(availableLevelNumber, vehicle.getId(), vehicle.getName(), parkRequest.getVehicleNumber(),vehicle.getParkingRate());
         if(levelParkedVehicle==null){
             throw new Exception("This vehicle is already parked");
@@ -76,7 +75,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
     }
 
 
-    public Vehicle getVehicleByName(String name) {
+    public Vehicle getVehicleByName(String name) throws Exception {
         Vehicle vehicle = vehicleDao.getVehicleByName(name);
         return vehicle;
     }
@@ -108,6 +107,7 @@ public class ParkingService implements com.azhar.VehicleParker.Services.ParkingS
             levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber,parkingRate);
             levelParkedVehicleDao.insert(levelParkedVehicle);
         } catch (Exception e) {
+            e.printStackTrace();
             levelParkedVehicle = null;
         }
 

@@ -19,20 +19,11 @@ public class VehicleDao implements com.azhar.VehicleParker.Dao.VehicleDao {
     }
 
     @Override
-    public Vehicle getVehicleByName(String name) {
-        return vehicleRepository.findVehicleByName(name);
-    }
+    public Vehicle getVehicleByName(String name) throws VehicleNotFound{
 
-    @Override
-    public Vehicle findById(int id) {
-        return vehicleRepository.getOne(id);
-    }
-
-    @Override
-    public Vehicle getVehicleById(int id) throws VehicleNotFound {
         Vehicle vehicle = null;
         try {
-            vehicle = vehicleRepository.getOne(id);
+            vehicle = vehicleRepository.findVehicleByName(name);
         } catch (Exception e) {
             throw new VehicleNotFound("Vehicle not exist");
         }

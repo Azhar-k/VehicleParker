@@ -15,8 +15,4 @@ public interface SpaceManager {
 
     List<LevelSpace> getLAvailableSpace();
 
-    List<Level> getLevelList();
-
-    List<Vehicle> getVehicles();
-
 }

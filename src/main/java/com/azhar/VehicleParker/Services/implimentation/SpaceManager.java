@@ -25,11 +25,6 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
     @Autowired
     LevelParkedVehicleDao levelParkedVehicleDao;
 
-    @Autowired
-    VehicleDao vehicleDao;
-
-    @Autowired
-    AllowedVehicleDao allowedVehicleDao;
 
 
     @Override
@@ -56,16 +51,6 @@ public class SpaceManager implements com.azhar.VehicleParker.Services.SpaceManag
         return availableSpace;
     }
 
-
-    @Override
-    public List<Level> getLevelList() {
-        return levelDao.getLevelBySortedLevelNumber();
-    }
-
-    @Override
-    public List<Vehicle> getVehicles() {
-        return vehicleDao.getVehicleList();
-    }
 
 
     class SortbyLevelNumber implements Comparator<Level> {

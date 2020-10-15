@@ -10,6 +10,8 @@ import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VehicleService implements com.azhar.VehicleParker.Services.VehicleService {
 
@@ -17,8 +19,11 @@ public class VehicleService implements com.azhar.VehicleParker.Services.VehicleS
     VehicleDao vehicleDao;
     @Autowired
     LevelDao levelDao;
-    @Autowired
-    AllowedVehicleDao allowedVehicleDao;
+
+    @Override
+    public List<Vehicle> getVehicles() {
+        return vehicleDao.getVehicleList();
+    }
 
     @Override
     public VehicleResponse insertVehicle(Vehicle inputVehicle) {
@@ -102,7 +107,13 @@ public class VehicleService implements com.azhar.VehicleParker.Services.VehicleS
 
     @Override
     public Vehicle validateVehicle(Vehicle inputVehicle) {
-        Vehicle vehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+        Vehicle vehicle=null;
+        try {
+            vehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         return vehicle;
     }

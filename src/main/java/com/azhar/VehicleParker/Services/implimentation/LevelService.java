@@ -24,6 +24,11 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
         VehicleDao vehicleDao;
 
     @Override
+    public List<Level> getLevels() {
+        return levelDao.getLevelBySortedLevelNumber();
+    }
+
+    @Override
     public LevelResponse insertLevel(Level inputLevel) {
         LevelResponse editLevelResponse = null;
 
@@ -31,7 +36,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
             try {
                 //Vehicles allowed for this level is inserted into database
 
-                insertAllowedVehicles(inputLevel.getAllowedVehicles(),inputLevel);
+                insertAllowedVehicles(inputLevel.getAllowedVehicles());
                 Level level = levelDao.insert(inputLevel);
                 for (AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
                     allowedVehicle.setLevel(level);
@@ -54,7 +59,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
 
     }
 
-    private void insertAllowedVehicles(List<AllowedVehicle> allowedVehicles,Level level) throws Exception {
+    private void insertAllowedVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
         for (AllowedVehicle allowedVehicle : allowedVehicles) {
             try {
                 Vehicle inputVehicle = allowedVehicle.getVehicle();
@@ -115,7 +120,7 @@ public class LevelService implements com.azhar.VehicleParker.Services.LevelServi
             if (!isLevelContainVehicles(inputLevel)) {
                 try {
                     //Vehicles allowed for this level is inserted into database
-                    insertAllowedVehicles(inputLevel.getAllowedVehicles(),inputLevel);
+                    insertAllowedVehicles(inputLevel.getAllowedVehicles());
 
                     Level level=levelDao.update(inputLevel);
 

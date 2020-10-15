@@ -4,6 +4,7 @@ import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
+import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.MockData;
 import com.azhar.VehicleParker.Services.implimentation.LevelService;
 import com.azhar.VehicleParker.db.models.Building.Level;
@@ -41,7 +42,7 @@ public class LevelServiceTest {
     public class testInsertLevel{
 
         @Test
-        public void givenNewLevel(){
+        public void givenNewLevel() throws VehicleNotFound {
             Level input = mockData.loadLevels().get(0);
             System.out.println(input.getNumber());
             input.setNumber(100);//change level number to a new level number

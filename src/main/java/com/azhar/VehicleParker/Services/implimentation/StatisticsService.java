@@ -25,14 +25,22 @@ public class StatisticsService implements com.azhar.VehicleParker.Services.Stati
     @Override
     public StatisticsResponse getAmountByDate(LocalDate localDate) {
         int amount = 0;
-        for (LevelParkedVehicle levelParkedVehicle : levelParkedVehicleDao.getLevelParkedVehicleList()) {
-            if (levelParkedVehicle.getDate().compareTo(localDate)==0) {
-                String vehicleName = levelParkedVehicle.getVehicleName();
-                int vehiclerate = vehicleDao.getVehicleByName(vehicleName).getParkingRate();
-                amount += vehiclerate;
+        StatisticsResponse statisticsResponse=null;
+        try {
+            for (LevelParkedVehicle levelParkedVehicle : levelParkedVehicleDao.getLevelParkedVehicleList()) {
+                if (levelParkedVehicle.getDate().compareTo(localDate) == 0) {
+                    String vehicleName = levelParkedVehicle.getVehicleName();
+                    int vehiclerate = vehicleDao.getVehicleByName(vehicleName).getParkingRate();
+                    amount += vehiclerate;
+                }
             }
+            statisticsResponse = new StatisticsResponse(true, "Total amount collected for the date is : " + amount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            statisticsResponse = new StatisticsResponse(false, e.getMessage());
         }
-        return new StatisticsResponse(true, "Total amount collected for the date is : " + amount);
+
+        return statisticsResponse;
     }
 
     @Override
@@ -41,7 +49,7 @@ public class StatisticsService implements com.azhar.VehicleParker.Services.Stati
         if (isVehicleValid(vehicleType)) {
             int count = 0;
             for (LevelParkedVehicle levelParkedVehicle : levelParkedVehicleDao.getLevelParkedVehicleList()) {
-                if (levelParkedVehicle.getDate().compareTo(localDate)==0 && levelParkedVehicle.getVehicleName().equals(vehicleType)) {
+                if (levelParkedVehicle.getDate().compareTo(localDate) == 0 && levelParkedVehicle.getVehicleName().equals(vehicleType)) {
                     count += 1;
                 }
             }
@@ -57,15 +65,15 @@ public class StatisticsService implements com.azhar.VehicleParker.Services.Stati
 
     @Override
     public List<Statistics> getStatistics() {
-        List<Statistics> statisticsList=new ArrayList<Statistics>();
-        for(LocalDate localDate:levelParkedVehicleDao.getDistinctDate()){
+        List<Statistics> statisticsList = new ArrayList<Statistics>();
+        for (LocalDate localDate : levelParkedVehicleDao.getDistinctDate()) {
             //Statistics is created for each unique localDate in levelParkedVehicle table
-            Statistics statistics=new Statistics(localDate);
-            for(Vehicle vehicle:vehicleDao.getVehicleList()){
+            Statistics statistics = new Statistics(localDate);
+            for (Vehicle vehicle : vehicleDao.getVehicleList()) {
                 //details for each vehicle in database for a given date is calculated
-                String vehicleName=vehicle.getName();
-                int countOfVehicle=levelParkedVehicleDao.findCountByDateAndVehicleName(vehicleName,localDate);
-                VehicleStatByType vehicleStatByType=new VehicleStatByType(countOfVehicle,vehicle);//total amount is setup implicitely
+                String vehicleName = vehicle.getName();
+                int countOfVehicle = levelParkedVehicleDao.findCountByDateAndVehicleName(vehicleName, localDate);
+                VehicleStatByType vehicleStatByType = new VehicleStatByType(countOfVehicle, vehicle);//total amount is setup implicitely
                 statistics.addVehicleStatByType(vehicleStatByType);
             }
             statistics.getVehicleStatByTypeList().sort(new sortByAmount());
@@ -77,17 +85,23 @@ public class StatisticsService implements com.azhar.VehicleParker.Services.Stati
 
     public boolean isVehicleValid(String vehicleName) {
         boolean isVehicleValid = true;
-        if (vehicleDao.getVehicleByName(vehicleName) == null) {
+        try{
+            if (vehicleDao.getVehicleByName(vehicleName) == null) {
+                isVehicleValid = false;
+            }
+        } catch (Exception e) {
             isVehicleValid = false;
+            e.printStackTrace();
         }
+
         return isVehicleValid;
     }
 
-    public class sortByAmount implements Comparator<VehicleStatByType>{
+    public class sortByAmount implements Comparator<VehicleStatByType> {
 
         @Override
         public int compare(VehicleStatByType o1, VehicleStatByType o2) {
-            return o2.getTotalAmount()-o1.getTotalAmount();
+            return o2.getTotalAmount() - o1.getTotalAmount();
         }
     }
 }

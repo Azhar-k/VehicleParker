@@ -17,10 +17,6 @@ public class AllowedVehicleDao implements com.azhar.VehicleParker.Dao.AllowedVeh
         return allowedVehicleRepository.save(allowedVehicle);
     }
 
-    @Override
-    public AllowedVehicle getAllowedVehicleByVehicleId(int parkedVehicleId) {
-        return allowedVehicleRepository.findAllowedVehicleByVehicleId(parkedVehicleId);
-    }
 
     @Override
     public AllowedVehicle insert(AllowedVehicle allowedVehicle) {

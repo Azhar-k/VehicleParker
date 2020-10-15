@@ -9,11 +9,7 @@ public interface VehicleDao {
 
     List<Vehicle> getVehicleList();
 
-    Vehicle getVehicleByName(String name);
-
-    Vehicle findById(int id);
-
-    Vehicle getVehicleById(int id) throws VehicleNotFound;
+    Vehicle getVehicleByName(String name) throws VehicleNotFound;
 
     Vehicle insert(Vehicle inputVehicle);
 
