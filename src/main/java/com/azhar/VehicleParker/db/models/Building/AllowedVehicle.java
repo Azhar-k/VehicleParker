@@ -17,7 +17,7 @@ public class AllowedVehicle {
     private int MAX_SLOTS;
     private int occupiedSlots;
     private int freeSlots;
-    @JsonIgnore
+    @JsonIgnore//to handle the problem of stack overflow (recursive mapping between level and allowedVehicle)
     @OneToOne
     @JoinColumn(name = "level_number", referencedColumnName = "number")
     public Level level;

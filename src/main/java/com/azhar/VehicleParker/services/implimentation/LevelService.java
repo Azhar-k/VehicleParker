@@ -19,8 +19,6 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
         @Autowired
         LevelDao levelDao;
         @Autowired
-        AllowedVehicleDao allowedVehicleDao;
-        @Autowired
         VehicleDao vehicleDao;
 
 
@@ -35,14 +33,14 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
         if (!isLevelExist(inputLevel)) {
             try {
-                //Vehicles allowed for this level is inserted into database
-
-                insertAllowedVehicles(inputLevel.getAllowedVehicles());
+                //input vehicle should be validated before editing.User may try to add non recognised vehicle
+                validateVehicles(inputLevel.getAllowedVehicles());
                 Level level = levelDao.insert(inputLevel);
+                //allowed vehicles in inputLevel may not contain the level attribute.
                 for (AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
                     allowedVehicle.setLevel(level);
                 }
-                levelDao.update(level);
+                levelDao.update(level);//update the level after changing the allowed vehicle's attribute
                 editLevelResponse = new LevelResponse(true, "Level added", level);
 
 
@@ -62,18 +60,16 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
     }
 
-    private void insertAllowedVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
+    private void validateVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
         for (AllowedVehicle allowedVehicle : allowedVehicles) {
             try {
                 Vehicle inputVehicle = allowedVehicle.getVehicle();
-                //input vehicle should be validated before editing.User may try to add non recognised vehicle
                 Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
                 if(recognisedVehicle==null){
                     throw new VehicleNotFound("vehicle not valid");
                 }
                 //input vehicle from user is replaced with recognised vehicle got from database
                 allowedVehicle.setVehicle(recognisedVehicle);
-                allowedVehicleDao.update(allowedVehicle);
 
             } catch (Exception e) {
 
@@ -123,7 +119,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
             if (!isLevelContainVehicles(inputLevel)) {
                 try {
                     //Vehicles allowed for this level is inserted into database
-                    insertAllowedVehicles(inputLevel.getAllowedVehicles());
+                    validateVehicles(inputLevel.getAllowedVehicles());
 
                     Level level=levelDao.update(inputLevel);
 

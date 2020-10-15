@@ -18,6 +18,8 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
     VehicleDao vehicleDao;
     @Autowired
     LevelDao levelDao;
+    @Autowired
+    AllowedVehicleDao allowedVehicleDao;
 
     @Override
     public List<Vehicle> getVehicles() {
