@@ -8,7 +8,6 @@ import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import java.util.List;
 
 
 @Service
-@Slf4j
 public class LevelService implements com.azhar.VehicleParker.services.LevelService {
 
     @Autowired
@@ -78,7 +76,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
                 allowedVehicle.setVehicle(recognisedVehicle);
 
             } catch (Exception e) {
-                logger.error(e.toString());
+                logger.error(e.toString()+allowedVehicle);
                 throw e;
 
             }
@@ -157,6 +155,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
         boolean isLevelExist = true;
         Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
         if (level == null) {
+            System.out.println(inputLevel);
             isLevelExist = false;
         }
         return isLevelExist;
@@ -168,6 +167,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
         level = levelDao.getLevelByLevelNumber(level.getNumber());
         for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
             if (allowedVehicle.getOccupiedSlots() > 0) {
+                System.out.println(level);
                 isLevelContainsVehicle = true;
             }
         }

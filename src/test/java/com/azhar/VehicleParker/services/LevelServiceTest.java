@@ -45,7 +45,6 @@ public class LevelServiceTest {
             System.out.println(input.getNumber());
             input.setNumber(100);//change level number to a new level number
 
-            System.out.println(input.getAllowedVehicles());
             when(levelDao.insert(input)).thenReturn(input);
             when(vehicleDao.getVehicleByName(anyString())).thenReturn(mockData.findVehicleByName("car"));
 

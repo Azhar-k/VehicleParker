@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker.controllers;
 
 
+import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -23,16 +24,6 @@ class AdminControllerTest {
     //public modifier for the class hasbeen removed to solve junit vintage error
     @Autowired
     MockMvc mockMvc;
-
-    @BeforeEach
-    public void initEach() throws Exception {
-        mockMvc.perform(post("/park")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"vehicleName\": \"car\" , \"vehicleNumber\":\"KL 11 BC 5978\" }")
-        );//this vehicle is parked in level 2 always.
-    }
-
-
 
     @Test
     public void testGetVehicles() throws Exception {
@@ -148,13 +139,13 @@ class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"number\": 1,\n" +
+                        "        \"number\": 0,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
                         "                \"vehicle\": {\n" +
                         "                    \n" +
-                        "                    \"name\": \"bike\"\n" +
+                        "                    \"name\": \"van\"\n" +
                         "                },\n" +
                         "                \"occupiedSlots\": 0,\n" +
                         "                \"max_SLOTS\": 15\n" +
@@ -172,7 +163,7 @@ class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"number\": 100,\n" +
+                        "        \"number\": 300,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
@@ -192,11 +183,12 @@ class AdminControllerTest {
 
     @Test
     public void testEditLevelGivenExistingLevel() throws Exception {
+        System.out.println();
         mockMvc.perform(put("/levels")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"number\": 1,\n" +
+                        "        \"number\": 5,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
@@ -205,7 +197,7 @@ class AdminControllerTest {
                         "                    \"name\": \"bike\"\n" +
                         "                },\n" +
                         "                \"occupiedSlots\": 0,\n" +
-                        "                \"max_SLOTS\": 15\n" +
+                        "                \"MAX_SLOTS\": 15\n" +
                         "            }\n" +
                         "        ]\n" +
                         " \t\n" +
@@ -219,7 +211,7 @@ class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\n" +
                         "       \n" +
-                        "        \"number\": 1000,\n" +
+                        "        \"number\": 500,\n" +
                         "        \"allowedVehicles\": [\n" +
                         "            {\n" +
                         "                \n" +
@@ -256,10 +248,14 @@ class AdminControllerTest {
 
     @Test
     public void testDeleteLevelGivenLevelContainsVehicle() throws Exception {
-
+        //park a vehicle first.
+        mockMvc.perform(post("/park")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"vehicleName\": \"car\" , \"vehicleNumber\":\"KL 11 BC 5978\" }")
+        );//this vehicle is parked in level 2
         mockMvc.perform(delete("/levels")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"number\": 2}")//assume level 2 contains vehicle
+                .content("{\"number\": 2}")//level 2 contain a vehicle which is parked in this method
         ).andExpect(jsonPath("$.message").value("Level can not be deleted. It contains vehicle"));
 
     }

@@ -2,11 +2,11 @@ package com.azhar.VehicleParker.Entities.ApiRequests;
 
 //Parking request should have vehicle name(type determined from name) and vehicle number
 public class ParkRequest {
-    private String VehicleName;
+    private String vehicleName;
     private String vehicleNumber;
 
     public ParkRequest(String vehicleName, String vehicleNumber) {
-        VehicleName = vehicleName;
+        this.vehicleName = vehicleName;
         this.vehicleNumber = vehicleNumber;
     }
 
@@ -14,11 +14,11 @@ public class ParkRequest {
     }
 
     public String getVehicleName() {
-        return VehicleName;
+        return vehicleName;
     }
 
     public void setVehicleName(String vehicleName) {
-        VehicleName = vehicleName;
+        this.vehicleName = vehicleName;
     }
 
     public String getVehicleNumber() {

@@ -23,17 +23,6 @@ class ParkingControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-
-
-    @BeforeEach
-    public void initEach() throws Exception {
-        //park a single vehicle for testing some use cases.
-        mockMvc.perform(post("/park")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"vehicleName\": \"car\" , \"vehicleNumber\":\"KL 11 BC 5978\" }")
-        );//this vehicle is parked in level 2 always.
-    }
-
     @Test
     public void parkGivenValidVEhicle() throws Exception {
         mockMvc.perform(post("/park")
@@ -52,7 +41,11 @@ class ParkingControllerTest {
 
     @Test
     public void parkGivenAlreadyParkedVEhicle() throws Exception {
-        //we have already parked the vehicle KL 11 BC 5978 using beforeEach method.
+        mockMvc.perform(post("/park")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"vehicleName\": \"car\" , \"vehicleNumber\":\"KL 11 BC 5978\" }")
+        );
+        //we have already parked the vehicle KL 11 BC 5978 just above.
         mockMvc.perform(post("/park")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"vehicleName\": \"car\" , \"vehicleNumber\":\"KL 11 BC 5978\" }")
