@@ -1,6 +1,6 @@
 package com.azhar.VehicleParker.services;
 
-import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
+import com.azhar.VehicleParker.Entities.Exceptions.VehicleException;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +10,9 @@ import java.util.List;
 public interface VehicleService {
     List<Vehicle> getVehicles();
 
-    VehicleResponse insertVehicle(Vehicle inputVehicle);
+    Vehicle insertVehicle(Vehicle inputVehicle) throws VehicleException;
 
-    VehicleResponse deleteVehicle(Vehicle inputVehicle);
+    boolean deleteVehicle(Vehicle inputVehicle) throws VehicleException;
 
-    VehicleResponse editVehicle(Vehicle inputVehicle);
-
-    Vehicle validateVehicle(Vehicle inputVehicle);
+    Vehicle editVehicle(Vehicle inputVehicle) throws VehicleException;
 }

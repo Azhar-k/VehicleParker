@@ -4,7 +4,7 @@ import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
-import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
+import com.azhar.VehicleParker.Entities.Exceptions.VehicleException;
 import com.azhar.VehicleParker.MockData;
 import com.azhar.VehicleParker.services.implimentation.VehicleService;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
@@ -36,7 +36,7 @@ public class VehicleServiceTest {
     @Nested
     public class ValidateVehicleTest {
         @Test
-        void validateVehicleGivenExistingVehicle() throws VehicleNotFound {
+        void validateVehicleGivenExistingVehicle()  {
             Vehicle inputVehicle = new Vehicle( "car", 20);
 
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
@@ -52,7 +52,7 @@ public class VehicleServiceTest {
         }
 
         @Test
-        void validateVehicleGivenNewVehicle() throws VehicleNotFound {
+        void validateVehicleGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle( "car", 20);
 
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
@@ -66,72 +66,73 @@ public class VehicleServiceTest {
     @Nested
     public class InsertVehicleTest {
         @Test
-        void insertVehicleTestGivenExistingVehicle() throws VehicleNotFound {
+        void insertVehicleTestGivenExistingVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
 
-
-            VehicleResponse expected = new VehicleResponse(true, "vehicle already exist", inputVehicle);
-            VehicleResponse actual = vehicleService.insertVehicle(inputVehicle);
-            assertEquals(expected.getMessage(), actual.getMessage());
+            VehicleException vehicleException=assertThrows(VehicleException.class,()->{
+                vehicleService.insertVehicle(inputVehicle);
+            });
+            assertEquals("vehicle already exist", vehicleException.getMessage());
         }
 
         @Test
-        void insertVehicleTestGivenNewVehicle() throws VehicleNotFound {
+        void insertVehicleTestGivenNewVehicle() throws VehicleException {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
             Mockito.when(vehicleDao.insert(inputVehicle)).thenReturn(inputVehicle);
 
-            VehicleResponse expected = new VehicleResponse(true, "vehicle added", inputVehicle);
-            VehicleResponse actual = vehicleService.insertVehicle(inputVehicle);
-            assertEquals(expected.getMessage(), actual.getMessage());
+            Vehicle expected = inputVehicle;
+            Vehicle actual = vehicleService.insertVehicle(inputVehicle);
+            assertEquals(expected.getName(), actual.getName());
         }
     }
 
     @Nested
     public class EditVehicleTest {
         @Test
-        void editVehicleTestGivenExistingVehicle() throws VehicleNotFound {
+        void editVehicleTestGivenExistingVehicle() throws VehicleException {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
             Mockito.when(vehicleDao.update(inputVehicle)).thenReturn(inputVehicle);
 
-            VehicleResponse expected = new VehicleResponse(true, "vehicle edited", inputVehicle);
-            VehicleResponse actual = vehicleService.editVehicle(inputVehicle);
-            assertEquals(expected.getMessage(), actual.getMessage());
+            Vehicle expected = inputVehicle;
+            Vehicle actual = vehicleService.editVehicle(inputVehicle);
+            assertEquals(expected.getName(), actual.getName());
         }
 
         @Test
-        void editVehicleTestGivenNewVehicle() throws VehicleNotFound {
+        void editVehicleTestGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
 
-            VehicleResponse expected = new VehicleResponse(true, "vehicle do not exist", inputVehicle);
-            VehicleResponse actual = vehicleService.editVehicle(inputVehicle);
-            assertEquals(expected.getMessage(), actual.getMessage());
+            VehicleException vehicleException=assertThrows(VehicleException.class,()->{
+                vehicleService.editVehicle(inputVehicle);
+            });
+            assertEquals("vehicle do not exist", vehicleException.getMessage());
         }
     }
 
     @Nested
     public class DeleteVehicleTest {
         @Test
-        void deleteVehicleTestGivenExistingVehicle() throws VehicleNotFound {
+        void deleteVehicleTestGivenExistingVehicle() throws VehicleException {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
             Mockito.when(levelDao.getLevelList()).thenReturn(mockData.loadLevels());
-            VehicleResponse expected = new VehicleResponse(true, "vehicle deleted", inputVehicle);
-            VehicleResponse actual = vehicleService.deleteVehicle(inputVehicle);
-            assertEquals(expected.getMessage(), actual.getMessage());
+            boolean actual = vehicleService.deleteVehicle(inputVehicle);
+            assertTrue(actual);
         }
 
         @Test
-        void deleteVehicleTestGivenNewVehicle() throws VehicleNotFound {
+        void deleteVehicleTestGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
 
-            VehicleResponse expected = new VehicleResponse(true, "vehicle do not exist", inputVehicle);
-            VehicleResponse actual = vehicleService.deleteVehicle(inputVehicle);
-            assertEquals(expected.getMessage(), actual.getMessage());
+            VehicleException vehicleException=assertThrows(VehicleException.class,()->{
+                vehicleService.deleteVehicle(inputVehicle);
+            });
+            assertEquals("vehicle do not exist", vehicleException.getMessage());
         }
 
     }

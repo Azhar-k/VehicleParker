@@ -6,6 +6,8 @@ import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.Entities.LevelSpace;
 import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,7 @@ public class SpaceManager implements com.azhar.VehicleParker.services.SpaceManag
     @Autowired
     LevelParkedVehicleDao levelParkedVehicleDao;
 
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Override
     public List<LevelParkedVehicle> getLevelVehicleList() {
@@ -33,18 +35,22 @@ public class SpaceManager implements com.azhar.VehicleParker.services.SpaceManag
     public List<LevelSpace> getLAvailableSpace() {
         //create a list of available space by checking all the levels
         List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
-        List<Level> levelList = levelDao.getLevelList();
-        levelList.sort(new SortbyLevelNumber());
-        for (Level level : levelList) {
-            LevelSpace levelSpace = new LevelSpace(level.getNumber());
-            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
-                int freeSlot = allowedVehicle.getFreeSlots();
-                levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
+        try{
+            List<Level> levelList = levelDao.getLevelList();
+            levelList.sort(new SortbyLevelNumber());
+            for (Level level : levelList) {
+                LevelSpace levelSpace = new LevelSpace(level.getNumber());
+                for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
+                    int freeSlot = allowedVehicle.getFreeSlots();
+                    levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
+                }
+                availableSpace.add(levelSpace);
 
             }
-            availableSpace.add(levelSpace);
-
+        } catch (Exception e) {
+            logger.error("Error while creating available space ",e);
         }
+
         return availableSpace;
     }
 

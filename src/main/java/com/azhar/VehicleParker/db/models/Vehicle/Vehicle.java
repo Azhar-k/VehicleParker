@@ -1,6 +1,10 @@
 package com.azhar.VehicleParker.db.models.Vehicle;
 
+
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Vehicle {
@@ -8,7 +12,9 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(unique=true)
+    @NotNull
     private String name;
+    @NotNull
     private int parkingRate;
 
     public Vehicle(String name) {

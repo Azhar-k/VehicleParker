@@ -1,25 +1,33 @@
 package com.azhar.VehicleParker.db.models;
 
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 //map a vehicle to a level. Id will be unique to this maping
 @Entity
+@Validated
 public class LevelParkedVehicle {
     @Id
     @GeneratedValue
     private int id;
+    @NotNull
     private int levelNumber;
     private int vehicleType;
+    @NotNull
     private String vehicleName;
     @Column(unique=true)
+    @NotNull
     private String vehicleNumber;
     private LocalDate date;
     private LocalTime time;
+    @NotNull
     private int parkingRate;
 
     public LevelParkedVehicle(int levelNumber, int vehicleType, String vehicleName, String vehicleNumber, int parkingRate) {
