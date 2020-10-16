@@ -13,6 +13,7 @@ public class Level {
     @Id
     private int number;
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true, mappedBy = "level")
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<AllowedVehicle> allowedVehicles;
 
 

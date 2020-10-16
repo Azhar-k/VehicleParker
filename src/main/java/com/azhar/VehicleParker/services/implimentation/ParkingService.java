@@ -143,7 +143,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             isSlotFilled=true;
 
         } catch (Exception e) {
-            logger.error(e.toString());
+            logger.error("",e);
         }
         return isSlotFilled;
 
