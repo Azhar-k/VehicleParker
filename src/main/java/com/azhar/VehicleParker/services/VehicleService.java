@@ -15,6 +15,4 @@ public interface VehicleService {
     VehicleResponse deleteVehicle(Vehicle inputVehicle);
 
     VehicleResponse editVehicle(Vehicle inputVehicle);
-
-    Vehicle validateVehicle(Vehicle inputVehicle);
 }

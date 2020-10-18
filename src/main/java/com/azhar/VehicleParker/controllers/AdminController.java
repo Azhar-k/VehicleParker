@@ -10,6 +10,7 @@ import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,20 +27,21 @@ public class AdminController {
     @GetMapping(path = "/levels")
     public List<Level> getLevelList() {
 
-        return levelService.getLevels();
+        return levelService.getSortedLevels();
     }
     @PostMapping(path = "/levels")
-    public LevelResponse addLevel(@RequestBody Level level) {
+    public LevelResponse addLevel(@Valid @RequestBody Level level) {
+
         return levelService.insertLevel(level);
     }
 
     @PutMapping(path = "/levels")
-    public LevelResponse editLevel(@RequestBody Level level) {
+    public LevelResponse editLevel(@Valid @RequestBody Level level) {
         return levelService.editLevel(level);
     }
 
     @DeleteMapping(path = "/levels")
-    public LevelResponse deleteLevel(@RequestBody Level level) {
+    public LevelResponse deleteLevel(@Valid @RequestBody Level level) {
 
         return levelService.deleteLevel(level);
     }
@@ -54,16 +56,16 @@ public class AdminController {
         return vehicleService.getVehicles();
     }
     @PostMapping(path = "/vehicles")
-    public VehicleResponse addVehicle(@RequestBody Vehicle inputVehicle) {
+    public VehicleResponse addVehicle(@Valid @RequestBody Vehicle inputVehicle) {
         return vehicleService.insertVehicle(inputVehicle);
     }
     @PutMapping(path = "/vehicles")
-    public VehicleResponse editVehicle(@RequestBody Vehicle inputVehicle) {
+    public VehicleResponse editVehicle(@Valid @RequestBody Vehicle inputVehicle) {
         return vehicleService.editVehicle(inputVehicle);
     }
 
     @DeleteMapping(path = "/vehicles")
-    public VehicleResponse deleteVehicle(@RequestBody Vehicle inputVehicle) {
+    public VehicleResponse deleteVehicle(@Valid @RequestBody Vehicle inputVehicle) {
 
         return vehicleService.deleteVehicle(inputVehicle);
     }

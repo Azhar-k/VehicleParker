@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -58,6 +59,8 @@ class AdminControllerTest {
 
     }
 
+
+
     @Test
     public void testAddVehicleGivenNewVehicle() throws Exception {
 
@@ -66,6 +69,14 @@ class AdminControllerTest {
                 .content("{ \"name\": \"jeep\" , \"parkingRate\":25 }")
         ).andExpect(jsonPath("$.message").value("vehicle added"));
 
+    }
+
+    @Test
+    public void testAddVehicleGivenInvalidParameter() throws Exception {
+        mockMvc.perform(post("/vehicles")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"nae\": \"car\" , \"parkingRate\":20 }")
+        ).andExpect(status().isBadRequest());
     }
 
     @Test

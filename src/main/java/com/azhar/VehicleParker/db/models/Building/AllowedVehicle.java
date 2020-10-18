@@ -3,8 +3,12 @@ package com.azhar.VehicleParker.db.models.Building;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.validation.annotation.Validated;
+
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class AllowedVehicle {
@@ -13,8 +17,12 @@ public class AllowedVehicle {
     int id;
     @ManyToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})//to handle serializer not found exception.
+    @NotNull
+    @Valid
     private Vehicle vehicle;
+    @NotNull
     private int MAX_SLOTS;
+    @NotNull
     private int occupiedSlots;
     private int freeSlots;
     @JsonIgnore//to handle the problem of stack overflow (recursive mapping between level and allowedVehicle)

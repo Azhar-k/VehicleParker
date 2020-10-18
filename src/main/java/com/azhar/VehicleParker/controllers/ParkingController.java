@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,13 +35,13 @@ public class ParkingController {
     }
 
     @PostMapping(path = "/park")
-    public ParkResponse park(@RequestBody ParkRequest parkRequest) {
+    public ParkResponse park(@Valid @RequestBody ParkRequest parkRequest) {
 
         return parkingService.park(parkRequest);
     }
 
     @PostMapping(path = "/unpark", consumes = "application/json", produces = "application/json")
-    public ParkResponse unpark(@RequestBody LevelParkedVehicle levelVehicleMap) {
+    public ParkResponse unpark(@Valid @RequestBody LevelParkedVehicle levelVehicleMap) {
 
         return parkingService.unPark(levelVehicleMap);
     }

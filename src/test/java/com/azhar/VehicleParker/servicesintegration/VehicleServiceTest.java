@@ -18,7 +18,6 @@ public class VehicleServiceTest {
     @Autowired
     VehicleService vehicleService;
 
-    @Test
     public void insertVehicleTest(){
 
         VehicleResponse actual = vehicleService.insertVehicle(new Vehicle("jeep",29));

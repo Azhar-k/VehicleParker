@@ -8,7 +8,7 @@ import java.util.List;
 
 @Component
 public interface LevelService {
-    List<Level> getLevels();
+    List<Level> getSortedLevels();
 
     LevelResponse insertLevel(Level level);
 
@@ -16,7 +16,4 @@ public interface LevelService {
 
     LevelResponse editLevel(Level level);
 
-    Boolean isLevelExist(Level level);
-
-    Boolean isLevelContainVehicles(Level level);
 }

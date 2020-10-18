@@ -1,16 +1,19 @@
 package com.azhar.VehicleParker.db.models.Building;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
 public class Level {
     @Id
+    @NotNull
     private int number;
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true, mappedBy = "level")
     @LazyCollection(LazyCollectionOption.FALSE)

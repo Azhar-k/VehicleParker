@@ -42,7 +42,7 @@ public class LevelServiceTest {
         @Test
         public void givenNewLevel() throws VehicleNotFound {
             Level input = mockData.loadLevels().get(0);
-            System.out.println(input.getNumber());
+
             input.setNumber(100);//change level number to a new level number
 
             when(levelDao.insert(input)).thenReturn(input);
