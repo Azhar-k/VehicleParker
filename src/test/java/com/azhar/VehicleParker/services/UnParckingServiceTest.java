@@ -120,46 +120,5 @@ public class UnParckingServiceTest {
         }
     }
 
-    @Nested
-    public class ParkTest {
-        @Test
-        public void givenInvalidLevelVehicle() {
-            //no level vehicle map has id as 1000. id is 3 digit
-            LevelParkedVehicle levelVehicle = new LevelParkedVehicle(1000);
-            ParkResponse expected = new ParkResponse(false, "This vehicle is not parked here", null);
-            ParkResponse actual = parkingService.unPark(levelVehicle);
-            assertAll(() -> {
-                assertEquals(expected.getMessage(), actual.getMessage());
-                assertEquals(expected.isSucces(), actual.isSucces());
-                assertEquals(expected.getVehicleMap(), actual.getVehicleMap());
-            });
 
-        }
-
-        @Test
-        public void givenValidLevelVehicle() throws Exception {
-            LevelParkedVehicle input = new LevelParkedVehicle(100);
-            Level level = new Level(0);
-            Vehicle vehicle = new Vehicle(0, "car", 20);
-            AllowedVehicle allowedVehicle = new AllowedVehicle(15, 0, vehicle,level);
-
-            List<AllowedVehicle> allowedVehicleList = new ArrayList<AllowedVehicle>();
-            allowedVehicleList.add(allowedVehicle);
-            level.setAllowedVehicles(allowedVehicleList);
-
-            when(levelParkedVehicleDao.getLevelParkedVehicleById(input.getId())).thenReturn(input);
-            when(levelDao.getLevelByLevelNumber(0)).thenReturn(level);
-            when(allowedVehicleDao.update(allowedVehicle)).thenReturn(allowedVehicle);
-
-            ParkResponse actual = parkingService.unPark(input);
-            System.out.println(actual.getMessage());
-            ParkResponse expected = new ParkResponse(true, "vehicle unparked", input);
-            assertAll(() -> {
-                assertEquals(expected.isSucces(), actual.isSucces());
-                assertEquals(expected.getMessage(), actual.getMessage());
-                assertEquals(expected.getVehicleMap(), actual.getVehicleMap());
-            });
-
-        }
-    }
 }

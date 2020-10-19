@@ -1,6 +1,7 @@
 package com.azhar.VehicleParker.controllers;
 
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
+import com.azhar.VehicleParker.Entities.Exceptions.ParkingException;
 import com.azhar.VehicleParker.Entities.LevelSpace;
 import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
@@ -36,14 +37,27 @@ public class ParkingController {
 
     @PostMapping(path = "/park")
     public ParkResponse park(@Valid @RequestBody ParkRequest parkRequest) {
-
-        return parkingService.park(parkRequest);
+        ParkResponse parkResponse = null;
+        try {
+            LevelParkedVehicle levelParkedVehicle = parkingService.parkVehicle(parkRequest);
+            parkResponse = new ParkResponse(true, "vehicle parked", levelParkedVehicle);
+        } catch (ParkingException parkingException) {
+            parkResponse = new ParkResponse(false, parkingException.getMessage(), null);
+        }
+        return parkResponse;
     }
 
     @PostMapping(path = "/unpark", consumes = "application/json", produces = "application/json")
     public ParkResponse unpark(@Valid @RequestBody LevelParkedVehicle levelVehicleMap) {
 
-        return parkingService.unPark(levelVehicleMap);
+        ParkResponse parkResponse = null;
+        try {
+             LevelParkedVehicle levelParkedVehicleResponse = parkingService.unParkVehicle(levelVehicleMap);
+            parkResponse = new ParkResponse(true, "vehicle unparked", levelParkedVehicleResponse);
+        } catch (ParkingException parkingException) {
+            parkResponse = new ParkResponse(false, parkingException.getMessage(), null);
+        }
+        return parkResponse;
     }
 
 
