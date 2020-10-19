@@ -33,6 +33,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
     SpaceManager spaceManager;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
     public ParkResponse park(ParkRequest parkRequest) {
         ParkResponse parkResponse;
         try {
@@ -40,9 +41,10 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             LevelParkedVehicle levelParkedVehicle = parkVehicle(parkRequest);
             //format the api response
             parkResponse = new ParkResponse(true, "vehicle parked", levelParkedVehicle);
+            logger.info("vehicle parked ",levelParkedVehicle);
 
         } catch (Exception e) {
-            //parking failed due to some reason
+            logger.error("Error occured while parking ",e);
             parkResponse = new ParkResponse(false, e.getMessage(), null);
         }
         return parkResponse;
@@ -93,7 +95,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
                     int freeSlot = levelSpace.getAvailabeSlots().get(vehicle.getName());
                     if (freeSlot > 0) {
                         levelNo = levelSpace.getLevelNumber();
-                        return levelNo;
+                        break;
                     }
                 }
             } catch (Exception e) {
@@ -112,9 +114,8 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
 
             levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber,parkingRate);
             levelParkedVehicleDao.insert(levelParkedVehicle);
-            logger.info("vehicle parked "+levelParkedVehicle);
+
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error("exception occured in addLevelParkedVehicle :",e);
             levelParkedVehicle = null;
         }
@@ -210,7 +211,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             levelDao.update(level);
             isSlotEmptied = true;
         } catch (Exception e) {
-            logger.error(e.toString());
+            logger.error("Error while filling slot",e);
         }
         return isSlotEmptied;
     }
@@ -220,7 +221,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             levelParkedVehicleDao.delete(levelParkedVehicle);
             return true;
         } catch (Exception e) {
-            logger.error(e.toString());
+            logger.error("Error while removing LevelParkedVehicle ",e);
             return false;
         }
     }

@@ -7,6 +7,8 @@ import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,8 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
     VehicleDao vehicleDao;
     @Autowired
     LevelDao levelDao;
-    @Autowired
-    AllowedVehicleDao allowedVehicleDao;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Override
     public List<Vehicle> getVehicles() {

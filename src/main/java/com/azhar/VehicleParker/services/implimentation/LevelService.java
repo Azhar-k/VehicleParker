@@ -1,6 +1,5 @@
 package com.azhar.VehicleParker.services.implimentation;
 
-import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
@@ -40,7 +39,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
 
         try {
-            isLevelExist(inputLevel);
+            checkLevelExist(inputLevel);
             //input vehicle should be validated before editing.User may try to add non recognised vehicle
             validateVehicles(inputLevel.getAllowedVehicles());
             Level level = levelDao.insert(inputLevel);
@@ -65,7 +64,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
     }
 
-    public Boolean isLevelExist(Level inputLevel) throws Exception {
+    public Boolean checkLevelExist(Level inputLevel) throws Exception {
         boolean isLevelExist = true;
         Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
         if (level == null) {
@@ -94,8 +93,8 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
     public LevelResponse deleteLevel(Level inputLevel) {
         LevelResponse levelResponse = null;
         try {
-            isLevelExist(inputLevel);
-            isLevelContainVehicles(inputLevel);
+            checkLevelExist(inputLevel);
+            checkLevelContainVehicles(inputLevel);
             Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
             levelDao.delete(level);
             levelResponse = new LevelResponse(true, "Level deleted", null);
@@ -110,7 +109,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
         return levelResponse;
     }
-    public Boolean isLevelContainVehicles(Level level) throws Exception {
+    public Boolean checkLevelContainVehicles(Level level) throws Exception {
         boolean isLevelContainsVehicle = false;
         level = levelDao.getLevelByLevelNumber(level.getNumber());
         for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
@@ -127,8 +126,8 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
 
         try {
-            isLevelExist(inputLevel);
-            isLevelContainVehicles(inputLevel);
+            checkLevelExist(inputLevel);
+            checkLevelContainVehicles(inputLevel);
             //Vehicles allowed for this level
             validateVehicles(inputLevel.getAllowedVehicles());
             Level level = levelDao.update(inputLevel);

@@ -7,6 +7,8 @@ import com.azhar.VehicleParker.Entities.Statistics;
 import com.azhar.VehicleParker.Entities.VehicleStatByType;
 import com.azhar.VehicleParker.db.models.LevelParkedVehicle;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ public class StatisticsService implements com.azhar.VehicleParker.services.Stati
     @Autowired
     VehicleDao vehicleDao;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
     @Override
     public StatisticsResponse getAmountByDate(LocalDate localDate) {
         int amount = 0;
@@ -36,7 +40,7 @@ public class StatisticsService implements com.azhar.VehicleParker.services.Stati
             }
             statisticsResponse = new StatisticsResponse(true, "Total amount collected for the date is : " + amount);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error in getAmountByDate ",e);
             statisticsResponse = new StatisticsResponse(false, e.getMessage());
         }
 
@@ -66,19 +70,25 @@ public class StatisticsService implements com.azhar.VehicleParker.services.Stati
     @Override
     public List<Statistics> getStatistics() {
         List<Statistics> statisticsList = new ArrayList<Statistics>();
-        for (LocalDate localDate : levelParkedVehicleDao.getDistinctDate()) {
-            //Statistics is created for each unique localDate in levelParkedVehicle table
-            Statistics statistics = new Statistics(localDate);
-            for (Vehicle vehicle : vehicleDao.getVehicleList()) {
-                //details for each vehicle in database for a given date is calculated
-                String vehicleName = vehicle.getName();
-                int countOfVehicle = levelParkedVehicleDao.findCountByDateAndVehicleName(vehicleName, localDate);
-                VehicleStatByType vehicleStatByType = new VehicleStatByType(countOfVehicle, vehicle);//total amount is setup implicitely
-                statistics.addVehicleStatByType(vehicleStatByType);
+        try {
+            for (LocalDate localDate : levelParkedVehicleDao.getDistinctDate()) {
+                //Statistics is created for each unique localDate in levelParkedVehicle table
+                Statistics statistics = new Statistics(localDate);
+                for (Vehicle vehicle : vehicleDao.getVehicleList()) {
+                    //details for each vehicle in database for a given date is calculated
+                    String vehicleName = vehicle.getName();
+                    int countOfVehicle = levelParkedVehicleDao.findCountByDateAndVehicleName(vehicleName, localDate);
+                    VehicleStatByType vehicleStatByType = new VehicleStatByType(countOfVehicle, vehicle);//total amount is setup implicitely
+                    statistics.addVehicleStatByType(vehicleStatByType);
+                }
+                statistics.getVehicleStatByTypeList().sort(new sortByAmount());
+                statisticsList.add(statistics);
             }
-            statistics.getVehicleStatByTypeList().sort(new sortByAmount());
-            statisticsList.add(statistics);
+
+        } catch (Exception e) {
+            logger.error("Error while retrieving statistics ",e);
         }
+
 
         return statisticsList;
     }
@@ -91,7 +101,7 @@ public class StatisticsService implements com.azhar.VehicleParker.services.Stati
             }
         } catch (Exception e) {
             isVehicleValid = false;
-            e.printStackTrace();
+            logger.error("Error while validating vehicle",e);
         }
 
         return isVehicleValid;
