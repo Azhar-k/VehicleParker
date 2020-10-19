@@ -4,7 +4,7 @@ import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
-import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
+import com.azhar.VehicleParker.Entities.Exceptions.LevelException;
 import com.azhar.VehicleParker.MockData;
 import com.azhar.VehicleParker.services.implimentation.LevelService;
 import com.azhar.VehicleParker.db.models.Building.Level;
@@ -15,8 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -29,8 +28,6 @@ public class LevelServiceTest {
     @Mock
     LevelDao levelDao;
     @Mock
-    AllowedVehicleDao allowedVehicleDao;
-    @Mock
     VehicleDao vehicleDao;
 
     MockData mockData = new MockData();
@@ -40,7 +37,7 @@ public class LevelServiceTest {
     public class testInsertLevel{
 
         @Test
-        public void givenNewLevel() throws VehicleNotFound {
+        public void givenNewLevel() throws LevelException {
             Level input = mockData.loadLevels().get(0);
 
             input.setNumber(100);//change level number to a new level number
@@ -48,64 +45,53 @@ public class LevelServiceTest {
             when(levelDao.insert(input)).thenReturn(input);
             when(vehicleDao.getVehicleByName(anyString())).thenReturn(mockData.findVehicleByName("car"));
 
-            LevelResponse expected = new LevelResponse(true,"Level added",input);
-            LevelResponse actual = levelService.insertLevel(input);
+            Level expected = input;
+            Level actual = levelService.insertLevel(input);
 
-            assertAll(()->{
-               assertEquals(expected.getMessage(),actual.getMessage());
-               assertEquals(expected.isSucces(),actual.isSucces());
-            });
+            assertEquals(expected.getNumber(),actual.getNumber());
 
         }
 
         @Test
-        public void givenExistingLevel(){
+        public void givenExistingLevel() {
             Level input = mockData.loadLevels().get(0);
 
             when(levelDao.getLevelByLevelNumber(0)).thenReturn(mockData.loadLevels().get(0));
 
-            LevelResponse expected = new LevelResponse(false,"level already exist",input);
-            LevelResponse actual = levelService.insertLevel(input);
-
-            assertAll(()->{
-                assertEquals(expected.getMessage(),actual.getMessage());
-                assertEquals(expected.isSucces(),actual.isSucces());
+            LevelException levelException = assertThrows(LevelException.class,()->{
+                levelService.insertLevel(input);
             });
-
+            assertEquals("level already exist",levelException.getMessage());
         }
     }
 
     @Nested
     public class testDeleteLevel{
         @Test
-        public void givenNewLevel(){
+        public void givenNewLevel() {
             Level input = new Level(100);
 
             when(levelDao.getLevelByLevelNumber(anyInt())).thenReturn(null);
 
-            LevelResponse expected = new LevelResponse(false,"input Level does not exist",input);
-            LevelResponse actual = levelService.deleteLevel(input);
-
-            assertAll(()->{
-                assertEquals(expected.getMessage(),actual.getMessage());
-                assertEquals(expected.isSucces(),actual.isSucces());
+            LevelException levelException = assertThrows(LevelException.class,()->{
+                levelService.deleteLevel(input);
             });
+            assertEquals("input Level does not exist",levelException.getMessage());
+
+
+
         }
 
         @Test
-        @Ignore
-        public void givenExistingLevel(){
+        public void givenExistingLevel() throws LevelException {
             Level input = new Level(0);
 
             when(levelDao.getLevelByLevelNumber(anyInt())).thenReturn(mockData.loadLevels().get(0));
 
-            LevelResponse expected = new LevelResponse(true,"Level deleted",input);
-            LevelResponse actual = levelService.deleteLevel(input);
+            boolean actual = levelService.deleteLevel(input);
 
-            assertAll(()->{
-                assertEquals(expected.getMessage(),actual.getMessage());
-                assertEquals(expected.isSucces(),actual.isSucces());
-            });
+            assertTrue(actual);
+
         }
     }
 

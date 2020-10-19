@@ -5,6 +5,7 @@ import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
+import com.azhar.VehicleParker.Entities.Exceptions.InvalidInputException;
 import com.azhar.VehicleParker.services.SpaceManager;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
@@ -56,7 +57,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
         //validate the vehicle given by user
         Vehicle vehicle = getVehicleByName(parkRequest.getVehicleName());
         if (vehicle == null) {
-            throw new Exception("This vehicle can not be parked here");
+            throw new InvalidInputException("this vehicle can not be parked here");
         }
 
         //try to find out a free level to park the vehicle
@@ -70,8 +71,6 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
         if(levelParkedVehicle==null){
             throw new Exception("This vehicle is already parked");
         }
-
-        //close the slot in the level corresponding to the parking
         boolean isSlotFilled = fillSlot(availableLevelNumber, vehicle.getId());
 
         if (isSlotFilled==false) {

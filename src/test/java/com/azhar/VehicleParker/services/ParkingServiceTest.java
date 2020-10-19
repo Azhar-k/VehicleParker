@@ -1,12 +1,9 @@
 package com.azhar.VehicleParker.services;
 
-import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
-import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
 import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
-import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.MockData;
 import com.azhar.VehicleParker.services.implimentation.ParkingService;
 
@@ -36,10 +33,7 @@ public class ParkingServiceTest {
     LevelDao levelDao;
     @Mock
     SpaceManager spaceManager;
-    @Mock
-    LevelParkedVehicleDao levelParkedVehicleDao;
-    @Mock
-    AllowedVehicleDao allowedVehicleDao;
+
     MockData mockData = new MockData();
 
     @BeforeAll
@@ -90,7 +84,7 @@ public class ParkingServiceTest {
     public class parkVehicleTest {
 
         @Test
-        public void GivenInValidVehicle() throws VehicleNotFound {
+        public void GivenInValidVehicle() {
             String vehicleName = "jeep";
             String vehicleNumber = "kl 11 ac 5978";
             ParkRequest parkRequest = new ParkRequest(vehicleName, vehicleNumber);
@@ -127,7 +121,7 @@ public class ParkingServiceTest {
         }
 
         @Test
-        public void GivenSpaceIsfull() throws VehicleNotFound {
+        public void GivenSpaceIsfull()  {
             String vehicleName = "car";
             String vehicleNumber = "xxxx";
 

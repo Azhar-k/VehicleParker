@@ -267,7 +267,7 @@ class AdminControllerTest {
         mockMvc.perform(delete("/levels")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"number\": 2}")//level 2 contain a vehicle which is parked in this method
-        ).andExpect(jsonPath("$.message").value("Level can not be deleted. It contains vehicle"));
+        ).andExpect(jsonPath("$.message").value("level contains vehicle"));
 
     }
 

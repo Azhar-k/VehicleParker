@@ -2,6 +2,7 @@ package com.azhar.VehicleParker.controllers;
 
 import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
+import com.azhar.VehicleParker.Entities.Exceptions.LevelException;
 import com.azhar.VehicleParker.services.LevelService;
 import com.azhar.VehicleParker.services.SpaceManager;
 import com.azhar.VehicleParker.services.VehicleService;
@@ -31,19 +32,38 @@ public class AdminController {
     }
     @PostMapping(path = "/levels")
     public LevelResponse addLevel(@Valid @RequestBody Level level) {
-
-        return levelService.insertLevel(level);
+        LevelResponse levelResponse ;
+        try {
+            Level insertedLevel = levelService.insertLevel(level);
+            levelResponse = new LevelResponse(true, "Level added", insertedLevel);
+        } catch (LevelException e) {
+            levelResponse = new LevelResponse(false, e.getMessage(), null);
+        }
+        return levelResponse;
     }
 
     @PutMapping(path = "/levels")
     public LevelResponse editLevel(@Valid @RequestBody Level level) {
-        return levelService.editLevel(level);
+        LevelResponse levelResponse=null;
+        try{
+            Level editedLevel = levelService.editLevel(level);
+            levelResponse = new LevelResponse(true, "Level edited", editedLevel);
+        } catch (LevelException e) {
+            levelResponse = new LevelResponse(false, e.getMessage(), null);
+        }
+        return levelResponse;
     }
 
     @DeleteMapping(path = "/levels")
     public LevelResponse deleteLevel(@Valid @RequestBody Level level) {
-
-        return levelService.deleteLevel(level);
+        LevelResponse levelResponse = null;
+        try{
+            levelService.deleteLevel(level);
+            levelResponse = new LevelResponse(true, "Level deleted", null);
+        } catch (LevelException e) {
+            levelResponse = new LevelResponse(false, e.getMessage(), null);
+        }
+        return levelResponse;
     }
 
 

@@ -4,7 +4,6 @@ import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
-import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.MockData;
 import com.azhar.VehicleParker.services.implimentation.VehicleService;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
@@ -36,7 +35,7 @@ public class VehicleServiceTest {
     @Nested
     public class ValidateVehicleTest {
         @Test
-        void validateVehicleGivenExistingVehicle() throws VehicleNotFound {
+        void validateVehicleGivenExistingVehicle()  {
             Vehicle inputVehicle = new Vehicle( "car", 20);
 
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
@@ -52,7 +51,7 @@ public class VehicleServiceTest {
         }
 
         @Test
-        void validateVehicleGivenNewVehicle() throws VehicleNotFound {
+        void validateVehicleGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle( "car", 20);
 
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
@@ -66,7 +65,7 @@ public class VehicleServiceTest {
     @Nested
     public class InsertVehicleTest {
         @Test
-        void insertVehicleTestGivenExistingVehicle() throws VehicleNotFound {
+        void insertVehicleTestGivenExistingVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
 
@@ -77,7 +76,7 @@ public class VehicleServiceTest {
         }
 
         @Test
-        void insertVehicleTestGivenNewVehicle() throws VehicleNotFound {
+        void insertVehicleTestGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
             Mockito.when(vehicleDao.insert(inputVehicle)).thenReturn(inputVehicle);
@@ -91,7 +90,7 @@ public class VehicleServiceTest {
     @Nested
     public class EditVehicleTest {
         @Test
-        void editVehicleTestGivenExistingVehicle() throws VehicleNotFound {
+        void editVehicleTestGivenExistingVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
             Mockito.when(vehicleDao.update(inputVehicle)).thenReturn(inputVehicle);
@@ -102,7 +101,7 @@ public class VehicleServiceTest {
         }
 
         @Test
-        void editVehicleTestGivenNewVehicle() throws VehicleNotFound {
+        void editVehicleTestGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
 
@@ -115,7 +114,7 @@ public class VehicleServiceTest {
     @Nested
     public class DeleteVehicleTest {
         @Test
-        void deleteVehicleTestGivenExistingVehicle() throws VehicleNotFound {
+        void deleteVehicleTestGivenExistingVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
             Mockito.when(levelDao.getLevelList()).thenReturn(mockData.loadLevels());
@@ -125,7 +124,7 @@ public class VehicleServiceTest {
         }
 
         @Test
-        void deleteVehicleTestGivenNewVehicle() throws VehicleNotFound {
+        void deleteVehicleTestGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
             Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
 
