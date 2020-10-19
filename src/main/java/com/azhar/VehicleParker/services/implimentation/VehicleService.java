@@ -1,9 +1,10 @@
 package com.azhar.VehicleParker.services.implimentation;
 
-import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
+import com.azhar.VehicleParker.Entities.Exceptions.InvalidInputException;
+import com.azhar.VehicleParker.Entities.Exceptions.VehicleException;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
@@ -30,95 +31,94 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
     }
 
     @Override
-    public VehicleResponse insertVehicle(Vehicle inputVehicle) {
-        VehicleResponse editVehicleResponse;
-        Vehicle validVehicle = validateVehicle(inputVehicle);
-        if (validVehicle == null) {
-            try {
-                Vehicle vehicle = vehicleDao.insert(inputVehicle);
-                editVehicleResponse = new VehicleResponse(true, "vehicle added", vehicle);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                editVehicleResponse = new VehicleResponse(true, e.getMessage(), null);
+    public Vehicle insertVehicle(Vehicle inputVehicle) throws VehicleException {
+        Vehicle insertedVehicle = null;
+        try {
+            Vehicle validVehicle = validateVehicle(inputVehicle);
+            if (validVehicle != null) {
+                throw new InvalidInputException("vehicle already exist");
             }
+            insertedVehicle = vehicleDao.insert(inputVehicle);
 
-        } else {
-            editVehicleResponse = new VehicleResponse(true, "vehicle already exist", validVehicle);
+        } catch (InvalidInputException invalidInputException) {
+            logger.error("Invalid input received while inserting level ", invalidInputException);
+            throw new VehicleException(invalidInputException.getMessage(), invalidInputException);
+        } catch (Exception e) {
+            logger.error("Error while inserting level ", e);
+            throw new VehicleException(e.getMessage(), e);
         }
-        return editVehicleResponse;
+
+
+        return insertedVehicle;
+    }
+
+    public Vehicle validateVehicle(Vehicle inputVehicle) {
+        Vehicle vehicle = null;
+        vehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+        return vehicle;
     }
 
     @Override
-    public VehicleResponse deleteVehicle(Vehicle inputVehicle) {
-        VehicleResponse editVehicleResponse;
-        Vehicle validVehicle = validateVehicle(inputVehicle);
-        if (validVehicle != null) {
-            try {
-                deleteVehicleFromAllLevels(validVehicle);
-                vehicleDao.delete(validVehicle);
-                editVehicleResponse = new VehicleResponse(true, "vehicle deleted", validVehicle);
+    public boolean deleteVehicle(Vehicle inputVehicle) throws VehicleException {
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                editVehicleResponse = new VehicleResponse(true, "something went wrong " + e.getMessage(), null);
+        try {
+            Vehicle validVehicle = validateVehicle(inputVehicle);
+            if (validVehicle == null) {
+                throw new InvalidInputException("vehicle do not exist");
             }
+            deleteVehicleFromAllLevels(validVehicle);
+            vehicleDao.delete(validVehicle);
 
-        } else {
-            editVehicleResponse = new VehicleResponse(true, "vehicle do not exist", null);
+
+        } catch (InvalidInputException invalidInputException) {
+            logger.error("Invalid input received while deleting level ", invalidInputException);
+            throw new VehicleException(invalidInputException.getMessage(), invalidInputException);
+        } catch (Exception e) {
+            logger.error("Error while deleting level ", e);
+            throw new VehicleException(e.getMessage(), e);
         }
-        return editVehicleResponse;
+
+
+        return true;
 
     }
 
     private void deleteVehicleFromAllLevels(Vehicle validVehicle) throws Exception {
-        try {
-            for(Level level:levelDao.getLevelList()){
-                for(AllowedVehicle allowedVehicle:level.getAllowedVehicles()){
-                    if(allowedVehicle.getVehicle().getName().equals(validVehicle.getName())){
-                        level.getAllowedVehicles().remove(allowedVehicle);
-                        break;
-                    }
+
+        for (Level level : levelDao.getLevelList()) {
+            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
+                if (allowedVehicle.getVehicle().getName().equals(validVehicle.getName())) {
+                    level.getAllowedVehicles().remove(allowedVehicle);
+                    break;
                 }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("vehicle can not be deleted. Some error occured");
         }
 
     }
 
     @Override
-    public VehicleResponse editVehicle(Vehicle inputVehicle) {
-        VehicleResponse editVehicleResponse;
-        Vehicle validVehicle = validateVehicle(inputVehicle);
-        if (validVehicle != null) {
-            try {
-                inputVehicle.setId(validVehicle.getId());
-                Vehicle vehicle = vehicleDao.update(inputVehicle);
-                editVehicleResponse = new VehicleResponse(true, "vehicle edited", vehicle);
-
-            } catch (Exception e) {
-                editVehicleResponse = new VehicleResponse(true, "something went wrong " + e.getMessage(), null);
-            }
-
-        } else {
-            editVehicleResponse = new VehicleResponse(true, "vehicle do not exist", null);
-        }
-        return editVehicleResponse;
-    }
-
-
-    public Vehicle validateVehicle(Vehicle inputVehicle) {
-        Vehicle vehicle=null;
+    public Vehicle editVehicle(Vehicle inputVehicle) throws VehicleException {
+        Vehicle editedVehicle=null;
         try {
-            vehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+            Vehicle validVehicle = validateVehicle(inputVehicle);
+            if (validVehicle == null) {
+                throw new InvalidInputException("vehicle do not exist");
+            }
+            inputVehicle.setId(validVehicle.getId());
+            editedVehicle = vehicleDao.update(inputVehicle);
+
+
+        } catch (InvalidInputException invalidInputException) {
+            logger.error("Invalid input received while editing level ", invalidInputException);
+            throw new VehicleException(invalidInputException.getMessage(), invalidInputException);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error while editing level ", e);
+            throw new VehicleException(e.getMessage(), e);
         }
 
 
-        return vehicle;
+        return editedVehicle;
     }
+
+
 }

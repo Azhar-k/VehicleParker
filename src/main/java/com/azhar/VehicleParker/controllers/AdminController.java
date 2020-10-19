@@ -3,6 +3,7 @@ package com.azhar.VehicleParker.controllers;
 import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
 import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
 import com.azhar.VehicleParker.Entities.Exceptions.LevelException;
+import com.azhar.VehicleParker.Entities.Exceptions.VehicleException;
 import com.azhar.VehicleParker.services.LevelService;
 import com.azhar.VehicleParker.services.SpaceManager;
 import com.azhar.VehicleParker.services.VehicleService;
@@ -77,17 +78,38 @@ public class AdminController {
     }
     @PostMapping(path = "/vehicles")
     public VehicleResponse addVehicle(@Valid @RequestBody Vehicle inputVehicle) {
-        return vehicleService.insertVehicle(inputVehicle);
+        VehicleResponse vehicleResponse = null;
+        try{
+            Vehicle vehicle=vehicleService.insertVehicle(inputVehicle);
+            vehicleResponse = new VehicleResponse(true, "vehicle added", vehicle);
+        } catch (VehicleException e) {
+            vehicleResponse = new VehicleResponse(false, e.getMessage(), null);
+        }
+        return vehicleResponse;
     }
     @PutMapping(path = "/vehicles")
     public VehicleResponse editVehicle(@Valid @RequestBody Vehicle inputVehicle) {
-        return vehicleService.editVehicle(inputVehicle);
+        VehicleResponse vehicleResponse = null;
+        try{
+            Vehicle vehicle=vehicleService.editVehicle(inputVehicle);
+            vehicleResponse = new VehicleResponse(true, "vehicle edited", vehicle);
+        } catch (VehicleException e) {
+            vehicleResponse = new VehicleResponse(false, e.getMessage(), null);
+        }
+        return vehicleResponse;
     }
 
     @DeleteMapping(path = "/vehicles")
     public VehicleResponse deleteVehicle(@Valid @RequestBody Vehicle inputVehicle) {
+        VehicleResponse vehicleResponse = null;
+        try{
+            vehicleService.deleteVehicle(inputVehicle);
+            vehicleResponse = new VehicleResponse(true, "vehicle deleted", null);
+        } catch (VehicleException e) {
+            vehicleResponse = new VehicleResponse(false, e.getMessage(), null);
+        }
+        return vehicleResponse;
 
-        return vehicleService.deleteVehicle(inputVehicle);
     }
 
 
