@@ -43,7 +43,6 @@ public class SpaceManager implements com.azhar.VehicleParker.services.SpaceManag
                 for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                     int freeSlot = allowedVehicle.getFreeSlots();
                     levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
-
                 }
                 availableSpace.add(levelSpace);
 

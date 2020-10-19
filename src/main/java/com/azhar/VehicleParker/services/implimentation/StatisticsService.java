@@ -84,7 +84,7 @@ public class StatisticsService implements com.azhar.VehicleParker.services.Stati
                 statistics.getVehicleStatByTypeList().sort(new sortByAmount());
                 statisticsList.add(statistics);
             }
-
+            logger.info("Statistics provided ");
         } catch (Exception e) {
             logger.error("Error while retrieving statistics ",e);
         }

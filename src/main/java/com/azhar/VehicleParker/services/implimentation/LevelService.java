@@ -48,6 +48,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
                 allowedVehicle.setLevel(insertedLevel);
             }
             levelDao.update(insertedLevel);//update the level after changing the allowed vehicle's attribute
+            logger.info("Level inserted "+insertedLevel);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input while inserting level", invalidInputException);
             throw new LevelException(invalidInputException.getMessage(),invalidInputException);
@@ -93,7 +94,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
             checkLevelContainVehicles(inputLevel);
             Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
             levelDao.delete(level);
-
+            logger.info("Level deleted "+inputLevel);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input while deleting level", invalidInputException);
             throw new LevelException(invalidInputException.getMessage(),invalidInputException);
@@ -120,8 +121,6 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
     @Override
     public Level editLevel(Level inputLevel) throws LevelException {
         Level editedLevel=null;
-
-
         try {
             if(!checkLevelExist(inputLevel)){
                 throw new InvalidInputException("input Level does not exist");
@@ -134,7 +133,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
                 allowedVehicle.setLevel(editedLevel);
             }
             levelDao.update(editedLevel);
-
+            logger.info("Level edited "+editedLevel);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid argument while editing level", invalidInputException);
             throw new LevelException(invalidInputException.getMessage(),invalidInputException);

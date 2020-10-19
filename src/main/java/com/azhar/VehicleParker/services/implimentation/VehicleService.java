@@ -39,7 +39,7 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
                 throw new InvalidInputException("vehicle already exist");
             }
             insertedVehicle = vehicleDao.insert(inputVehicle);
-
+            logger.info("Vehicle inserted "+insertedVehicle);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input received while inserting level ", invalidInputException);
             throw new VehicleException(invalidInputException.getMessage(), invalidInputException);
@@ -68,8 +68,7 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
             }
             deleteVehicleFromAllLevels(validVehicle);
             vehicleDao.delete(validVehicle);
-
-
+            logger.info("Level deleted "+inputVehicle);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input received while deleting level ", invalidInputException);
             throw new VehicleException(invalidInputException.getMessage(), invalidInputException);
@@ -106,8 +105,7 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
             }
             inputVehicle.setId(validVehicle.getId());
             editedVehicle = vehicleDao.update(inputVehicle);
-
-
+            logger.info("Level inserted "+editedVehicle);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input received while editing level ", invalidInputException);
             throw new VehicleException(invalidInputException.getMessage(), invalidInputException);
