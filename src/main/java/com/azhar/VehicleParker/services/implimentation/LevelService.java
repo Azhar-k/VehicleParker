@@ -1,10 +1,9 @@
 package com.azhar.VehicleParker.services.implimentation;
 
-import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
-import com.azhar.VehicleParker.Entities.ApiResponses.LevelResponse;
-import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
+import com.azhar.VehicleParker.Entities.Exceptions.InvalidInputException;
+import com.azhar.VehicleParker.Entities.Exceptions.LevelException;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 
 @Service
@@ -27,150 +27,127 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Override
-    public List<Level> getLevels() {
+    public List<Level> getSortedLevels() {
+
         return levelDao.getLevelBySortedLevelNumber();
     }
 
     @Override
-    public LevelResponse insertLevel(Level inputLevel) {
-        LevelResponse editLevelResponse = null;
-
-        if (!isLevelExist(inputLevel)) {
-            try {
-                //input vehicle should be validated before editing.User may try to add non recognised vehicle
-                validateVehicles(inputLevel.getAllowedVehicles());
-                Level level = levelDao.insert(inputLevel);
-                //allowed vehicles in inputLevel may not contain the level attribute.
-                for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
-                    allowedVehicle.setLevel(level);
-                }
-                levelDao.update(level);//update the level after changing the allowed vehicle's attribute
-                editLevelResponse = new LevelResponse(true, "Level added", level);
+    public Level insertLevel(Level inputLevel) throws LevelException {
+        Level insertedLevel = null;
 
 
-            } catch (Exception e) {
-                logger.error(e.toString());
-                String errorMessage = e.getMessage();
-                editLevelResponse = new LevelResponse(false, errorMessage, null);
+        try {
+            if(checkLevelExist(inputLevel)){
+                throw new InvalidInputException("level already exist");
             }
-
-        } else {
-
-            String errorMessage = "level already exist";
-            editLevelResponse = new LevelResponse(false, errorMessage, null);
+            validateVehicles(inputLevel.getAllowedVehicles());
+            insertedLevel = levelDao.insert(inputLevel);
+            //allowed vehicles in inputLevel may not contain the level attribute.
+            for (AllowedVehicle allowedVehicle : insertedLevel.getAllowedVehicles()) {
+                allowedVehicle.setLevel(insertedLevel);
+            }
+            levelDao.update(insertedLevel);//update the level after changing the allowed vehicle's attribute
+            logger.info("Level inserted "+insertedLevel);
+        } catch (InvalidInputException invalidInputException) {
+            logger.error("Invalid input while inserting level", invalidInputException);
+            throw new LevelException(invalidInputException.getMessage(),invalidInputException);
+        } catch (Exception e) {
+            logger.error("Exception occured while inserting level", e);
+            throw new LevelException(e.getMessage(), e);
         }
 
-        return editLevelResponse;
+
+        return insertedLevel;
 
     }
 
-    private void validateVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
-        for (AllowedVehicle allowedVehicle : allowedVehicles) {
-            try {
-                Vehicle inputVehicle = allowedVehicle.getVehicle();
-                Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
-                if (recognisedVehicle == null) {
-                    throw new VehicleNotFound("vehicle not valid");
-                }
-                //input vehicle from user is replaced with recognised vehicle got from database
-                allowedVehicle.setVehicle(recognisedVehicle);
-
-            } catch (Exception e) {
-                logger.error(e.toString()+allowedVehicle);
-                throw e;
-
-            }
-
-        }
-
-    }
-
-
-    @Override
-    public LevelResponse deleteLevel(Level inputLevel) {
-        LevelResponse editLevelResponse = null;
-
-        boolean isLevelExist = isLevelExist(inputLevel);
-
-        if (isLevelExist) {
-            if (!isLevelContainVehicles(inputLevel)) {
-                try {
-                    Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
-                    levelDao.delete(level);
-                    editLevelResponse = new LevelResponse(true, "Level deleted", null);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    logger.error(e.toString());
-                    editLevelResponse = new LevelResponse(false, "something went wrong..please try again", null);
-                }
-            } else {
-                editLevelResponse = new LevelResponse(false, "Level can not be deleted. It contains vehicle", null);
-            }
-
-        } else {
-            editLevelResponse = new LevelResponse(false, "input Level does not exist", null);
-        }
-        return editLevelResponse;
-    }
-
-
-    @Override
-    public LevelResponse editLevel(Level inputLevel) {
-        LevelResponse editLevelResponse = null;
-
-        boolean isLevelExist = isLevelExist(inputLevel);
-
-        if (isLevelExist) {
-            if (!isLevelContainVehicles(inputLevel)) {
-                try {
-                    //Vehicles allowed for this level is inserted into database
-                    validateVehicles(inputLevel.getAllowedVehicles());
-
-                    Level level = levelDao.update(inputLevel);
-
-                    for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
-                        allowedVehicle.setLevel(level);
-                    }
-                    levelDao.update(level);
-
-                    editLevelResponse = new LevelResponse(true, "Level edited", inputLevel);
-
-
-                } catch (Exception e) {
-                    logger.error(e.toString());
-                    editLevelResponse = new LevelResponse(false, "something went wrong..please try again" + e.getMessage(), null);
-                }
-            } else {
-                editLevelResponse = new LevelResponse(false, "Level can not be edited. It contains vehicle", null);
-            }
-
-        } else {
-            editLevelResponse = new LevelResponse(false, "input Level does not exist", null);
-        }
-        return editLevelResponse;
-    }
-
-    @Override
-    public Boolean isLevelExist(Level inputLevel) {
+    public Boolean checkLevelExist(Level inputLevel) {
         boolean isLevelExist = true;
         Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
         if (level == null) {
-            System.out.println(inputLevel);
             isLevelExist = false;
         }
         return isLevelExist;
     }
 
+    private void validateVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
+        for (AllowedVehicle allowedVehicle : allowedVehicles) {
+
+            Vehicle inputVehicle = allowedVehicle.getVehicle();
+            Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+            if (recognisedVehicle == null) {
+                throw new InvalidInputException("vehicle not valid");
+            }
+            //input vehicle from user is replaced with recognised vehicle got from database
+            allowedVehicle.setVehicle(recognisedVehicle);
+        }
+
+    }
+
     @Override
-    public Boolean isLevelContainVehicles(Level level) {
+    public boolean deleteLevel(Level inputLevel) throws LevelException {
+        try {
+            if(!checkLevelExist(inputLevel)){
+                throw new InvalidInputException("input Level does not exist");
+            }
+            if(checkLevelContainVehicles(inputLevel)){
+                throw new InvalidInputException("level contains vehicle");
+            }
+            Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
+            levelDao.delete(level);
+            logger.info("Level deleted "+inputLevel);
+        } catch (InvalidInputException invalidInputException) {
+            logger.error("Invalid input while deleting level", invalidInputException);
+            throw new LevelException(invalidInputException.getMessage(),invalidInputException);
+        } catch (Exception e) {
+            logger.error("Exception occured while deleting level", e);
+            throw new LevelException(e.getMessage(),e);
+        }
+
+
+        return true;
+    }
+
+    public Boolean checkLevelContainVehicles(Level level) throws Exception {
         boolean isLevelContainsVehicle = false;
         level = levelDao.getLevelByLevelNumber(level.getNumber());
         for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
             if (allowedVehicle.getOccupiedSlots() > 0) {
-                System.out.println(level);
                 isLevelContainsVehicle = true;
+                break;
             }
         }
         return isLevelContainsVehicle;
     }
+
+    @Override
+    public Level editLevel(Level inputLevel) throws LevelException {
+        Level editedLevel=null;
+        try {
+            if(!checkLevelExist(inputLevel)){
+                throw new InvalidInputException("input Level does not exist");
+            }
+            if(checkLevelContainVehicles(inputLevel)){
+                throw new InvalidInputException("level contains vehicle");
+            }
+            validateVehicles(inputLevel.getAllowedVehicles());
+            editedLevel = levelDao.update(inputLevel);
+            //allowed vehicles in inputLevel may not contain the level attribute.
+            for (AllowedVehicle allowedVehicle : editedLevel.getAllowedVehicles()) {
+                allowedVehicle.setLevel(editedLevel);
+            }
+            levelDao.update(editedLevel);
+            logger.info("Level edited "+editedLevel);
+        } catch (InvalidInputException invalidInputException) {
+            logger.error("Invalid argument while editing level", invalidInputException);
+            throw new LevelException(invalidInputException.getMessage(),invalidInputException);
+        } catch (Exception e) {
+            logger.error("error while editing level", e);
+            throw new LevelException(e.getMessage(),e);
+
+        }
+        return editedLevel;
+    }
+
 }

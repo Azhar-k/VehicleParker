@@ -1,6 +1,5 @@
 package com.azhar.VehicleParker.Dao.implimentation;
 
-import com.azhar.VehicleParker.Entities.Exceptions.VehicleNotFound;
 import com.azhar.VehicleParker.db.models.Vehicle.Vehicle;
 import com.azhar.VehicleParker.db.repositories.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +18,9 @@ public class VehicleDao implements com.azhar.VehicleParker.Dao.VehicleDao {
     }
 
     @Override
-    public Vehicle getVehicleByName(String name) throws VehicleNotFound{
+    public Vehicle getVehicleByName(String name){
 
-        Vehicle vehicle = null;
-        try {
-            vehicle = vehicleRepository.findVehicleByName(name);
-        } catch (Exception e) {
-            throw new VehicleNotFound("Vehicle not exist");
-        }
+        Vehicle vehicle = vehicleRepository.findVehicleByName(name);
         return vehicle;
     }
 
