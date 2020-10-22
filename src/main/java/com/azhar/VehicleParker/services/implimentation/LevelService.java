@@ -108,6 +108,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
         }
         return true;
     }
+
     private void validateInputLevel(Level inputLevel) throws Exception {
         if (!checkLevelExist(inputLevel)) {
             throw new InvalidInputException("input Level does not exist");
@@ -116,6 +117,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
             throw new InvalidInputException("level contains vehicle");
         }
     }
+
     public Boolean checkLevelContainVehicles(Level level) throws Exception {
         boolean isLevelContainsVehicle = false;
         level = levelDao.getLevelByLevelNumber(level.getNumber());
@@ -127,6 +129,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
         }
         return isLevelContainsVehicle;
     }
+
     private void delete(Level inputLevel) {
         Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
         levelDao.delete(level);
