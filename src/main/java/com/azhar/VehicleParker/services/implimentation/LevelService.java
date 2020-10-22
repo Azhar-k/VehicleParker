@@ -41,7 +41,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
             if(checkLevelExist(inputLevel)){
                 throw new InvalidInputException("level already exist");
             }
-            validateVehicles(inputLevel.getAllowedVehicles());
+            validateAllowedVehicles(inputLevel.getAllowedVehicles());
             insertedLevel = levelDao.insert(inputLevel);
             //allowed vehicles in inputLevel may not contain the level attribute.
             for (AllowedVehicle allowedVehicle : insertedLevel.getAllowedVehicles()) {
@@ -71,9 +71,12 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
         return isLevelExist;
     }
 
-    private void validateVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
+    private void validateAllowedVehicles(List<AllowedVehicle> allowedVehicles) throws Exception {
         for (AllowedVehicle allowedVehicle : allowedVehicles) {
 
+            if(allowedVehicle.getMAX_SLOTS()<allowedVehicle.getOccupiedSlots()){
+                throw new InvalidInputException("Occupied slot can not be greater than maximum slot");
+            }
             Vehicle inputVehicle = allowedVehicle.getVehicle();
             Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
             if (recognisedVehicle == null) {
@@ -131,7 +134,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
             if(checkLevelContainVehicles(inputLevel)){
                 throw new InvalidInputException("level contains vehicle");
             }
-            validateVehicles(inputLevel.getAllowedVehicles());
+            validateAllowedVehicles(inputLevel.getAllowedVehicles());
             editedLevel = levelDao.update(inputLevel);
             //allowed vehicles in inputLevel may not contain the level attribute.
             for (AllowedVehicle allowedVehicle : editedLevel.getAllowedVehicles()) {

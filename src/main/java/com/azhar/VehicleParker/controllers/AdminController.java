@@ -18,8 +18,6 @@ import java.util.List;
 @RestController
 public class AdminController {
     @Autowired
-    SpaceManager spaceManager;
-    @Autowired
     LevelService levelService;
     @Autowired
     VehicleService vehicleService;

@@ -3,6 +3,7 @@ package com.azhar.VehicleParker.controllers;
 
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,6 +190,85 @@ class AdminControllerTest {
                         " \t\n" +
                         " }")
         ).andExpect(jsonPath("$.message").value("vehicle not valid"));
+
+    }
+    @Test
+    public void testAddLevelGivenOccupiedSlotGreaterThanMaxSlot() throws Exception {
+        mockMvc.perform(post("/levels")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(" {\n" +
+                        "       \n" +
+                        "        \"number\": 100,\n" +
+                        "        \"allowedVehicles\": [\n" +
+                        "            {\n" +
+                        "                \n" +
+                        "                \"vehicle\": {\n" +
+                        "                    \n" +
+                        "                    \"name\": \"bike\"\n" +
+                        "                },\n" +
+                        "                \"occupiedSlots\": 19,\n" +
+                        "                \"max_SLOTS\": 15\n" +
+                        "            }\n" +
+                        "        ]\n" +
+                        " \t\n" +
+                        " }")
+        ).andExpect(jsonPath("$.message").value("Occupied slot can not be greater than maximum slot"));
+
+    }
+    @Test
+    public void testAddLevelGivenEmptyAllowedVehiclesList() throws Exception {
+        mockMvc.perform(post("/levels")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(" {\n" +
+                        "       \n" +
+                        "        \"number\": 100,\n" +
+                        "        \"allowedVehicles\": []\n" +
+                        " \t\n" +
+                        " }")
+        ).andExpect(jsonPath("$.message").value("Level added"));
+
+    }
+    @Test
+    @Disabled
+    public void testAddLevelGivenLevelWithoutInputVehicle() throws Exception {
+        mockMvc.perform(post("/levels")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(" {\n" +
+                        "       \n" +
+                        "        \"number\": 100,\n" +
+                        "        \"allowedVehicles\": [\n" +
+                        "            {\n" +
+                        "                \"occupiedSlots\": 0,\n" +
+                        "                \"max_SLOTS\": 15\n" +
+                        "            }\n" +
+                        "        ]\n" +
+                        " \t\n" +
+                        " }")
+        ).andExpect(status().isBadRequest());
+
+    }
+    @Test
+    @Disabled
+    public void testAddLevelGivenLevelWithoutSlotAttribute() throws Exception {
+        mockMvc.perform(post("/levels")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(" {\n" +
+                        "       \n" +
+                        "        \"number\": 100,\n" +
+                        "        \"allowedVehicles\": [\n" +
+                        "            {\n" +
+                        "                \n" +
+                        "                \"vehicle\": {\n" +
+                        "                    \n" +
+                        "                    \"name\": \"bike\"\n" +
+                        "                },\n" +
+                        "                \"jhvbhjgvbhjv: 0,\n" +
+                        "                \"max_SLOTS\": 15\n" +
+                        "            }\n" +
+                        "        ]\n" +
+                        " \t\n" +
+                        " }")
+        ).andExpect(status().isBadRequest());
 
     }
 
