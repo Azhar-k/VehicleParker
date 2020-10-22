@@ -22,7 +22,6 @@ public class AdminController {
     @Autowired
     VehicleService vehicleService;
 
-
     //end points for level
     @GetMapping(path = "/levels")
     public List<Level> getLevelList() {

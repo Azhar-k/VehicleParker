@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface VehicleDao {
 
-    List<Vehicle> getVehicleList();
+    List<Vehicle> getAll();
 
-    Vehicle getVehicleByName(String name);
+    Vehicle getByName(String name);
 
     Vehicle insert(Vehicle inputVehicle);
 

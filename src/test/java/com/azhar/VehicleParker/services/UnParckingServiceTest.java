@@ -3,7 +3,6 @@ package com.azhar.VehicleParker.services;
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
-import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.services.implimentation.ParkingService;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
 import com.azhar.VehicleParker.db.models.Building.Level;
@@ -52,7 +51,7 @@ public class UnParckingServiceTest {
         public void givenValidId() throws Exception {
             LevelParkedVehicle expected = new LevelParkedVehicle(0, 0, "car", "xx xx xx xxxx",20);
             LevelParkedVehicle input = new LevelParkedVehicle();
-            when(levelParkedVehicleDao.getLevelParkedVehicleById(input.getId())).thenReturn(expected);
+            when(levelParkedVehicleDao.getById(input.getId())).thenReturn(expected);
             LevelParkedVehicle actual = parkingService.getValidLevelParkedVehicle(input.getId());
             assertEquals(expected, actual);
         }
@@ -69,7 +68,7 @@ public class UnParckingServiceTest {
             allowedVehicleList.add(allowedVehicle);
             level.setAllowedVehicles(allowedVehicleList);
 
-            when(levelDao.getLevelByLevelNumber(0)).thenReturn(level);
+            when(levelDao.getByNumber(0)).thenReturn(level);
             when(allowedVehicleDao.update(allowedVehicle)).thenReturn(allowedVehicle);
 
             assertTrue(parkingService.emptySlot(new LevelParkedVehicle(10)));
@@ -81,7 +80,7 @@ public class UnParckingServiceTest {
         @Test
         public void givenInvalidLevelVehicle() {
             LevelParkedVehicle input = new LevelParkedVehicle(1000);
-            when(levelParkedVehicleDao.getLevelParkedVehicleById(input.getId())).thenReturn(null);
+            when(levelParkedVehicleDao.getById(input.getId())).thenReturn(null);
             try {
                 parkingService.unParkVehicle(input);
             } catch (Exception e) {
@@ -101,8 +100,8 @@ public class UnParckingServiceTest {
             allowedVehicleList.add(allowedVehicle);
             level.setAllowedVehicles(allowedVehicleList);
 
-            when(levelParkedVehicleDao.getLevelParkedVehicleById(input.getId())).thenReturn(expected);
-            when(levelDao.getLevelByLevelNumber(0)).thenReturn(level);
+            when(levelParkedVehicleDao.getById(input.getId())).thenReturn(expected);
+            when(levelDao.getByNumber(0)).thenReturn(level);
             when(allowedVehicleDao.update(allowedVehicle)).thenReturn(allowedVehicle);
 
             LevelParkedVehicle actual = parkingService.unParkVehicle(input);

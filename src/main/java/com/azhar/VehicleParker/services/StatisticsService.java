@@ -13,5 +13,5 @@ public interface StatisticsService {
 
     StatisticsResponse countOfParkedVehiclesByDateAndType(LocalDate localDate, String vehicleType);
 
-    List<Statistics> getStatistics();
+    List<Statistics> getStatistics() throws Exception;
 }

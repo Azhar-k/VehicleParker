@@ -23,27 +23,25 @@ public class StatisticsService implements com.azhar.VehicleParker.services.Stati
     LevelParkedVehicleDao levelParkedVehicleDao;
     @Autowired
     VehicleDao vehicleDao;
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Override
     public StatisticsResponse getAmountByDate(LocalDate localDate) {
-        int amount = 0;
-        StatisticsResponse statisticsResponse=null;
+        StatisticsResponse statisticsResponse ;
         try {
-            for (LevelParkedVehicle levelParkedVehicle : levelParkedVehicleDao.getLevelParkedVehicleList()) {
+            int amount = 0;
+            for (LevelParkedVehicle levelParkedVehicle : levelParkedVehicleDao.getAll()) {
                 if (levelParkedVehicle.getDate().compareTo(localDate) == 0) {
                     String vehicleName = levelParkedVehicle.getVehicleName();
-                    int vehiclerate = vehicleDao.getVehicleByName(vehicleName).getParkingRate();
+                    int vehiclerate = vehicleDao.getByName(vehicleName).getParkingRate();
                     amount += vehiclerate;
                 }
             }
             statisticsResponse = new StatisticsResponse(true, "Total amount collected for the date is : " + amount);
         } catch (Exception e) {
-            logger.error("Error in getAmountByDate ",e);
+            logger.error("Error in getAmountByDate ", e);
             statisticsResponse = new StatisticsResponse(false, e.getMessage());
         }
-
         return statisticsResponse;
     }
 
@@ -52,7 +50,7 @@ public class StatisticsService implements com.azhar.VehicleParker.services.Stati
         StatisticsResponse statisticsResponse = null;
         if (isVehicleValid(vehicleType)) {
             int count = 0;
-            for (LevelParkedVehicle levelParkedVehicle : levelParkedVehicleDao.getLevelParkedVehicleList()) {
+            for (LevelParkedVehicle levelParkedVehicle : levelParkedVehicleDao.getAll()) {
                 if (levelParkedVehicle.getDate().compareTo(localDate) == 0 && levelParkedVehicle.getVehicleName().equals(vehicleType)) {
                     count += 1;
                 }
@@ -67,48 +65,56 @@ public class StatisticsService implements com.azhar.VehicleParker.services.Stati
         return statisticsResponse;
     }
 
-    @Override
-    public List<Statistics> getStatistics() {
-        List<Statistics> statisticsList = new ArrayList<Statistics>();
-        try {
-            for (LocalDate localDate : levelParkedVehicleDao.getDistinctDate()) {
-                //Statistics is created for each unique localDate in levelParkedVehicle table
-                Statistics statistics = new Statistics(localDate);
-                for (Vehicle vehicle : vehicleDao.getVehicleList()) {
-                    //details for each vehicle in database for a given date is calculated
-                    String vehicleName = vehicle.getName();
-                    int countOfVehicle = levelParkedVehicleDao.findCountByDateAndVehicleName(vehicleName, localDate);
-                    VehicleStatByType vehicleStatByType = new VehicleStatByType(countOfVehicle, vehicle);//total amount is setup implicitely
-                    statistics.addVehicleStatByType(vehicleStatByType);
-                }
-                statistics.getVehicleStatByTypeList().sort(new sortByAmount());
-                statisticsList.add(statistics);
-            }
-            logger.info("Statistics provided ");
-        } catch (Exception e) {
-            logger.error("Error while retrieving statistics ",e);
-        }
-
-
-        return statisticsList;
-    }
-
     public boolean isVehicleValid(String vehicleName) {
         boolean isVehicleValid = true;
-        try{
-            if (vehicleDao.getVehicleByName(vehicleName) == null) {
+        try {
+            if (vehicleDao.getByName(vehicleName) == null) {
                 isVehicleValid = false;
             }
         } catch (Exception e) {
             isVehicleValid = false;
-            logger.error("Error while validating vehicle",e);
+            logger.error("Error while validating vehicle", e);
         }
-
         return isVehicleValid;
     }
 
-    public class sortByAmount implements Comparator<VehicleStatByType> {
+    @Override
+    public List<Statistics> getStatistics() throws Exception {
+        List<Statistics> statisticsList = null;
+        try {
+            statisticsList = buildSortedStatisticsList();
+            logger.info("Statistics provided ");
+        } catch (Exception e) {
+            logger.error("Error while retrieving statistics ", e);
+            throw new Exception("Error while retrieving statistics");
+        }
+        return statisticsList;
+    }
 
+    private List<Statistics> buildSortedStatisticsList() {
+        List<Statistics> statisticsList = new ArrayList<Statistics>();
+        for (LocalDate localDate : levelParkedVehicleDao.getDistinctDate()) {
+            //Statistics is created for each unique localDate in levelParkedVehicle table
+            Statistics statistics = buildStatisticsOfDate(localDate);
+            statistics.getVehicleStatByTypeList().sort(new sortByAmount());
+            statisticsList.add(statistics);
+        }
+        return statisticsList;
+    }
+
+    private Statistics buildStatisticsOfDate(LocalDate localDate) {
+        Statistics statistics = new Statistics(localDate);
+        for (Vehicle vehicle : vehicleDao.getAll()) {
+            //details for each vehicle in database for a given date is calculated
+            String vehicleName = vehicle.getName();
+            int countOfVehicle = levelParkedVehicleDao.findCountByDateAndVehicleName(vehicleName, localDate);
+            VehicleStatByType vehicleStatByType = new VehicleStatByType(countOfVehicle, vehicle);//total amount is setup implicitly
+            statistics.addVehicleStatByType(vehicleStatByType);
+        }
+        return statistics;
+    }
+
+    public class sortByAmount implements Comparator<VehicleStatByType> {
         @Override
         public int compare(VehicleStatByType o1, VehicleStatByType o2) {
             return o2.getTotalAmount() - o1.getTotalAmount();

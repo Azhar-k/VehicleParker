@@ -4,7 +4,6 @@ import com.azhar.VehicleParker.db.models.Building.Level;
 
 //Used to provide responses for all services of LevelService
 public class LevelResponse extends Response {
-
     private Level level;
 
     public LevelResponse(boolean isSucces, String message, Level level) {

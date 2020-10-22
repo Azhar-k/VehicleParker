@@ -9,11 +9,11 @@ public interface LevelParkedVehicleDao {
 
     LevelParkedVehicle insert(LevelParkedVehicle levelAllowedVehicle);
 
-    List<LevelParkedVehicle> getLevelParkedVehicleList();
+    List<LevelParkedVehicle> getAll();
 
     void delete(LevelParkedVehicle levelAllowedVehicle);
 
-    LevelParkedVehicle getLevelParkedVehicleById(int levelParkedVehicleId);
+    LevelParkedVehicle getById(int levelParkedVehicleId);
 
     List<LocalDate> getDistinctDate();
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface LevelDao {
-    List<Level> getLevelList();
+    List<Level> getAll();
 
     Level update(Level level);
 
@@ -15,9 +15,9 @@ public interface LevelDao {
 
     void delete(Level inputLevel);
 
-    Level getLevelByLevelNumber(int levelNumber);
+    Level getByNumber(int levelNumber);
 
-    List<Level> getLevelBySortedLevelNumber();
+    List<Level> getAllSortedByLevelNumber();
 
 
 }

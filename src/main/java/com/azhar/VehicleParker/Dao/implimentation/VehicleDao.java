@@ -13,12 +13,12 @@ public class VehicleDao implements com.azhar.VehicleParker.Dao.VehicleDao {
     VehicleRepository vehicleRepository;
 
     @Override
-    public List<Vehicle> getVehicleList() {
+    public List<Vehicle> getAll() {
         return vehicleRepository.findAll();
     }
 
     @Override
-    public Vehicle getVehicleByName(String name){
+    public Vehicle getByName(String name){
 
         Vehicle vehicle = vehicleRepository.findVehicleByName(name);
         return vehicle;

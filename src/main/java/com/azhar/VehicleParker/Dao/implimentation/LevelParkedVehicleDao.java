@@ -19,7 +19,7 @@ public class LevelParkedVehicleDao implements com.azhar.VehicleParker.Dao.LevelP
     }
 
     @Override
-    public List<LevelParkedVehicle> getLevelParkedVehicleList() {
+    public List<LevelParkedVehicle> getAll() {
 
         return levelParkedVehicleRepository.findAll();
     }
@@ -30,7 +30,7 @@ public class LevelParkedVehicleDao implements com.azhar.VehicleParker.Dao.LevelP
     }
 
     @Override
-    public LevelParkedVehicle getLevelParkedVehicleById(int levelParkedVehicleId) {
+    public LevelParkedVehicle getById(int levelParkedVehicleId) {
         return levelParkedVehicleRepository.findLevelParkedVehicleById(levelParkedVehicleId);
     }
 

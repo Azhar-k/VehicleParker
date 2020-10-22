@@ -2,7 +2,6 @@ package com.azhar.VehicleParker.services.implimentation;
 
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
-import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
 import com.azhar.VehicleParker.Entities.Exceptions.InvalidInputException;
 import com.azhar.VehicleParker.Entities.Exceptions.VehicleException;
 import com.azhar.VehicleParker.db.models.Building.AllowedVehicle;
@@ -22,12 +21,11 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
     VehicleDao vehicleDao;
     @Autowired
     LevelDao levelDao;
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Override
     public List<Vehicle> getVehicles() {
-        return vehicleDao.getVehicleList();
+        return vehicleDao.getAll();
     }
 
     @Override
@@ -39,7 +37,7 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
                 throw new InvalidInputException("vehicle already exist");
             }
             insertedVehicle = vehicleDao.insert(inputVehicle);
-            logger.info("Vehicle inserted "+insertedVehicle);
+            logger.info("Vehicle inserted " + insertedVehicle);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input received while inserting level ", invalidInputException);
             throw new VehicleException(invalidInputException.getMessage(), invalidInputException);
@@ -47,20 +45,17 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
             logger.error("Error while inserting level ", e);
             throw new VehicleException(e.getMessage(), e);
         }
-
-
         return insertedVehicle;
     }
 
     public Vehicle validateVehicle(Vehicle inputVehicle) {
-        Vehicle vehicle = null;
-        vehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+        Vehicle vehicle;
+        vehicle = vehicleDao.getByName(inputVehicle.getName());
         return vehicle;
     }
 
     @Override
     public boolean deleteVehicle(Vehicle inputVehicle) throws VehicleException {
-
         try {
             Vehicle validVehicle = validateVehicle(inputVehicle);
             if (validVehicle == null) {
@@ -68,7 +63,7 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
             }
             deleteVehicleFromAllLevels(validVehicle);
             vehicleDao.delete(validVehicle);
-            logger.info("Level deleted "+inputVehicle);
+            logger.info("Level deleted " + inputVehicle);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input received while deleting level ", invalidInputException);
             throw new VehicleException(invalidInputException.getMessage(), invalidInputException);
@@ -76,15 +71,11 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
             logger.error("Error while deleting level ", e);
             throw new VehicleException(e.getMessage(), e);
         }
-
-
         return true;
-
     }
 
     private void deleteVehicleFromAllLevels(Vehicle validVehicle) throws Exception {
-
-        for (Level level : levelDao.getLevelList()) {
+        for (Level level : levelDao.getAll()) {
             for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
                 if (allowedVehicle.getVehicle().getName().equals(validVehicle.getName())) {
                     level.getAllowedVehicles().remove(allowedVehicle);
@@ -92,12 +83,11 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
                 }
             }
         }
-
     }
 
     @Override
     public Vehicle editVehicle(Vehicle inputVehicle) throws VehicleException {
-        Vehicle editedVehicle=null;
+        Vehicle editedVehicle = null;
         try {
             Vehicle validVehicle = validateVehicle(inputVehicle);
             if (validVehicle == null) {
@@ -105,7 +95,7 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
             }
             inputVehicle.setId(validVehicle.getId());
             editedVehicle = vehicleDao.update(inputVehicle);
-            logger.info("Level inserted "+editedVehicle);
+            logger.info("Level inserted " + editedVehicle);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input received while editing level ", invalidInputException);
             throw new VehicleException(invalidInputException.getMessage(), invalidInputException);
@@ -113,10 +103,6 @@ public class VehicleService implements com.azhar.VehicleParker.services.VehicleS
             logger.error("Error while editing level ", e);
             throw new VehicleException(e.getMessage(), e);
         }
-
-
         return editedVehicle;
     }
-
-
 }

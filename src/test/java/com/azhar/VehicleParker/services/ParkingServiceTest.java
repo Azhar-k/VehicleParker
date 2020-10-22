@@ -5,7 +5,6 @@ import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.LevelParkedVehicleDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
 import com.azhar.VehicleParker.Entities.ApiRequests.ParkRequest;
-import com.azhar.VehicleParker.Entities.ApiResponses.ParkResponse;
 import com.azhar.VehicleParker.Entities.Exceptions.InvalidInputException;
 import com.azhar.VehicleParker.Entities.Exceptions.ParkingException;
 import com.azhar.VehicleParker.Entities.LevelSpace;
@@ -56,13 +55,13 @@ public class ParkingServiceTest {
         @Test
         public void GivenInValidType() throws Exception {
 
-            Mockito.when(vehicleDao.getVehicleByName("jeep")).thenReturn(mockData.findVehicleByName("jeep"));
+            Mockito.when(vehicleDao.getByName("jeep")).thenReturn(mockData.findVehicleByName("jeep"));
             assertNull(parkingService.getVehicleByName("jeep"));
         }
 
         @Test
         public void GivenValidType() throws Exception {
-            Mockito.when(vehicleDao.getVehicleByName("car")).thenReturn(mockData.findVehicleByName("car"));
+            Mockito.when(vehicleDao.getByName("car")).thenReturn(mockData.findVehicleByName("car"));
             assertNotNull(parkingService.getVehicleByName("car"));
         }
     }
@@ -72,7 +71,7 @@ public class ParkingServiceTest {
     @CsvSource(value = {"bus", "van", "bike", "container", "truck", "container"})
     public void getAvailableLevelNumberGivenVehicle(String vehicleName) throws InvalidInputException {
 
-        Mockito.when(spaceManager.getLAvailableSpace()).thenReturn(mockData.getLAvailableSpace());
+        Mockito.when(spaceManager.getAvailableSpaceList()).thenReturn(mockData.getLAvailableSpace());
         Vehicle vehicle = mockData.findVehicleByName(vehicleName);
 
         int expected = 0;//all vehicle types except truck has slot in 0th level
@@ -99,8 +98,8 @@ public class ParkingServiceTest {
             String vehicleNumber = "kl 11 ac 5978";
             ParkRequest parkRequest = new ParkRequest(vehicleName, vehicleNumber);
 
-            Mockito.when(vehicleDao.getVehicleByName(vehicleName)).thenReturn(mockData.findVehicleByName(vehicleName));
-            Mockito.when(spaceManager.getLAvailableSpace()).thenReturn(mockData.getLAvailableSpace());
+            Mockito.when(vehicleDao.getByName(vehicleName)).thenReturn(mockData.findVehicleByName(vehicleName));
+            Mockito.when(spaceManager.getAvailableSpaceList()).thenReturn(mockData.getLAvailableSpace());
             ParkingException parkingException = assertThrows(ParkingException.class, () -> {
                 parkingService.parkVehicle(parkRequest);
             });
@@ -114,10 +113,10 @@ public class ParkingServiceTest {
             String vehicleNumber = "kl 11 ac 5978 " + vehicleName;
             ParkRequest parkRequest = new ParkRequest(vehicleName, vehicleNumber);
 
-            Mockito.when(vehicleDao.getVehicleByName(vehicleName)).thenReturn(mockData.findVehicleByName(vehicleName));
-            Mockito.when(spaceManager.getLAvailableSpace()).thenReturn(mockData.getLAvailableSpace());
-            Mockito.when(levelDao.getLevelByLevelNumber(0)).thenReturn(mockData.loadLevels().get(0));
-            Mockito.when(levelDao.getLevelByLevelNumber(6)).thenReturn(mockData.loadLevels().get(6));
+            Mockito.when(vehicleDao.getByName(vehicleName)).thenReturn(mockData.findVehicleByName(vehicleName));
+            Mockito.when(spaceManager.getAvailableSpaceList()).thenReturn(mockData.getLAvailableSpace());
+            Mockito.when(levelDao.getByNumber(0)).thenReturn(mockData.loadLevels().get(0));
+            Mockito.when(levelDao.getByNumber(6)).thenReturn(mockData.loadLevels().get(6));
 
             LevelParkedVehicle actual = parkingService.parkVehicle(parkRequest);
 
@@ -127,9 +126,9 @@ public class ParkingServiceTest {
         @Test
         public void GivenSpaceIsfull() {
 
-            Mockito.when(vehicleDao.getVehicleByName("car")).thenReturn(mockData.findVehicleByName("car"));
-            Mockito.when(spaceManager.getLAvailableSpace()).thenReturn(new ArrayList<LevelSpace>());
-            Mockito.when(levelDao.getLevelByLevelNumber(0)).thenReturn(mockData.loadLevels().get(0));
+            Mockito.when(vehicleDao.getByName("car")).thenReturn(mockData.findVehicleByName("car"));
+            Mockito.when(spaceManager.getAvailableSpaceList()).thenReturn(new ArrayList<LevelSpace>());
+            Mockito.when(levelDao.getByNumber(0)).thenReturn(mockData.loadLevels().get(0));
 
             ParkingException parkingException = assertThrows(ParkingException.class, () -> {
                 for (int i = 0; i < 50; i++) {

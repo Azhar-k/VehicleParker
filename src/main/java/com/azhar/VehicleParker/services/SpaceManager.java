@@ -9,8 +9,8 @@ import java.util.List;
 
 @Component
 public interface SpaceManager {
-    List<LevelParkedVehicle> getLevelVehicleList();
+    List<LevelParkedVehicle> getLevelParkedVehicleList();
 
-    List<LevelSpace> getLAvailableSpace();
+    List<LevelSpace> getAvailableSpaceList() throws Exception;
 
 }

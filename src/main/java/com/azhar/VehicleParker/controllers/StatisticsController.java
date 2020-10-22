@@ -37,7 +37,14 @@ public class StatisticsController {
     }
 
     @GetMapping("/statistics")
-    public List<Statistics> getStatistics() {
-        return statisticsService.getStatistics();
+    public StatisticsResponse getStatistics() {
+        StatisticsResponse statisticsResponse = null;
+        try {
+            List<Statistics> statisticsList = statisticsService.getStatistics();
+            statisticsResponse = new StatisticsResponse(true,"Statistics is ready",statisticsList);
+        } catch (Exception e) {
+            statisticsResponse = new StatisticsResponse(true,e.getMessage(),null);
+        }
+        return statisticsResponse;
     }
 }

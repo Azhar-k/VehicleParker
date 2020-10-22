@@ -12,54 +12,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SpaceManager implements com.azhar.VehicleParker.services.SpaceManager {
 
     @Autowired
     LevelDao levelDao;
-
     @Autowired
     LevelParkedVehicleDao levelParkedVehicleDao;
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Override
-    public List<LevelParkedVehicle> getLevelVehicleList() {
-        return levelParkedVehicleDao.getLevelParkedVehicleList();
+    public List<LevelParkedVehicle> getLevelParkedVehicleList() {
+        return levelParkedVehicleDao.getAll();
     }
 
     @Override
-    public List<LevelSpace> getLAvailableSpace() {
+    public List<LevelSpace> getAvailableSpaceList() throws Exception {
         //create a list of available space by checking all the levels
-        List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
-        try{
-            List<Level> levelList = levelDao.getLevelList();
-            levelList.sort(new SortbyLevelNumber());
-            for (Level level : levelList) {
-                LevelSpace levelSpace = new LevelSpace(level.getNumber());
-                for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
-                    int freeSlot = allowedVehicle.getFreeSlots();
-                    levelSpace.getAvailabeSlots().put(allowedVehicle.getVehicle().getName(), freeSlot);
-                }
-                availableSpace.add(levelSpace);
-
-            }
+        List<LevelSpace> availableSpace = null;
+        try {
+            availableSpace = buildAvailableSpaceList();
         } catch (Exception e) {
-            logger.error("Error while creating available space ",e);
+            logger.error("Error while creating available space", e);
+            throw new Exception("Error while creating available space");
         }
-
         return availableSpace;
     }
 
+    private List<LevelSpace> buildAvailableSpaceList() {
+        List<LevelSpace> availableSpace = new ArrayList<LevelSpace>();
+        List<Level> levelList = levelDao.getAllSortedByLevelNumber();
+        for (Level level : levelList) {
+            LevelSpace levelSpace = new LevelSpace(level.getNumber());
+            for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
+                int freeSlot = allowedVehicle.getFreeSlots();
+                Map<String, Integer> availableSlotsMap = levelSpace.getAvailabeSlots();
+                availableSlotsMap.put(allowedVehicle.getVehicle().getName(), freeSlot);
+            }
+            availableSpace.add(levelSpace);
 
-
-    class SortbyLevelNumber implements Comparator<Level> {
-        public int compare(Level a, Level b) {
-            return a.getNumber() - b.getNumber();
         }
+        return availableSpace;
     }
-
 }

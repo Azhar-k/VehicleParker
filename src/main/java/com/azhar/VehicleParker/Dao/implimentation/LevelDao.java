@@ -15,7 +15,7 @@ public class LevelDao implements com.azhar.VehicleParker.Dao.LevelDao {
     LevelRepository levelRepository;
 
 
-    public List<Level> getLevelList() {
+    public List<Level> getAll() {
         return levelRepository.findAll();
     }
 
@@ -35,13 +35,13 @@ public class LevelDao implements com.azhar.VehicleParker.Dao.LevelDao {
     }
 
     @Override
-    public Level getLevelByLevelNumber(int levelNumber) {
+    public Level getByNumber(int levelNumber) {
 
         return levelRepository.findLevelByNumber(levelNumber);
     }
 
     @Override
-    public List<Level> getLevelBySortedLevelNumber() {
+    public List<Level> getAllSortedByLevelNumber() {
         return levelRepository.findByOrderByNumberAsc();
     }
 

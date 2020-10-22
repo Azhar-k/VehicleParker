@@ -3,7 +3,6 @@ package com.azhar.VehicleParker.services;
 import com.azhar.VehicleParker.Dao.AllowedVehicleDao;
 import com.azhar.VehicleParker.Dao.LevelDao;
 import com.azhar.VehicleParker.Dao.VehicleDao;
-import com.azhar.VehicleParker.Entities.ApiResponses.VehicleResponse;
 import com.azhar.VehicleParker.Entities.Exceptions.VehicleException;
 import com.azhar.VehicleParker.MockData;
 import com.azhar.VehicleParker.services.implimentation.VehicleService;
@@ -39,7 +38,7 @@ public class VehicleServiceTest {
         void validateVehicleGivenExistingVehicle()  {
             Vehicle inputVehicle = new Vehicle( "car", 20);
 
-            Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
+            Mockito.when(vehicleDao.getByName(inputVehicle.getName())).thenReturn(inputVehicle);
 
             Vehicle expected = inputVehicle;
             Vehicle actual = vehicleService.validateVehicle(inputVehicle);
@@ -55,7 +54,7 @@ public class VehicleServiceTest {
         void validateVehicleGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle( "car", 20);
 
-            Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
+            Mockito.when(vehicleDao.getByName(inputVehicle.getName())).thenReturn(null);
             Vehicle actual = vehicleService.validateVehicle(inputVehicle);
             assertNull(actual);
 
@@ -68,7 +67,7 @@ public class VehicleServiceTest {
         @Test
         void insertVehicleTestGivenExistingVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
-            Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
+            Mockito.when(vehicleDao.getByName(inputVehicle.getName())).thenReturn(inputVehicle);
 
             VehicleException vehicleException=assertThrows(VehicleException.class,()->{
                 vehicleService.insertVehicle(inputVehicle);
@@ -79,7 +78,7 @@ public class VehicleServiceTest {
         @Test
         void insertVehicleTestGivenNewVehicle() throws VehicleException {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
-            Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
+            Mockito.when(vehicleDao.getByName(inputVehicle.getName())).thenReturn(null);
             Mockito.when(vehicleDao.insert(inputVehicle)).thenReturn(inputVehicle);
 
             Vehicle expected = inputVehicle;
@@ -93,7 +92,7 @@ public class VehicleServiceTest {
         @Test
         void editVehicleTestGivenExistingVehicle() throws VehicleException {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
-            Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
+            Mockito.when(vehicleDao.getByName(inputVehicle.getName())).thenReturn(inputVehicle);
             Mockito.when(vehicleDao.update(inputVehicle)).thenReturn(inputVehicle);
 
             Vehicle expected = inputVehicle;
@@ -104,7 +103,7 @@ public class VehicleServiceTest {
         @Test
         void editVehicleTestGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
-            Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
+            Mockito.when(vehicleDao.getByName(inputVehicle.getName())).thenReturn(null);
 
             VehicleException vehicleException=assertThrows(VehicleException.class,()->{
                 vehicleService.editVehicle(inputVehicle);
@@ -118,8 +117,8 @@ public class VehicleServiceTest {
         @Test
         void deleteVehicleTestGivenExistingVehicle() throws VehicleException {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
-            Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(inputVehicle);
-            Mockito.when(levelDao.getLevelList()).thenReturn(mockData.loadLevels());
+            Mockito.when(vehicleDao.getByName(inputVehicle.getName())).thenReturn(inputVehicle);
+            Mockito.when(levelDao.getAll()).thenReturn(mockData.loadLevels());
             boolean actual = vehicleService.deleteVehicle(inputVehicle);
             assertTrue(actual);
         }
@@ -127,7 +126,7 @@ public class VehicleServiceTest {
         @Test
         void deleteVehicleTestGivenNewVehicle()  {
             Vehicle inputVehicle = new Vehicle(0, "car", 20);
-            Mockito.when(vehicleDao.getVehicleByName(inputVehicle.getName())).thenReturn(null);
+            Mockito.when(vehicleDao.getByName(inputVehicle.getName())).thenReturn(null);
 
             VehicleException vehicleException=assertThrows(VehicleException.class,()->{
                 vehicleService.deleteVehicle(inputVehicle);

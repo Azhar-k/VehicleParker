@@ -27,7 +27,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
     @Override
     public List<Level> getSortedLevels() {
-        return levelDao.getLevelBySortedLevelNumber();
+        return levelDao.getAllSortedByLevelNumber();
     }
 
     @Override
@@ -43,10 +43,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
             logger.error("Exception occured while inserting level", e);
             throw new LevelException(e.getMessage(), e);
         }
-
-
         return insertedLevel;
-
     }
 
     private void validateInputLevelBeforeInsert(Level inputLevel) throws Exception {
@@ -58,7 +55,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
     public Boolean checkLevelExist(Level inputLevel) {
         boolean isLevelExist = true;
-        Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
+        Level level = levelDao.getByNumber(inputLevel.getNumber());
         if (level == null) {
             isLevelExist = false;
         }
@@ -72,14 +69,13 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
                 throw new InvalidInputException("Occupied slot can not be greater than maximum slot");
             }
             Vehicle inputVehicle = allowedVehicle.getVehicle();
-            Vehicle recognisedVehicle = vehicleDao.getVehicleByName(inputVehicle.getName());
+            Vehicle recognisedVehicle = vehicleDao.getByName(inputVehicle.getName());
             if (recognisedVehicle == null) {
                 throw new InvalidInputException("vehicle not valid");
             }
             //input vehicle from user is replaced with recognised vehicle got from database
             allowedVehicle.setVehicle(recognisedVehicle);
         }
-
     }
 
     private Level insert(Level inputLevel) {
@@ -120,7 +116,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
 
     public Boolean checkLevelContainVehicles(Level level) throws Exception {
         boolean isLevelContainsVehicle = false;
-        level = levelDao.getLevelByLevelNumber(level.getNumber());
+        level = levelDao.getByNumber(level.getNumber());
         for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
             if (allowedVehicle.getOccupiedSlots() > 0) {
                 isLevelContainsVehicle = true;
@@ -131,7 +127,7 @@ public class LevelService implements com.azhar.VehicleParker.services.LevelServi
     }
 
     private void delete(Level inputLevel) {
-        Level level = levelDao.getLevelByLevelNumber(inputLevel.getNumber());
+        Level level = levelDao.getByNumber(inputLevel.getNumber());
         levelDao.delete(level);
         logger.info("Level deleted " + inputLevel);
     }

@@ -25,14 +25,14 @@ public class ParkingController {
     ParkingService parkingService;
 
     @GetMapping(path = "/getAvailableSpace")
-    public List<LevelSpace> getAvailableSpace() {
-        return spaceManager.getLAvailableSpace();
+    public List<LevelSpace> getAvailableSpace() throws Exception {
+        return spaceManager.getAvailableSpaceList();
     }
 
     @GetMapping(path = "/getParkedVehicles")
     public List<LevelParkedVehicle> getParkedVehicles() {
 
-        return spaceManager.getLevelVehicleList();
+        return spaceManager.getLevelParkedVehicleList();
     }
 
     @PostMapping(path = "/park")

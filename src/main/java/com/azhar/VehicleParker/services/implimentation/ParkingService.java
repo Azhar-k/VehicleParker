@@ -32,13 +32,10 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
     VehicleDao vehicleDao;
     @Autowired
     SpaceManager spaceManager;
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
 
     @Override
     public LevelParkedVehicle parkVehicle(ParkRequest parkRequest) throws ParkingException {
-
         LevelParkedVehicle levelParkedVehicle = null;
         try {
             Vehicle vehicle = getVehicleByName(parkRequest.getVehicleName());
@@ -50,7 +47,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             //Create a levelParkedVehicle for this parking and get a unique id for this parking.Unique id is attribute of LevelParkedVehicle
             levelParkedVehicle = addLevelParkedVehicle(availableLevelNumber, vehicle.getId(), vehicle.getName(), parkRequest.getVehicleNumber(), vehicle.getParkingRate());
             fillSlot(availableLevelNumber, vehicle.getId());
-            logger.info("Vehicle parked "+levelParkedVehicle);
+            logger.info("Vehicle parked " + levelParkedVehicle);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input received while parking vehicle", invalidInputException);
             throw new ParkingException(invalidInputException.getMessage(), invalidInputException);
@@ -58,20 +55,18 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             logger.error("error while parking vehicle", e);
             throw new ParkingException(e.getMessage(), e);
         }
-
         return levelParkedVehicle;
     }
 
-
     public Vehicle getVehicleByName(String name) {
-        Vehicle vehicle = vehicleDao.getVehicleByName(name);
+        Vehicle vehicle = vehicleDao.getByName(name);
         return vehicle;
     }
 
-    public int getAvailableLevelNumber(Vehicle vehicle) throws InvalidInputException {
+    public int getAvailableLevelNumber(Vehicle vehicle) throws Exception {
         //-1 indicate no slot available
         int levelNo = -1;
-        for (LevelSpace levelSpace : spaceManager.getLAvailableSpace()) {
+        for (LevelSpace levelSpace : spaceManager.getAvailableSpaceList()) {
             if (levelSpace.getAvailabeSlots().keySet().contains(vehicle.getName())) {
                 int freeSlot = levelSpace.getAvailabeSlots().get(vehicle.getName());
                 if (freeSlot > 0) {
@@ -89,32 +84,32 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
     public LevelParkedVehicle addLevelParkedVehicle(int levelNumber, int parkedVehicleId, String vehicleName, String vehicleNumber, int parkingRate) throws Exception {
         LevelParkedVehicle levelParkedVehicle = null;
         levelParkedVehicle = new LevelParkedVehicle(levelNumber, parkedVehicleId, vehicleName, vehicleNumber, parkingRate);
-        try{
+        try {
             levelParkedVehicleDao.insert(levelParkedVehicle);
         } catch (Exception e) {
             throw new InvalidInputException("This vehicle is already parked");
         }
-
         return levelParkedVehicle;
     }
 
     public boolean fillSlot(int levelNumber, int parkedVehicleId) {
         boolean isSlotFilled = true;
-        Level level = levelDao.getLevelByLevelNumber(levelNumber);
+        Level level = levelDao.getByNumber(levelNumber);
         for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
             if (allowedVehicle.getVehicle().getId() == parkedVehicleId) {
-
-                int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
-                int updatedOccupiedSlot = currentOccupiedSlot + 1;
-                allowedVehicle.setOccupiedSlots(updatedOccupiedSlot);
-
-                allowedVehicleDao.update(allowedVehicle);
+                incrementOccupiedSlot(allowedVehicle);
             }
         }
         levelDao.update(level);
         return isSlotFilled;
     }
 
+    private void incrementOccupiedSlot(AllowedVehicle allowedVehicle) {
+        int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
+        int updatedOccupiedSlot = currentOccupiedSlot + 1;
+        allowedVehicle.setOccupiedSlots(updatedOccupiedSlot);
+        allowedVehicleDao.update(allowedVehicle);
+    }
 
     @Override
     public LevelParkedVehicle unParkVehicle(LevelParkedVehicle inputLevelParkedVehicle) throws ParkingException {
@@ -127,7 +122,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
             }
             removeLevelParkedVehicle(levelParkedVehicle);
             emptySlot(levelParkedVehicle);
-            logger.info("Vehicle unparked "+levelParkedVehicle);
+            logger.info("Vehicle unparked " + levelParkedVehicle);
         } catch (InvalidInputException invalidInputException) {
             logger.error("Invalid input received while unparking vehicle", invalidInputException);
             throw new ParkingException(invalidInputException.getMessage(), invalidInputException);
@@ -141,9 +136,8 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
 
     public LevelParkedVehicle getValidLevelParkedVehicle(int levelParkedVehicleId) {
         //find out the parked vehicle
-        LevelParkedVehicle levelParkedVehicle = levelParkedVehicleDao.getLevelParkedVehicleById(levelParkedVehicleId);
+        LevelParkedVehicle levelParkedVehicle = levelParkedVehicleDao.getById(levelParkedVehicleId);
         return levelParkedVehicle;
-
     }
 
     public boolean removeLevelParkedVehicle(LevelParkedVehicle levelParkedVehicle) {
@@ -156,7 +150,7 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
         int levelNumber = levelParkedVehicle.getLevelNumber();
         int parkedVehicleId = levelParkedVehicle.getVehicleType();
         //find out level in which vehicle is parked
-        Level level = levelDao.getLevelByLevelNumber(levelNumber);
+        Level level = levelDao.getByNumber(levelNumber);
         for (AllowedVehicle allowedVehicle : level.getAllowedVehicles()) {
             if (allowedVehicle.getVehicle().getId() == parkedVehicleId) {
                 int currentOccupiedSlot = allowedVehicle.getOccupiedSlots();
@@ -169,6 +163,4 @@ public class ParkingService implements com.azhar.VehicleParker.services.ParkingS
         levelDao.update(level);
         return isSlotEmptied;
     }
-
-
 }
